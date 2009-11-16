@@ -50,11 +50,6 @@ namespace libbloki
             BFopcje.ActiveForm.Close();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnZapisz_Click(object sender, EventArgs e)
         {
             //uc.prText = edtLval_1.Text + " = " + edtRval_1a.Text + " " + cbDzialanie.SelectedItem.ToString() + " " + edtRval1b.Text;
@@ -132,16 +127,5 @@ namespace libbloki
             
             
         }
-
-        private void textBox9_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
     }
 }

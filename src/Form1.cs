@@ -150,7 +150,7 @@ namespace Okienka
                 tabBO.Add(temp);
                 panel1.Controls.Add(tabBO.Last());
 
-                if (ile > 0)
+                /*if (ile > 0)
                 {
                     tabBO[ile - 1].prNext = tabBO[ile].Name;
                     tabBO[ile - 1].prNext_ref = tabBO[ile];
@@ -173,7 +173,7 @@ namespace Okienka
                 {
                     temp_BO = (BlokObliczeniowy)panel1.Controls[0];
                 }
-            
+                */
 
                 ile++;
                 if (ctrl != true)
@@ -197,10 +197,10 @@ namespace Okienka
             if (ile > 0)
             {
                 Form1.ActiveForm.Text = temp_BO.Name;
-                if (temp_BO.prNext.Length > 0)
+                /*if (temp_BO.prNext.Length > 0)
                 {
                     temp_BO = temp_BO.prNext_ref;
-                }   
+                } */  
             }
         }
     }
