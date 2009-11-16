@@ -253,7 +253,6 @@
             this.edtLval_4.Name = "edtLval_4";
             this.edtLval_4.Size = new System.Drawing.Size(93, 20);
             this.edtLval_4.TabIndex = 17;
-            this.edtLval_4.TextChanged += new System.EventHandler(this.textBox9_TextChanged);
             // 
             // edtRval_5b
             // 

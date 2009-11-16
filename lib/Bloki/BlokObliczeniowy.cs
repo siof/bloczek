@@ -20,13 +20,10 @@ namespace libbloki
         private int[] rval_b = new int[5];
         private String[] dzial = new String[5];
 
-        private String next="";
-        private BlokObliczeniowy next_ref=null;
-
         private Point klikoffset;
         private bool klik;
 
-        public BlokObliczeniowy prNext_ref
+        /*public BlokObliczeniowy prNext_ref
         {
             get { return next_ref; }
             set { next_ref = value; }
@@ -36,7 +33,7 @@ namespace libbloki
         {
             get { return next; }
             set { next = value; }
-        }
+        }*/
 
         public String[] prlval
         {
@@ -96,31 +93,6 @@ namespace libbloki
 
         }
 
-        private void textBox1_MouseHover(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_MouseLeave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            
-        }
-
-        private void textBox1_Leave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
         private void UserControl1_Resize(object sender, EventArgs e)
         {
 
@@ -164,11 +136,6 @@ namespace libbloki
                 graph.DrawString(prlval[4] + " = " + prrval_a[4].ToString() + " " + prdzial[4] + " " + prrval_a[4].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
                 i += 15;
             }
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void BlokObliczeniowy_MouseDown(object sender, MouseEventArgs e)
@@ -260,15 +227,6 @@ namespace libbloki
             {
                 graph.DrawString(prlval[4] + " = " + prrval_a[4].ToString() + " " + prdzial[4] + " " + prrval_a[4].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
                 i += 15;
-            }
-
-            //linia
-
-            if (next.Length > 0)
-            {
-                Pen p = new Pen(Color.Black, 2);
-                p.EndCap = LineCap.ArrowAnchor;
-                graph.DrawLine(p,this.Left + 75, this.Top + 75, next_ref.Left + 75, next_ref.Top);
             }
         } 
     }
