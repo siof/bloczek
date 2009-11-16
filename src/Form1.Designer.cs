@@ -31,8 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,16 +57,6 @@
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Location = new System.Drawing.Point(21, 45);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(658, 275);
-            this.panel1.TabIndex = 5;
-            this.panel1.Click += new System.EventHandler(this.panel1_Click);
-            this.panel1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel1_Scroll);
-            // 
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -76,6 +66,16 @@
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "toolStripButton2";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Location = new System.Drawing.Point(21, 45);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(658, 275);
+            this.panel1.TabIndex = 5;
+            this.panel1.Click += new System.EventHandler(this.panel1_Click);
+            this.panel1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel1_Scroll);
             // 
             // Form1
             // 

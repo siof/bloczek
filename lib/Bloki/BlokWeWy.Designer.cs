@@ -36,6 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Name = "BlokWeWy";
+            this.Size = new System.Drawing.Size(174, 77);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokWeWy_MouseMove);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BlokWeWy_MouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BlokWeWy_MouseUp);
