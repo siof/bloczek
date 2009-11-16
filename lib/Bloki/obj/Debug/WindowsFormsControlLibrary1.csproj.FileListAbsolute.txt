@@ -1,0 +1,7 @@
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Debug\WindowsFormsControlLibrary1.UserControl1.resources
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Debug\WindowsFormsControlLibrary1.csproj.GenerateResource.Cache
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\bin\Debug\WindowsFormsControlLibrary1.dll
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\bin\Debug\WindowsFormsControlLibrary1.pdb
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Debug\WindowsFormsControlLibrary1.dll
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Debug\WindowsFormsControlLibrary1.pdb

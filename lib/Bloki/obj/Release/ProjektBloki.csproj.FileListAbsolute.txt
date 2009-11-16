@@ -1,0 +1,12 @@
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\bin\Release\WindowsFormsControlLibrary1.dll
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\bin\Release\WindowsFormsControlLibrary1.pdb
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\WindowsFormsControlLibrary1.BlokSTART.resources
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\WindowsFormsControlLibrary1.BFopcje.resources
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\ProjektBloki.csproj.GenerateResource.Cache
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\WindowsFormsControlLibrary1.dll
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\WindowsFormsControlLibrary1.pdb
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\WindowsFormsControlLibrary1.BlokSTOP.resources
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\WindowsFormsControlLibrary1.BlokObliczeniowy.resources
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\WindowsFormsControlLibrary1.BlokDecyzyjny.resources
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsControlLibrary1\WindowsFormsControlLibrary1\obj\Release\WindowsFormsControlLibrary1.BlokWeWy.resources

@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CCCF8DF6-8476-4981-8CC3-80EED69C5201}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>libbloki</RootNamespace>
+    <AssemblyName>libbloki</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BlokDecyzyjny.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlokDecyzyjny.Designer.cs">
+      <DependentUpon>BlokDecyzyjny.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlokSTART.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlokSTART.Designer.cs">
+      <DependentUpon>BlokSTART.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BFopcje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BFopcje.Designer.cs">
+      <DependentUpon>BFopcje.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlokObliczeniowy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlokObliczeniowy.Designer.cs">
+      <DependentUpon>BlokObliczeniowy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlokSTOP.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlokSTOP.Designer.cs">
+      <DependentUpon>BlokSTOP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlokWeWy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BlokWeWy.Designer.cs">
+      <DependentUpon>BlokWeWy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BlokDecyzyjny.resx">
+      <DependentUpon>BlokDecyzyjny.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlokSTART.resx">
+      <DependentUpon>BlokSTART.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BFopcje.resx">
+      <DependentUpon>BFopcje.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlokObliczeniowy.resx">
+      <DependentUpon>BlokObliczeniowy.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlokSTOP.resx">
+      <DependentUpon>BlokSTOP.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlokWeWy.resx">
+      <DependentUpon>BlokWeWy.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

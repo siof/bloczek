@@ -1,0 +1,10 @@
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\bin\Debug\WindowsFormsApplication6.exe
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\bin\Debug\WindowsFormsApplication6.pdb
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\bin\Debug\WindowsFormsControlLibrary1.dll
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\bin\Debug\WindowsFormsControlLibrary1.pdb
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\obj\Debug\WindowsFormsApplication6.Form1.resources
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\obj\Debug\WindowsFormsApplication6.Properties.Resources.resources
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\obj\Debug\WindowsFormsApplication6.csproj.GenerateResource.Cache
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\obj\Debug\WindowsFormsApplication6.exe
+C:\Users\Ja\Documents\Visual Studio 2008\Projects\WindowsFormsApplication6\WindowsFormsApplication6\obj\Debug\WindowsFormsApplication6.pdb
