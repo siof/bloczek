@@ -26,6 +26,14 @@ namespace libbloki
             graph = CreateGraphics();
         }
 
+        public NaroznikLG(Panel parent)
+        {
+            InitializeComponent();
+            graph = CreateGraphics();
+            Parent = parent;
+            BackColor = Color.White;
+        }
+
         protected override void OnPaint(PaintEventArgs pe)
         {
             int temp = this.Width - 1;
