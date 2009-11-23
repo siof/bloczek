@@ -14,7 +14,7 @@ namespace libbloki
     public partial class BlokObliczeniowy : UserControl
     {
         private BFopcje frmOpcje;
-        Graphics graph;
+        Graphics graph = null;
         private String[] lval = new String[5];
         private int[] rval_a = new int[5];
         private int[] rval_b = new int[5];
@@ -66,7 +66,6 @@ namespace libbloki
             /*for (int i = 0; i < 2; i++)
                 for (int j = 0; j < 5; j++)
                     prrval[i,j] = new Int32();*/
-            graph = CreateGraphics();
         }
 
         private void UserControl1_Paint(object sender, PaintEventArgs e)
@@ -137,14 +136,14 @@ namespace libbloki
                 i += 15;
             }
         }
-
+        /*
         private void BlokObliczeniowy_MouseDown(object sender, MouseEventArgs e)
         {
             klik = true;
             klikoffset.X = e.X;
             klikoffset.Y = e.Y;
         }
-
+        
         private void BlokObliczeniowy_MouseUp(object sender, MouseEventArgs e)
         {
             klik = false;
@@ -192,7 +191,7 @@ namespace libbloki
                 this.Top = e.Y + this.Top - klikoffset.Y;
             }
         }
-
+        
         private void BlokObliczeniowy_Move(object sender, EventArgs e)
         {
             Pen pn = new Pen(Color.Brown, 2);
@@ -228,6 +227,45 @@ namespace libbloki
                 graph.DrawString(prlval[4] + " = " + prrval_a[4].ToString() + " " + prdzial[4] + " " + prrval_a[4].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
                 i += 15;
             }
-        } 
+        }*/
+        public void ReDrawText()
+        {
+            if (graph != null)
+                graph.Dispose();
+            graph = CreateGraphics();
+            Pen pn = new Pen(Color.Brown, 2);
+            Rectangle rect = new Rectangle(1, 1, 150, 75);
+            graph.DrawRectangle(pn, rect);
+            graph.FillRectangle(new SolidBrush(Color.Wheat), rect);
+            Font fnt = new Font("Verdana", 8);
+
+            int i = 2;
+            if (prlval[0].ToString().Length > 0)
+            {
+
+                graph.DrawString(prlval[0] + " = " + prrval_a[0].ToString() + " " + prdzial[0] + " " + prrval_b[0].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
+                i += 15;
+            }
+            if (prlval[1].Length > 0)
+            {
+                graph.DrawString(prlval[1] + " = " + prrval_a[1].ToString() + " " + prdzial[1] + " " + prrval_b[1].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
+                i += 15;
+            }
+            if (prlval[2].Length > 0)
+            {
+                graph.DrawString(prlval[2] + " = " + prrval_a[2].ToString() + " " + prdzial[2] + " " + prrval_b[2].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
+                i += 15;
+            }
+            if (prlval[3].Length > 0)
+            {
+                graph.DrawString(prlval[3] + " = " + prrval_a[3].ToString() + " " + prdzial[3] + " " + prrval_b[3].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
+                i += 15;
+            }
+            if (prlval[4].Length > 0)
+            {
+                graph.DrawString(prlval[4] + " = " + prrval_a[4].ToString() + " " + prdzial[4] + " " + prrval_a[4].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
+                i += 15;
+            }
+        }
     }
 }
