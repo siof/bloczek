@@ -54,7 +54,5 @@ namespace libbloki
 
             graph.DrawLine(pn,p[0],p[1]);
         }
-
-
     }
 }

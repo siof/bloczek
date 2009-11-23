@@ -18,18 +18,26 @@ namespace Okienka
         private bool klik = false;
         private bool ctrl = false;
         private int ile = 0;
-        private IList<BlokObliczeniowy> tabBO =new List<BlokObliczeniowy>();
+        //private IList<BlokObliczeniowy> tabBO =new List<BlokObliczeniowy>();
         private Graphics g;
-        BlokObliczeniowy temp_BO;
+        //BlokObliczeniowy temp_BO;
         private bool przesun = false;
-        private BlokSTART przenoszony;
-        private PictureBox pbox;
-        private string typ;
+        //private BlokSTART przenoszony;
+        private Bloki przenoszony;
+        //private PictureBox pbox;
+        private Type typ;
+        private NaroznikLD nld;
+        private NaroznikLG nlg;
+        private NaroznikPD npd;
+        private NaroznikPG npg;
+        private int polowaX;
+        private int polowaY;
+        private IList<Bloki> tabBloki = new List<Bloki>();
+        private Point punktKlikuNaBlok;      //punkt w którym kliknięto na blok (przeciwdziałanie przesunięciu bloku bez przesuwania kursora)
 
-        private Point klikoffset;
+        //private Point klikoffset;
 
-
-        private Rectangle r;
+        //private Rectangle r;
 
 
         public Form1()
@@ -43,14 +51,15 @@ namespace Okienka
         {
             int i;
             for (i = 0; i < ile + 1; i++)
-                if (tabBO[i].Name.Equals(nazwa) == true) break;
+                if (tabBloki[i].blok.Name.Equals(nazwa) == true) break;
+                //if (tabBO[i].Name.Equals(nazwa) == true) break;
 
             return i;
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void toolStripBlokObliczeniowy_Click(object sender, EventArgs e)
         {
-            typ = "bo";
+            typ = typeof(BlokObliczeniowy);
             klik = true;
         }
 
@@ -69,8 +78,8 @@ namespace Okienka
                     temp.Name = "BO_" + numer;
                     temp.KeyDown += new KeyEventHandler(UsunBO);
 
-                    tabBO.Add(temp);
-                    Form1.ActiveForm.Controls.Add(tabBO.Last());
+                    //tabBO.Add(temp);
+                    //Form1.ActiveForm.Controls.Add(tabBO.Last());
                     
                     ile++;
                 if (ctrl != true)
@@ -95,7 +104,7 @@ namespace Okienka
             if (e.KeyCode == Keys.Delete)
             {
                 int temp = ZnajdzBlok(((BlokObliczeniowy)sender).Name);
-                tabBO[temp].Dispose();
+                //tabBO[temp].Dispose();
             }
         }
 
@@ -103,8 +112,19 @@ namespace Okienka
         {
             if (e.KeyCode == Keys.Delete)
             {
-                tabBO.Remove((BlokObliczeniowy)sender);
+                //tabBO.Remove((BlokObliczeniowy)sender);
+                tabBloki.RemoveAt(ZnajdzBlok(((BlokObliczeniowy)sender).Name));
                 ((BlokObliczeniowy)sender).Dispose();
+                ile--;
+            }
+        }
+
+        private void UsunBStart(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                tabBloki.RemoveAt(ZnajdzBlok(((BlokSTART)sender).Name));
+                ((BlokSTART)sender).Dispose();
                 ile--;
             }
         }
@@ -136,7 +156,7 @@ namespace Okienka
                     temp.Name = "BO_" + numer;
                     temp.KeyDown += new KeyEventHandler(UsunBO);
 
-                    tabBO.Add(temp);
+                    //tabBO.Add(temp);
                     //flowLayoutPanel1.Controls.Add(tabBO.Last());
                     
                     ile++;
@@ -151,17 +171,21 @@ namespace Okienka
         {
             if (klik == true)
             {
-                if (typ == "bo")
+                if (typ == typeof(BlokObliczeniowy))
                 {
                     BlokObliczeniowy temp = new BlokObliczeniowy();
                     temp.Left = ((MouseEventArgs)e).X;
                     temp.Top = ((MouseEventArgs)e).Y;
                     temp.Name = "BO_" + numer;
                     temp.KeyDown += new KeyEventHandler(UsunBO);
+                    temp.MouseDown += new MouseEventHandler(PrzesunStart);
+                    temp.MouseMove += new MouseEventHandler(panel1_MouseMove);
+                    temp.MouseUp += new MouseEventHandler(panel1_MouseUp);
+                    temp.ReDrawText();
 
                     numer++;
-                    tabBO.Add(temp);
-                    panel1.Controls.Add(tabBO.Last());
+                    //tabBO.Add(temp);
+                    //panel1.Controls.Add(tabBO.Last());
 
                     /*if (ile > 0)
                     {
@@ -187,6 +211,12 @@ namespace Okienka
                         temp_BO = (BlokObliczeniowy)panel1.Controls[0];
                     }
                     */
+                    Bloki temp2 = new Bloki();
+                    temp2.typBloku = typeof(BlokObliczeniowy);
+                    temp2.blok = (UserControl)temp;
+                    tabBloki.Add(temp2);
+
+                    panel1.Controls.Add(tabBloki.Last().blok);
 
                     ile++;
                     if (ctrl != true)
@@ -195,19 +225,25 @@ namespace Okienka
                     }
                     return;
                 }
-                if (typ == "start")
+                if (typ == typeof(BlokSTART))
                 {
                     BlokSTART temp = new BlokSTART();
                     temp.Left = ((MouseEventArgs)e).X;
                     temp.Top = ((MouseEventArgs)e).Y;
                     temp.Name = "START_" + numer;
+                    temp.KeyDown += new KeyEventHandler(UsunBStart);
                     temp.MouseDown += new MouseEventHandler(PrzesunStart);
                     temp.MouseMove += new MouseEventHandler(panel1_MouseMove);
                     temp.MouseUp += new MouseEventHandler(panel1_MouseUp);
                     //temp.KeyDown += new KeyEventHandler(UsunBO);
 
                     //tabBO.Add(temp);
-                    panel1.Controls.Add(temp);
+                    Bloki temp2 = new Bloki();
+                    temp2.typBloku = typeof(BlokSTART);
+                    temp2.blok = (UserControl)temp;
+                    tabBloki.Add(temp2);
+
+                    panel1.Controls.Add(tabBloki.Last().blok);
 
                     ile++;
                     if (ctrl != true)
@@ -226,7 +262,7 @@ namespace Okienka
             }
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        private void toolStripBlokStart_Click(object sender, EventArgs e)
         {
             //if (ile > 0)
             //{
@@ -236,7 +272,7 @@ namespace Okienka
             //        temp_BO = temp_BO.prNext_ref;
             //    } */  
             //}
-            typ = "start";
+            typ = typeof(BlokSTART);
             klik = true;
         }
 
@@ -244,27 +280,58 @@ namespace Okienka
         {
             if (przesun == false)
             {
-                przenoszony = (BlokSTART)sender;
+                przenoszony = tabBloki[ZnajdzBlok(((UserControl)sender).Name)];
                 przesun = true;
-                //r = new Rectangle(e.X - 10, e.Y - 10, 20, 20);
-                pbox = new PictureBox();
-                pbox.Parent = panel1;
-                
-                Color myColor = Color.FromArgb(1, 0, 0, 0);
-                
+                punktKlikuNaBlok = new Point();
+                punktKlikuNaBlok.X = e.X;
+                punktKlikuNaBlok.Y = e.Y;
+                ////r = new Rectangle(e.X - 10, e.Y - 10, 20, 20);
+                //pbox = new PictureBox();
+                //pbox.Parent = panel1;
 
-                pbox.BackColor = myColor;
+                //Color myColor = Color.FromArgb(1, 0, 0, 0);
+
+                //pbox.BackColor = myColor;
+
+                ////pbox.BackgroundImage = Image.FromFile("tlo1.gif",true);
+
+                //pbox.Width = przenoszony.Width;
+                //pbox.Height = przenoszony.Height;
+                ////klikoffset.X = e.X + przenoszony.Left + (przenoszony.Width)/2;  //((Control)sender).Left;
+                ////klikoffset.Y = e.Y + przenoszony.Top + (przenoszony.Height)/2;   //((Control)sender).Top;
+                //pbox.Left = przenoszony.Left + (przenoszony.Width) / 2;
+                //pbox.Top = przenoszony.Top + (przenoszony.Height) / 2;
+                //pbox.MouseMove += new MouseEventHandler(panel1_MouseMove);
+                //panel1.Controls.Add(pbox);  
               
-                //pbox.BackgroundImage = Image.FromFile("tlo1.gif",true);
+                nlg = new NaroznikLG();
+                nld = new NaroznikLD();
+                npg = new NaroznikPG();
+                npd = new NaroznikPD();
+                nlg.Parent = panel1; nlg.BackColor = Color.White;
+                nld.Parent = panel1; nld.BackColor = Color.White;
+                npg.Parent = panel1; npg.BackColor = Color.White;
+                npd.Parent = panel1; npd.BackColor = Color.White;
 
-                pbox.Width = przenoszony.Width;
-                pbox.Height = przenoszony.Height;
-                //klikoffset.X = e.X + przenoszony.Left + (przenoszony.Width)/2;  //((Control)sender).Left;
-                //klikoffset.Y = e.Y + przenoszony.Top + (przenoszony.Height)/2;   //((Control)sender).Top;
-                pbox.Left = przenoszony.Left + (przenoszony.Width) / 2;
-                pbox.Top = przenoszony.Top + (przenoszony.Height) / 2;
-                pbox.MouseMove += new MouseEventHandler(panel1_MouseMove);
-                panel1.Controls.Add(pbox);
+                polowaX = (przenoszony.blok.Width) / 2;
+                polowaY = (przenoszony.blok.Height) / 2;
+
+                nlg.Left = przenoszony.blok.Left;
+                nlg.Top = przenoszony.blok.Top;
+
+                nld.Left = przenoszony.blok.Left;
+                nld.Top = przenoszony.blok.Top + (przenoszony.blok.Height - nld.Height);
+
+                npg.Left = przenoszony.blok.Left + (przenoszony.blok.Width - npd.Width);
+                npg.Top = przenoszony.blok.Top;
+
+                npd.Left = przenoszony.blok.Left + (przenoszony.blok.Width - npd.Width);
+                npd.Top = przenoszony.blok.Top + (przenoszony.blok.Height - npd.Height);
+
+                panel1.Controls.Add(nlg);
+                panel1.Controls.Add(nld);
+                panel1.Controls.Add(npg);
+                panel1.Controls.Add(npd);
             }
         }
 
@@ -272,13 +339,40 @@ namespace Okienka
         {
             if (przesun == true)
             {
-                pbox.Left = e.X + przenoszony.Left - (przenoszony.Width) / 2;// +klikoffset.X;
-                pbox.Top = e.Y + przenoszony.Top - (przenoszony.Height) / 2;//+klikoffset.Y;
-                pbox.Refresh();
-                //panel1.Update();
-                //r.X = e.X - 10;
-                //r.Y = e.Y - 10;
-                //g.DrawRectangle(new Pen(Color.Black),r);
+                //pbox.Left = e.X + przenoszony.Left - (przenoszony.Width) / 2;// +klikoffset.X;
+                //pbox.Top = e.Y + przenoszony.Top - (przenoszony.Height) / 2;//+klikoffset.Y;
+                //pbox.Refresh();
+                ////panel1.Update();
+                ////r.X = e.X - 10;
+                ////r.Y = e.Y - 10;
+                ////g.DrawRectangle(new Pen(Color.Black),r);
+                przesunNarozniki(sender, e);
+            }
+        }
+
+        private void przesunNarozniki(object sender, MouseEventArgs e)
+        {
+            if (przesun == true)
+            {
+                if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
+                {
+                    nlg.Left = e.X + przenoszony.blok.Left - polowaX;
+                    nlg.Top = e.Y + przenoszony.blok.Top - polowaY;
+
+                    nld.Left = e.X + przenoszony.blok.Left - polowaX;
+                    nld.Top = e.Y + przenoszony.blok.Top + (przenoszony.blok.Height - nld.Height) - polowaY;
+
+                    npg.Left = e.X + przenoszony.blok.Left + (przenoszony.blok.Width - npd.Width) - polowaX;
+                    npg.Top = e.Y + przenoszony.blok.Top - polowaY;
+
+                    npd.Left = e.X + przenoszony.blok.Left + (przenoszony.blok.Width - npd.Width) - polowaX;
+                    npd.Top = e.Y + przenoszony.blok.Top + (przenoszony.blok.Height - npd.Height) - polowaY;
+
+                    nlg.Refresh();
+                    nld.Refresh();
+                    npg.Refresh();
+                    npd.Refresh();
+                }
             }
         }
 
@@ -302,16 +396,46 @@ namespace Okienka
         }
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
-        {
+        {                         
             if (przesun == true)
             {
-                przenoszony.Left = pbox.Left;
-                przenoszony.Top = pbox.Top;
+                //przenoszony.Left = pbox.Left;
+                //przenoszony.Top = pbox.Top;
+                //przesun = false;
+                //przenoszony = null;
+                //panel1.Controls.Remove(pbox);
+                //panel1.Refresh();
+                if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
+                {
+                    przenoszony.blok.Left = nlg.Left;
+                    przenoszony.blok.Top = nlg.Top;
+                }
+                if (przenoszony.typBloku == typeof(BlokObliczeniowy)) //nie działa
+                {
+                    ((BlokObliczeniowy)przenoszony.blok).ReDrawText();
+                    przenoszony.blok.Refresh();
+                }
                 przesun = false;
                 przenoszony = null;
-                panel1.Controls.Remove(pbox);
+                polowaX = 0;
+                polowaY = 0;
+                panel1.Controls.Remove(nlg);
+                panel1.Controls.Remove(nld);
+                panel1.Controls.Remove(npg);
+                panel1.Controls.Remove(npd);
                 panel1.Refresh();
             }
+        }
+
+        private void toolStripBlokStop_Click(object sender, EventArgs e)
+        {
+            typ = typeof(BlokSTART);
+            klik = true;
+        }
+
+        private void toolStripBlokDecyzyjny_Click(object sender, EventArgs e)
+        {
+
         }
 
         //private void panel1_MouseDown(object sender, MouseEventArgs e)
