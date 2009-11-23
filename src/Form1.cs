@@ -42,7 +42,6 @@ namespace Okienka
         {
             InitializeComponent();
             graph = panel1.CreateGraphics();
-            
         }
 
         private int ZnajdzBlok(String nazwa)
@@ -75,6 +74,21 @@ namespace Okienka
             if (e.KeyCode == Keys.ControlKey)
             {
                 ctrl = true;
+            }
+
+            if (e.KeyCode == Keys.Escape)
+            {
+                ctrl = false;
+                klik = false;
+                przesun = false;
+                przenoszony = null;
+                polowaX = 0;
+                polowaY = 0;
+
+                panel1.Controls.Remove(nld);
+                panel1.Controls.Remove(nlg);
+                panel1.Controls.Remove(npd);
+                panel1.Controls.Remove(npg);
             }
         }
 
@@ -186,15 +200,15 @@ namespace Okienka
                 punktKlikuNaBlok = new Point();
                 punktKlikuNaBlok.X = e.X;
                 punktKlikuNaBlok.Y = e.Y;
-              
-                nlg = new NaroznikLG();
-                nld = new NaroznikLD();
-                npg = new NaroznikPG();
-                npd = new NaroznikPD();
-                nlg.Parent = panel1; nlg.BackColor = Color.White;
-                nld.Parent = panel1; nld.BackColor = Color.White;
-                npg.Parent = panel1; npg.BackColor = Color.White;
-                npd.Parent = panel1; npd.BackColor = Color.White;
+
+                if (nld == null)
+                    nld = new NaroznikLD(panel1);
+                if (nlg == null)
+                    nlg = new NaroznikLG(panel1);
+                if (npd == null)
+                    npd = new NaroznikPD(panel1);
+                if (npg == null)
+                    npg = new NaroznikPG(panel1);
 
                 polowaX = (przenoszony.blok.Width) / 2;
                 polowaY = (przenoszony.blok.Height) / 2;
@@ -234,15 +248,21 @@ namespace Okienka
                 {
                     nlg.Left = e.X + przenoszony.blok.Left - polowaX;
                     nlg.Top = e.Y + przenoszony.blok.Top - polowaY;
+                    
+                    if (nlg.Left < panel1.Margin.Left)
+                        nlg.Left = panel1.Margin.Left;
 
-                    nld.Left = e.X + przenoszony.blok.Left - polowaX;
-                    nld.Top = e.Y + przenoszony.blok.Top + (przenoszony.blok.Height - nld.Height) - polowaY;
+                    if (nlg.Top < panel1.Top)
+                        nlg.Top = panel1.Top;
 
-                    npg.Left = e.X + przenoszony.blok.Left + (przenoszony.blok.Width - npd.Width) - polowaX;
-                    npg.Top = e.Y + przenoszony.blok.Top - polowaY;
+                    nld.Left = nlg.Left;
+                    nld.Top = nlg.Top + (przenoszony.blok.Height - nld.Height);
 
-                    npd.Left = e.X + przenoszony.blok.Left + (przenoszony.blok.Width - npd.Width) - polowaX;
-                    npd.Top = e.Y + przenoszony.blok.Top + (przenoszony.blok.Height - npd.Height) - polowaY;
+                    npg.Left = nlg.Left + (przenoszony.blok.Width - npd.Width);
+                    npg.Top = nlg.Top;
+
+                    npd.Left = nlg.Left + (przenoszony.blok.Width - npd.Width);
+                    npd.Top = nlg.Top + (przenoszony.blok.Height - npd.Height);
 
                     nlg.Refresh();
                     nld.Refresh();
