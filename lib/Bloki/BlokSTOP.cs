@@ -13,13 +13,23 @@ namespace libbloki
     {
         Graphics graph;
 
-        private Point klikoffset;
-        private bool klik;
+        //private Point klikoffset;
+        //private bool klik;
 
         public BlokSTOP()
         {
             InitializeComponent();
             graph = CreateGraphics();
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x20;
+                return cp;
+            }
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -53,5 +63,10 @@ namespace libbloki
         {
             klik = false;
         }*/
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // przezroczyste tlo
+        }
     }
 }

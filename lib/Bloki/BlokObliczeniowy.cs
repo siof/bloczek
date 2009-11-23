@@ -20,20 +20,8 @@ namespace libbloki
         private int[] rval_b = new int[5];
         private String[] dzial = new String[5];
 
-        private Point klikoffset;
-        private bool klik;
-
-        /*public BlokObliczeniowy prNext_ref
-        {
-            get { return next_ref; }
-            set { next_ref = value; }
-        }
-
-        public String prNext
-        {
-            get { return next; }
-            set { next = value; }
-        }*/
+        //private Point klikoffset;
+        //private bool klik;
 
         public String[] prlval
         {
@@ -68,12 +56,22 @@ namespace libbloki
                     prrval[i,j] = new Int32();*/
         }
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x20;
+                return cp;
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs pe)
         {
             Font fnt = new Font("Verdana", 16);
             Graphics g = pe.Graphics;
             Pen pn = new Pen(Color.Brown,2);
-            Rectangle rect = new Rectangle(1, 1, 150, 75);
+            Rectangle rect = new Rectangle(2, 2, 148, 73);
             g.DrawRectangle(pn, rect); 
             g.FillRectangle(new SolidBrush(Color.Wheat),rect);
         }
@@ -247,6 +245,11 @@ namespace libbloki
                 graph.DrawString(prlval[4] + " = " + prrval_a[4].ToString() + " " + prdzial[4] + " " + prrval_a[4].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
                 i += 15;
             }
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // przezroczyste tlo
         }
     }
 }

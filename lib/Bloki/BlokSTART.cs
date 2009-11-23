@@ -12,8 +12,8 @@ namespace libbloki
     public partial class BlokSTART : UserControl
     {
         Graphics graph;
-        private Point klikoffset;
-        private bool klik;
+        //private Point klikoffset;
+        //private bool klik;
 
         protected override CreateParams CreateParams
         {
