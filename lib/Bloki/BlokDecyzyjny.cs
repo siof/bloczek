@@ -40,7 +40,7 @@ namespace libbloki
             g.DrawString("NIE", fnt, new SolidBrush(Color.Black), 2, 20);
         }
 
-        private void BlokDecyzyjny_MouseDown(object sender, MouseEventArgs e)
+        /*private void BlokDecyzyjny_MouseDown(object sender, MouseEventArgs e)
         {
             klik = true;
             klikoffset.X = e.X;
@@ -59,6 +59,6 @@ namespace libbloki
                 this.Left = e.X + this.Left - klikoffset.X;
                 this.Top = e.Y + this.Top - klikoffset.Y;
             }
-        }
+        }*/
     }
 }

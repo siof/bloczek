@@ -37,9 +37,9 @@
             this.BackColor = System.Drawing.Color.Transparent;
             this.Name = "BlokDecyzyjny";
             this.Size = new System.Drawing.Size(197, 77);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokDecyzyjny_MouseMove);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BlokDecyzyjny_MouseDown);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BlokDecyzyjny_MouseUp);
+            //this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokDecyzyjny_MouseMove);
+            //this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BlokDecyzyjny_MouseDown);
+            //this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BlokDecyzyjny_MouseUp);
             this.ResumeLayout(false);
 
         }

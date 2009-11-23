@@ -68,10 +68,6 @@ namespace libbloki
                     prrval[i,j] = new Int32();*/
         }
 
-        private void UserControl1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
         protected override void OnPaint(PaintEventArgs pe)
         {
             Font fnt = new Font("Verdana", 16);
@@ -80,21 +76,6 @@ namespace libbloki
             Rectangle rect = new Rectangle(1, 1, 150, 75);
             g.DrawRectangle(pn, rect); 
             g.FillRectangle(new SolidBrush(Color.Wheat),rect);
-        }
-
-        private void UserControl1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void UserControl1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void UserControl1_Resize(object sender, EventArgs e)
-        {
-
         }
 
         private void UserControl1_MouseDoubleClick(object sender, MouseEventArgs e)

@@ -38,9 +38,9 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Name = "BlokSTOP";
             this.Size = new System.Drawing.Size(153, 77);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokSTOP_MouseMove);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BlokSTOP_MouseDown);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BlokSTOP_MouseUp);
+            //this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokSTOP_MouseMove);
+            //this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BlokSTOP_MouseDown);
+            //this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BlokSTOP_MouseUp);
             this.ResumeLayout(false);
 
         }
