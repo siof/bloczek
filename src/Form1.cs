@@ -75,21 +75,6 @@ namespace Okienka
             {
                 ctrl = true;
             }
-
-            if (e.KeyCode == Keys.Escape)
-            {
-                ctrl = false;
-                klik = false;
-                przesun = false;
-                przenoszony = null;
-                polowaX = 0;
-                polowaY = 0;
-
-                panel1.Controls.Remove(nld);
-                panel1.Controls.Remove(nlg);
-                panel1.Controls.Remove(npd);
-                panel1.Controls.Remove(npg);
-            }
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)

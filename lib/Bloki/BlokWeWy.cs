@@ -11,14 +11,24 @@ namespace libbloki
 {
     public partial class BlokWeWy : UserControl
     {
-        private Point klikoffset;
-        private bool klik;
+        //private Point klikoffset;
+        //private bool klik;
         Graphics graph;
 
         public BlokWeWy()
         {
             InitializeComponent();
             graph = CreateGraphics();
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x20;
+                return cp;
+            }
         }
 
         /*private void BlokWeWy_MouseDown(object sender, MouseEventArgs e)
@@ -56,6 +66,11 @@ namespace libbloki
             
             graph.DrawPolygon(pn, p);
             graph.FillPolygon(new SolidBrush(Color.Wheat), p);
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // przezroczyste tlo
         }
     }
 }
