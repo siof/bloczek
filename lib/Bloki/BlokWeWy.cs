@@ -21,7 +21,7 @@ namespace libbloki
             graph = CreateGraphics();
         }
 
-        private void BlokWeWy_MouseDown(object sender, MouseEventArgs e)
+        /*private void BlokWeWy_MouseDown(object sender, MouseEventArgs e)
         {
             klik = true;
             klikoffset.X = e.X;
@@ -40,7 +40,7 @@ namespace libbloki
                 this.Left = e.X + this.Left - klikoffset.X;
                 this.Top = e.Y + this.Top - klikoffset.Y;
             }
-        }
+        }*/
 
         protected override void OnPaint(PaintEventArgs pe)
         {

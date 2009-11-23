@@ -33,7 +33,7 @@ namespace libbloki
             g.DrawString("STOP", fnt, new SolidBrush(Color.Black), 40, 25);
         }
 
-        private void BlokSTOP_MouseDown(object sender, MouseEventArgs e)
+        /*private void BlokSTOP_MouseDown(object sender, MouseEventArgs e)
         {
             klik = true;
             klikoffset.X = e.X;
@@ -52,6 +52,6 @@ namespace libbloki
         private void BlokSTOP_MouseUp(object sender, MouseEventArgs e)
         {
             klik = false;
-        }
+        }*/
     }
 }
