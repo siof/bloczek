@@ -48,10 +48,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -71,7 +74,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Bloki.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -80,6 +82,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Watch.resx">
+      <DependentUpon>Watch.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -96,12 +102,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\lib\Bloki\ProjektBloki.csproj">
-      <Project>{CCCF8DF6-8476-4981-8CC3-80EED69C5201}</Project>
-      <Name>ProjektBloki</Name>
-    </ProjectReference>
+    <Compile Include="Watch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Watch.Designer.cs">
+      <DependentUpon>Watch.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
@@ -128,6 +134,12 @@
   <ItemGroup>
     <Content Include="Img\tlo.png" />
     <Content Include="Img\tlo1.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Bloki\ProjektBloki.csproj">
+      <Project>{CCCF8DF6-8476-4981-8CC3-80EED69C5201}</Project>
+      <Name>ProjektBloki</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,9 +9,25 @@ using System.Windows.Forms;
 
 namespace libbloki
 {
-    public partial class BlokSTART : UserControl
+    
+    
+    public partial class BlokSTART : Bloki
     {
-        Graphics graph;
+        
+        //private tryby _tryb;
+
+        //public tryby tryb
+        //{
+        //    get { return _tryb; }
+        //    set
+        //    {
+        //        _tryb = value;
+        //        Rectangle rect = new Rectangle(1, 1, 150, 75);
+        //        PaintEventArgs pe = new PaintEventArgs(graph, rect);
+        //        this.OnPaint(pe);
+        //    }
+        //}
+
         //private Point klikoffset;
         //private bool klik;
 
@@ -30,17 +46,26 @@ namespace libbloki
             InitializeComponent();
 
             graph = CreateGraphics();
+            tryb = tryby.normal;
         }
 
         protected override void OnPaint(PaintEventArgs pe)
         {
             Font fnt = new Font("Verdana", 16);
             Graphics g = pe.Graphics;
+            SolidBrush brush = new SolidBrush(Color.Black);
+            switch (tryb)
+            {
+                case tryby.normal: brush.Color = Color.Wheat ; break;
+                case tryby.zaznaczony: brush.Color = Color.Orange; break;
+                case tryby.aktualny: brush.Color = Color.Red; break;
+            }
+
             Pen pn = new Pen(Color.Brown, 2);
             Rectangle rect = new Rectangle(1, 1, 150, 75);
             g.DrawEllipse(pn, rect);
-            g.FillEllipse(new SolidBrush(Color.Wheat), rect);
-            g.DrawString("START", fnt, new SolidBrush(Color.Black), 40, 25);
+            g.FillEllipse(brush, rect);
+            g.DrawString("START", fnt,new SolidBrush(Color.Black), 40, 25);
         }
 
         //private void BlokSTART_MouseMove(object sender, MouseEventArgs e)
@@ -77,6 +102,18 @@ namespace libbloki
              Rectangle rect = new Rectangle(1, 1, 150, 75);
              PaintEventArgs pe = new PaintEventArgs(graph, rect);
              this.OnPaint(pe);
+        }
+
+        private void BlokSTART_MouseHover(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void BlokSTART_MouseMove(object sender, MouseEventArgs e)
+        {
+            Rectangle rect = new Rectangle(1, 1, 150, 75);
+            PaintEventArgs pe = new PaintEventArgs(graph, rect);
+            this.OnPaint(pe);
         }
     }
 }

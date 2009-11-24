@@ -53,6 +53,9 @@
     <Compile Include="BlokDecyzyjny.Designer.cs">
       <DependentUpon>BlokDecyzyjny.cs</DependentUpon>
     </Compile>
+    <Compile Include="Bloki.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="BlokSTART.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -89,31 +92,24 @@
     <Compile Include="Linia.Designer.cs">
       <DependentUpon>Linia.cs</DependentUpon>
     </Compile>
-    <Compile Include="NaroznikLD.cs">
+    <Compile Include="Pion.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NaroznikLD.Designer.cs">
-      <DependentUpon>NaroznikLD.cs</DependentUpon>
+    <Compile Include="Pion.Designer.cs">
+      <DependentUpon>Pion.cs</DependentUpon>
     </Compile>
-    <Compile Include="NaroznikLG.cs">
+    <Compile Include="Poziom.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NaroznikLG.Designer.cs">
-      <DependentUpon>NaroznikLG.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NaroznikPD.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="NaroznikPD.Designer.cs">
-      <DependentUpon>NaroznikPD.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NaroznikPG.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="NaroznikPG.Designer.cs">
-      <DependentUpon>NaroznikPG.cs</DependentUpon>
+    <Compile Include="Poziom.Designer.cs">
+      <DependentUpon>Poziom.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
@@ -145,20 +141,17 @@
       <DependentUpon>Linia.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NaroznikLD.resx">
-      <DependentUpon>NaroznikLD.cs</DependentUpon>
+    <EmbeddedResource Include="Pion.resx">
+      <DependentUpon>Pion.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NaroznikLG.resx">
-      <DependentUpon>NaroznikLG.cs</DependentUpon>
+    <EmbeddedResource Include="Poziom.resx">
+      <DependentUpon>Poziom.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NaroznikPD.resx">
-      <DependentUpon>NaroznikPD.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NaroznikPG.resx">
-      <DependentUpon>NaroznikPG.cs</DependentUpon>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

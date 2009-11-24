@@ -1,6 +1,6 @@
 ﻿namespace libbloki
 {
-    partial class NaroznikLG
+    partial class Poziom
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,12 +30,12 @@
         {
             this.SuspendLayout();
             // 
-            // NaroznikLG
+            // Poziom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "NaroznikLG";
-            this.Size = new System.Drawing.Size(15, 15);
+            this.Name = "Poziom";
+            this.Size = new System.Drawing.Size(17, 1);
             this.ResumeLayout(false);
 
         }

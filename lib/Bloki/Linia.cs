@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace libbloki
 {
-    public partial class Linia : UserControl
+    public partial class Linia : Bloki
     {
-        private Point klikoffset;
-        private bool klik;
-        Graphics graph;
+        //private Point klikoffset;
+        //private bool klik;
+        //Graphics graph;
 
         public Linia()
         {
@@ -21,26 +21,26 @@ namespace libbloki
             graph = CreateGraphics();
         }
 
-        private void Linia_MouseDown(object sender, MouseEventArgs e)
-        {
-            klik = true;
-            klikoffset.X = e.X;
-            klikoffset.Y = e.Y;
-        }
+        //private void Linia_MouseDown(object sender, MouseEventArgs e)
+        //{
+        //    klik = true;
+        //    klikoffset.X = e.X;
+        //    klikoffset.Y = e.Y;
+        //}
 
-        private void Linia_MouseUp(object sender, MouseEventArgs e)
-        {
-            klik = false;
-        }
+        //private void Linia_MouseUp(object sender, MouseEventArgs e)
+        //{
+        //    klik = false;
+        //}
 
-        private void Linia_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (klik)
-            {
-                this.Left = e.X + this.Left - klikoffset.X;
-                this.Top = e.Y + this.Top - klikoffset.Y;
-            }
-        }
+        //private void Linia_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (klik)
+        //    {
+        //        this.Left = e.X + this.Left - klikoffset.X;
+        //        this.Top = e.Y + this.Top - klikoffset.Y;
+        //    }
+        //}
 
         protected override void OnPaint(PaintEventArgs pe)
         {

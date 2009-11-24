@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace libbloki
 {
-    public partial class BlokSTOP : UserControl
+    public partial class BlokSTOP : Bloki
     {
-        Graphics graph;
+        //Graphics graph;
 
         //private Point klikoffset;
         //private bool klik;

@@ -11,10 +11,10 @@ using System.Drawing.Drawing2D;
 
 namespace libbloki
 {
-    public partial class BlokObliczeniowy : UserControl
+    public partial class BlokObliczeniowy : Bloki
     {
         private BFopcje frmOpcje;
-        Graphics graph = null;
+        //Graphics graph = null;
         private String[] lval = new String[5];
         private int[] rval_a = new int[5];
         private int[] rval_b = new int[5];
