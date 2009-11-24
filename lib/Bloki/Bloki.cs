@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.InteropServices;
-using libbloki;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
+using System.Drawing;
 
-namespace Okienka
+namespace libbloki
 {
-    class Bloki
+    public enum tryby { normal, zaznaczony, aktualny };
+
+    public class Bloki : UserControl
     {
         private BlokSTART blokStart;
         private BlokSTOP blokStop;
@@ -16,10 +18,28 @@ namespace Okienka
         private BlokObliczeniowy blokObliczeniowy;
         private BlokWeWy blokWeWy;
 
-        private Type typ;
-        private String nastepny;
-        private String poprzedni;
-        private String nazwa;
+        protected Type typ;
+        protected String nastepny;
+        protected String poprzedni;
+        protected String nazwa;
+
+        protected tryby _tryb;
+        protected Graphics graph;
+
+        protected Point[] punkty = new Point[2]; //polaczenia
+
+        
+        public tryby tryb
+        {
+            get { return _tryb; }
+            set
+            {
+                _tryb = value;
+                Rectangle rect = new Rectangle(1, 1, 150, 75);
+                PaintEventArgs pe = new PaintEventArgs(graph, rect);
+                this.OnPaint(pe);
+            }
+        }
 
         public Type typBloku
         {
@@ -74,20 +94,21 @@ namespace Okienka
                     }
                 }
             }
+
             set
             {
                 if (typ == typeof(BlokSTART))
                     blokStart = (BlokSTART)value;
-  
+
                 if (typ == typeof(BlokSTOP))
                     blokStop = (BlokSTOP)value;
-    
+
                 if (typ == typeof(BlokDecyzyjny))
                     blokDecyzyjny = (BlokDecyzyjny)value;
-    
+
                 if (typ == typeof(BlokObliczeniowy))
                     blokObliczeniowy = (BlokObliczeniowy)value;
-        
+
                 if (typ == typeof(BlokWeWy))
                     blokWeWy = (BlokWeWy)value;
             }

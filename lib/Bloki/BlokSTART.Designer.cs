@@ -37,11 +37,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.Name = "BlokSTART";
             this.Size = new System.Drawing.Size(153, 77);
-            //this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokSTART_MouseMove);
-            //this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BlokSTART_MouseDown);
-            //this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BlokSTART_MouseUp);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokSTART_MouseMove);
+            this.MouseHover += new System.EventHandler(this.BlokSTART_MouseHover);
             this.ResumeLayout(false);
 
         }

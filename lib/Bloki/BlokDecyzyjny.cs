@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace libbloki
 {
-    public partial class BlokDecyzyjny : UserControl
+    public partial class BlokDecyzyjny : Bloki
     {
-        Graphics graph;
+        //Graphics graph;
 
         //private Point klikoffset;
         //private bool klik;

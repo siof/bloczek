@@ -1,6 +1,6 @@
 ﻿namespace libbloki
 {
-    partial class NaroznikPD
+    partial class Pion
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,12 +30,12 @@
         {
             this.SuspendLayout();
             // 
-            // NaroznikPD
+            // Pion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "NaroznikPD";
-            this.Size = new System.Drawing.Size(15, 15);
+            this.Name = "Pion";
+            this.Size = new System.Drawing.Size(1, 17);
             this.ResumeLayout(false);
 
         }

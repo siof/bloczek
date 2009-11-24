@@ -16,9 +16,13 @@ namespace Okienka
     {
         private static int numer = 0;
 
+        Watch okno;
         private bool klik = false;
+        private bool polacz = false;
         private bool ctrl = false;
         private bool przesun = false;
+
+        private Bloki polaczOD, polaczDO;
 
         private int ile = 0;
         private int polowaX;
@@ -31,17 +35,18 @@ namespace Okienka
         private Bloki przenoszony;
         private Type typ;
 
-        private NaroznikLD nld;
-        private NaroznikLG nlg;
-        private NaroznikPD npd;
-        private NaroznikPG npg;
+        private Poziom[] pozK = new Poziom[4];
+        private Pion[] pioK = new Pion[4];
 
         private Point punktKlikuNaBlok;      //punkt w którym kliknięto na blok (przeciwdziałanie przesunięciu bloku bez przesuwania kursora)
+        public Bloki zaznaczony;    ////////////
+
         
         public Form1()
         {
             InitializeComponent();
             graph = panel1.CreateGraphics();
+            
         }
 
         private int ZnajdzBlok(String nazwa)
@@ -160,6 +165,11 @@ namespace Okienka
                 if (ctrl != true)
                     klik = false;
             }
+            if (zaznaczony != null)
+            {
+                zaznaczony.tryb = tryby.normal;
+                zaznaczony = null;
+            }
         }
 
         private void panel1_Scroll(object sender, ScrollEventArgs e)
@@ -186,34 +196,81 @@ namespace Okienka
                 punktKlikuNaBlok.X = e.X;
                 punktKlikuNaBlok.Y = e.Y;
 
-                if (nld == null)
-                    nld = new NaroznikLD(panel1);
-                if (nlg == null)
-                    nlg = new NaroznikLG(panel1);
-                if (npd == null)
-                    npd = new NaroznikPD(panel1);
-                if (npg == null)
-                    npg = new NaroznikPG(panel1);
+                for (int i = 0; i < 4; i++)
+                {
+                    pozK[i] = new Poziom();
+                    pioK[i] = new Pion();
+                }
 
                 polowaX = (przenoszony.blok.Width) / 2;
                 polowaY = (przenoszony.blok.Height) / 2;
 
-                nlg.Left = przenoszony.blok.Left;
-                nlg.Top = przenoszony.blok.Top;
+                pioK[0].Left = przenoszony.blok.Left;
+                pioK[0].Top = przenoszony.blok.Top;
 
-                nld.Left = przenoszony.blok.Left;
-                nld.Top = przenoszony.blok.Top + (przenoszony.blok.Height - nld.Height);
+                pozK[0].Left = przenoszony.blok.Left;
+                pozK[0].Top = przenoszony.blok.Top;
 
-                npg.Left = przenoszony.blok.Left + (przenoszony.blok.Width - npd.Width);
-                npg.Top = przenoszony.blok.Top;
 
-                npd.Left = przenoszony.blok.Left + (przenoszony.blok.Width - npd.Width);
-                npd.Top = przenoszony.blok.Top + (przenoszony.blok.Height - npd.Height);
+                pioK[1].Left = przenoszony.blok.Left;
+                pioK[1].Top = przenoszony.blok.Top + (przenoszony.blok.Height - pioK[1].Height);
 
-                panel1.Controls.Add(nlg);
-                panel1.Controls.Add(nld);
-                panel1.Controls.Add(npg);
-                panel1.Controls.Add(npd);
+                pozK[1].Left = przenoszony.blok.Left;
+                pozK[1].Top = przenoszony.blok.Top + (przenoszony.blok.Height -  pozK[1].Height);
+
+
+                pioK[2].Left = przenoszony.blok.Left + (przenoszony.blok.Width - pioK[2].Width);
+                pioK[2].Top = przenoszony.blok.Top;
+
+                pozK[2].Left = przenoszony.blok.Left + (przenoszony.blok.Width - pozK[2].Width);
+                pozK[2].Top = przenoszony.blok.Top;
+
+
+                pioK[3].Left = przenoszony.blok.Left + (przenoszony.blok.Width - pioK[3].Width);
+                pioK[3].Top = przenoszony.blok.Top + (przenoszony.blok.Height - pioK[3].Height);
+
+                pozK[3].Left = przenoszony.blok.Left + (przenoszony.blok.Width - pozK[3].Width);
+                pozK[3].Top = przenoszony.blok.Top + (przenoszony.blok.Height - pozK[3].Height);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    panel1.Controls.Add(pioK[i]);
+                    panel1.Controls.Add(pozK[i]);
+                }
+            }
+
+            //###############################
+            if (zaznaczony != null)
+            {
+                zaznaczony.tryb = tryby.normal;
+            }
+
+            if (sender.GetType() == typeof(BlokSTART) ||
+                sender.GetType() == typeof(BlokSTOP) ||
+                sender.GetType() == typeof(BlokObliczeniowy) ||
+                sender.GetType() == typeof(BlokDecyzyjny) ||
+                sender.GetType() == typeof(BlokWeWy))
+            {
+                zaznaczony = (Bloki)sender;
+                zaznaczony.tryb = tryby.zaznaczony;
+
+                if (polacz == true)
+                {
+                    if (polaczOD == null)
+                    {
+                        polaczOD = zaznaczony;
+                    }
+                    else
+                    {
+                        polaczDO = zaznaczony;
+                        polacz = false;
+                    }
+                }
+            }
+            else
+            {
+                polacz = false;
+                polaczOD = null;
             }
         }
 
@@ -231,28 +288,41 @@ namespace Okienka
             {
                 if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
                 {
-                    nlg.Left = e.X + przenoszony.blok.Left - polowaX;
-                    nlg.Top = e.Y + przenoszony.blok.Top - polowaY;
-                    
-                    if (nlg.Left < panel1.Margin.Left)
-                        nlg.Left = panel1.Margin.Left;
+                    pozK[0].Left = e.X + przenoszony.blok.Left - polowaX;
+                    pozK[0].Top = e.Y + przenoszony.blok.Top - polowaY;
 
-                    if (nlg.Top < panel1.Top)
-                        nlg.Top = panel1.Top;
+                    pioK[0].Left = e.X + przenoszony.blok.Left - polowaX;
+                    pioK[0].Top = e.Y + przenoszony.blok.Top - polowaY;
 
-                    nld.Left = nlg.Left;
-                    nld.Top = nlg.Top + (przenoszony.blok.Height - nld.Height);
+                    if (pozK[0].Left < panel1.Margin.Left)
+                        pozK[0].Left = panel1.Margin.Left;
 
-                    npg.Left = nlg.Left + (przenoszony.blok.Width - npd.Width);
-                    npg.Top = nlg.Top;
+                    if (pozK[0].Top < panel1.Top)
+                        pozK[0].Top = panel1.Top;
 
-                    npd.Left = nlg.Left + (przenoszony.blok.Width - npd.Width);
-                    npd.Top = nlg.Top + (przenoszony.blok.Height - npd.Height);
+                    pozK[1].Left = pozK[0].Left;
+                    pozK[1].Top = pozK[0].Top + (przenoszony.blok.Height - pozK[1].Height);
 
-                    nlg.Refresh();
-                    nld.Refresh();
-                    npg.Refresh();
-                    npd.Refresh();
+                    pioK[1].Left = pozK[0].Left;
+                    pioK[1].Top = pozK[0].Top + (przenoszony.blok.Height - pioK[1].Height);
+
+                    pozK[2].Left = pozK[0].Left + (przenoszony.blok.Width - pozK[2].Width);
+                    pozK[2].Top = pozK[0].Top;
+
+                    pioK[2].Left = pioK[0].Left + (przenoszony.blok.Width);
+                    pioK[2].Top = pozK[0].Top;
+
+                    pozK[3].Left = pozK[0].Left + (przenoszony.blok.Width - pozK[3].Width);
+                    pozK[3].Top = pozK[0].Top + (przenoszony.blok.Height - pozK[3].Height);
+
+                    pioK[3].Left = pioK[0].Left + (przenoszony.blok.Width);
+                    pioK[3].Top = pioK[0].Top + (przenoszony.blok.Height - pioK[3].Height);
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        pioK[i].Refresh();
+                        pozK[i].Refresh();
+                    }
                 }
             }
         }
@@ -263,22 +333,26 @@ namespace Okienka
             {
                 if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
                 {
-                    przenoszony.blok.Left = nlg.Left;
-                    przenoszony.blok.Top = nlg.Top;
+                    przenoszony.blok.Left = pozK[0].Left;
+                    przenoszony.blok.Top = pozK[0].Top;
                 }
                 if (przenoszony.typBloku == typeof(BlokObliczeniowy)) //nie działa
                 {
                     ((BlokObliczeniowy)przenoszony.blok).ReDrawText();
                     przenoszony.blok.Refresh();
                 }
+                przenoszony.BringToFront();
                 przesun = false;
                 przenoszony = null;
                 polowaX = 0;
                 polowaY = 0;
-                panel1.Controls.Remove(nlg);
-                panel1.Controls.Remove(nld);
-                panel1.Controls.Remove(npg);
-                panel1.Controls.Remove(npd);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    panel1.Controls.Remove(pozK[i]);
+                    panel1.Controls.Remove(pioK[i]);
+                }
+                
                 panel1.Refresh();
             }
         }
@@ -299,6 +373,27 @@ namespace Okienka
         {
             typ = typeof(BlokWeWy);
             klik = true;
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            okno = new Watch();
+            okno.Show();
+        }
+
+        private void Połączenie_Click(object sender, EventArgs e)
+        {
+            polacz = true; 
+        }
+
+        private void RysujPolaczenie()
+        {
+           // if(polaczDO.Top - polaczOD.Top >=  )
+
+
+
+            Pen p = new Pen(Color.Black);
+            //graph.DrawLine(
         }
     }
 }

@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace libbloki
 {
-    public partial class BlokWeWy : UserControl
+    public partial class BlokWeWy : Bloki
     {
         //private Point klikoffset;
         //private bool klik;
-        Graphics graph;
+        //Graphics graph;
 
         public BlokWeWy()
         {

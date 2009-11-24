@@ -9,24 +9,24 @@ using System.Windows.Forms;
 
 /*
 rysuje:
-  _
-   |
+  
+ |
 
 */
 
 namespace libbloki
 {
-    public partial class NaroznikPG : UserControl
+    public partial class Pion : UserControl
     {
         Graphics graph;
 
-        public NaroznikPG()
+        public Pion()
         {
             InitializeComponent();
             graph = CreateGraphics();
         }
 
-        public NaroznikPG(Panel parent)
+        public Pion(Panel parent)
         {
             InitializeComponent();
             graph = CreateGraphics();
@@ -36,16 +36,14 @@ namespace libbloki
 
         protected override void OnPaint(PaintEventArgs pe)
         {
-            int temp = this.Width - 1;
+            int temp = this.Height;
             Graphics graph = pe.Graphics;
             Pen pn = new Pen(Color.Black, 1);
-            Point[] p = new Point[3];
-            p[0].X = temp; p[0].Y = 0;
-            p[1].X = 0; p[1].Y = 0;
-            p[2].X = temp; p[2].Y = temp;
+            Point[] p = new Point[2];
+            p[0].X = 0; p[0].Y = 0;
+            p[1].X = 0; p[1].Y = temp;
 
             graph.DrawLine(pn, p[0], p[1]);
-            graph.DrawLine(pn, p[0], p[2]);
         }
     }
 }
