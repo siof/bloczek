@@ -22,7 +22,7 @@ namespace Okienka
         private bool ctrl = false;
         private bool przesun = false;
 
-        private Bloki polaczOD, polaczDO;
+        private Bloki polaczOD = null, polaczDO = null;
 
         private int ile = 0;
         private int polowaX;
@@ -53,23 +53,20 @@ namespace Okienka
         {
             int i;
             for (i = 0; i < ile + 1; i++)
-                if (tabBloki[i].blok.Name.Equals(nazwa) == true) break;
+                if (tabBloki[i].Name.Equals(nazwa) == true) break;
 
             return i;
-        }
-
-        private void toolStripBlokObliczeniowy_Click(object sender, EventArgs e)
-        {
-            typ = typeof(BlokObliczeniowy);
-            klik = true;
         }
 
         private void UsunBlok(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
-                tabBloki.RemoveAt(ZnajdzBlok(((UserControl)sender).Name));
-                ((UserControl)sender).Dispose();
+                if (zaznaczony.Name.Equals(((Bloki)sender).Name))
+                    zaznaczony = null;
+
+                tabBloki.RemoveAt(ZnajdzBlok(((Bloki)sender).Name));
+                ((Bloki)sender).Dispose();
                 ile--;
             }
         }
@@ -102,69 +99,60 @@ namespace Okienka
                 {
                     BlokSTART temp = new BlokSTART();
 
-                    temp.Name = "START_" + numer;
-
                     temp2.typBloku = typeof(BlokSTART);
-                    temp2.blok = (UserControl)temp;
+                    temp2 = (Bloki)temp;
                 }
 
                 if (typ == typeof(BlokSTOP))
                 {
                     BlokSTOP temp = new BlokSTOP();
-
-                    temp.Name = "STOP_" + numer;
                     
                     temp2.typBloku = typeof(BlokSTOP);
-                    temp2.blok = (UserControl)temp;
+                    temp2 = (Bloki)temp;
                 }
 
                 if (typ == typeof(BlokObliczeniowy))
                 {
                     BlokObliczeniowy temp = new BlokObliczeniowy();
 
-                    temp.Name = "BlokObliczeniowy_" + numer;
-                    temp.ReDrawText();                      //nie działa
-
                     temp2.typBloku = typeof(BlokObliczeniowy);
-                    temp2.blok = (UserControl)temp;
+                    temp2 = (Bloki)temp;
                 }
 
                 if (typ == typeof(BlokDecyzyjny))
                 {
                     BlokDecyzyjny temp = new BlokDecyzyjny();
 
-                    temp.Name = "BlokDecyzyjny_" + numer;
-
                     temp2.typBloku = typeof(BlokDecyzyjny);
-                    temp2.blok = (UserControl)temp;
+                    temp2 = (Bloki)temp;
                 }
 
                 if (typ == typeof(BlokWeWy))
                 {
                     BlokWeWy temp = new BlokWeWy();
 
-                    temp.Name = "BlokWeWy_" + numer;
-
                     temp2.typBloku = typeof(BlokWeWy);
-                    temp2.blok = (UserControl)temp;
+                    temp2 = (Bloki)temp;
                 }
 
                 //globalne dla wszystkich bloków
 
-                temp2.blok.Left = ((MouseEventArgs)e).X;
-                temp2.blok.Top = ((MouseEventArgs)e).Y;
-                temp2.blok.KeyDown += new KeyEventHandler(UsunBlok);
-                temp2.blok.MouseDown += new MouseEventHandler(PrzesunStart);
-                temp2.blok.MouseMove += new MouseEventHandler(panel1_MouseMove);
-                temp2.blok.MouseUp += new MouseEventHandler(panel1_MouseUp);
+                temp2.Left = ((MouseEventArgs)e).X;
+                temp2.Top = ((MouseEventArgs)e).Y;
+                temp2.Name = numer.ToString();
+                temp2.KeyDown += new KeyEventHandler(UsunBlok);
+                temp2.MouseDown += new MouseEventHandler(PrzesunStart);
+                temp2.MouseMove += new MouseEventHandler(panel1_MouseMove);
+                temp2.MouseUp += new MouseEventHandler(panel1_MouseUp);
                 tabBloki.Add(temp2);
 
-                panel1.Controls.Add(tabBloki.Last().blok);
+                panel1.Controls.Add(tabBloki.Last());
 
                 ile++;
                 if (ctrl != true)
                     klik = false;
             }
+            
             if (zaznaczony != null)
             {
                 zaznaczony.tryb = tryby.normal;
@@ -178,12 +166,6 @@ namespace Okienka
             {
                 c.Update();
             }
-        }
-
-        private void toolStripBlokStart_Click(object sender, EventArgs e)
-        {
-            typ = typeof(BlokSTART);
-            klik = true;
         }
 
         public void PrzesunStart(object sender, MouseEventArgs e)
@@ -202,35 +184,35 @@ namespace Okienka
                     pioK[i] = new Pion();
                 }
 
-                polowaX = (przenoszony.blok.Width) / 2;
-                polowaY = (przenoszony.blok.Height) / 2;
+                polowaX = (przenoszony.Width) / 2;
+                polowaY = (przenoszony.Height) / 2;
 
-                pioK[0].Left = przenoszony.blok.Left;
-                pioK[0].Top = przenoszony.blok.Top;
+                pioK[0].Left = przenoszony.Left;
+                pioK[0].Top = przenoszony.Top;
 
-                pozK[0].Left = przenoszony.blok.Left;
-                pozK[0].Top = przenoszony.blok.Top;
-
-
-                pioK[1].Left = przenoszony.blok.Left;
-                pioK[1].Top = przenoszony.blok.Top + (przenoszony.blok.Height - pioK[1].Height);
-
-                pozK[1].Left = przenoszony.blok.Left;
-                pozK[1].Top = przenoszony.blok.Top + (przenoszony.blok.Height -  pozK[1].Height);
+                pozK[0].Left = przenoszony.Left;
+                pozK[0].Top = przenoszony.Top;
 
 
-                pioK[2].Left = przenoszony.blok.Left + (przenoszony.blok.Width - pioK[2].Width);
-                pioK[2].Top = przenoszony.blok.Top;
+                pioK[1].Left = przenoszony.Left;
+                pioK[1].Top = przenoszony.Top + (przenoszony.Height - pioK[1].Height);
 
-                pozK[2].Left = przenoszony.blok.Left + (przenoszony.blok.Width - pozK[2].Width);
-                pozK[2].Top = przenoszony.blok.Top;
+                pozK[1].Left = przenoszony.Left;
+                pozK[1].Top = przenoszony.Top + (przenoszony.Height -  pozK[1].Height);
 
 
-                pioK[3].Left = przenoszony.blok.Left + (przenoszony.blok.Width - pioK[3].Width);
-                pioK[3].Top = przenoszony.blok.Top + (przenoszony.blok.Height - pioK[3].Height);
+                pioK[2].Left = przenoszony.Left + (przenoszony.Width - pioK[2].Width);
+                pioK[2].Top = przenoszony.Top;
 
-                pozK[3].Left = przenoszony.blok.Left + (przenoszony.blok.Width - pozK[3].Width);
-                pozK[3].Top = przenoszony.blok.Top + (przenoszony.blok.Height - pozK[3].Height);
+                pozK[2].Left = przenoszony.Left + (przenoszony.Width - pozK[2].Width);
+                pozK[2].Top = przenoszony.Top;
+
+
+                pioK[3].Left = przenoszony.Left + (przenoszony.Width - pioK[3].Width);
+                pioK[3].Top = przenoszony.Top + (przenoszony.Height - pioK[3].Height);
+
+                pozK[3].Left = przenoszony.Left + (przenoszony.Width - pozK[3].Width);
+                pozK[3].Top = przenoszony.Top + (przenoszony.Height - pozK[3].Height);
 
                 for (int i = 0; i < 4; i++)
                 {
@@ -249,7 +231,8 @@ namespace Okienka
                 sender.GetType() == typeof(BlokSTOP) ||
                 sender.GetType() == typeof(BlokObliczeniowy) ||
                 sender.GetType() == typeof(BlokDecyzyjny) ||
-                sender.GetType() == typeof(BlokWeWy))
+                sender.GetType() == typeof(BlokWeWy) ||
+                sender.GetType() == typeof(Bloki))
             {
                 zaznaczony = (Bloki)sender;
                 zaznaczony.tryb = tryby.zaznaczony;
@@ -272,6 +255,14 @@ namespace Okienka
                 polacz = false;
                 polaczOD = null;
             }
+
+
+            if (polaczDO != null && polaczOD != null)
+            {
+                RysujPolaczenie();
+                polaczOD = null;
+                polaczDO = null;
+            }
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
@@ -288,11 +279,11 @@ namespace Okienka
             {
                 if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
                 {
-                    pozK[0].Left = e.X + przenoszony.blok.Left - polowaX;
-                    pozK[0].Top = e.Y + przenoszony.blok.Top - polowaY;
+                    pozK[0].Left = e.X + przenoszony.Left - polowaX;
+                    pozK[0].Top = e.Y + przenoszony.Top - polowaY;
 
-                    pioK[0].Left = e.X + przenoszony.blok.Left - polowaX;
-                    pioK[0].Top = e.Y + przenoszony.blok.Top - polowaY;
+                    pioK[0].Left = e.X + przenoszony.Left - polowaX;
+                    pioK[0].Top = e.Y + przenoszony.Top - polowaY;
 
                     if (pozK[0].Left < panel1.Margin.Left)
                         pozK[0].Left = panel1.Margin.Left;
@@ -301,22 +292,22 @@ namespace Okienka
                         pozK[0].Top = panel1.Top;
 
                     pozK[1].Left = pozK[0].Left;
-                    pozK[1].Top = pozK[0].Top + (przenoszony.blok.Height - pozK[1].Height);
+                    pozK[1].Top = pozK[0].Top + (przenoszony.Height - pozK[1].Height);
 
                     pioK[1].Left = pozK[0].Left;
-                    pioK[1].Top = pozK[0].Top + (przenoszony.blok.Height - pioK[1].Height);
+                    pioK[1].Top = pozK[0].Top + (przenoszony.Height - pioK[1].Height);
 
-                    pozK[2].Left = pozK[0].Left + (przenoszony.blok.Width - pozK[2].Width);
+                    pozK[2].Left = pozK[0].Left + (przenoszony.Width - pozK[2].Width);
                     pozK[2].Top = pozK[0].Top;
 
-                    pioK[2].Left = pioK[0].Left + (przenoszony.blok.Width);
+                    pioK[2].Left = pioK[0].Left + (przenoszony.Width);
                     pioK[2].Top = pozK[0].Top;
 
-                    pozK[3].Left = pozK[0].Left + (przenoszony.blok.Width - pozK[3].Width);
-                    pozK[3].Top = pozK[0].Top + (przenoszony.blok.Height - pozK[3].Height);
+                    pozK[3].Left = pozK[0].Left + (przenoszony.Width - pozK[3].Width);
+                    pozK[3].Top = pozK[0].Top + (przenoszony.Height - pozK[3].Height);
 
-                    pioK[3].Left = pioK[0].Left + (przenoszony.blok.Width);
-                    pioK[3].Top = pioK[0].Top + (przenoszony.blok.Height - pioK[3].Height);
+                    pioK[3].Left = pioK[0].Left + (przenoszony.Width);
+                    pioK[3].Top = pioK[0].Top + (przenoszony.Height - pioK[3].Height);
 
                     for (int i = 0; i < 4; i++)
                     {
@@ -333,13 +324,13 @@ namespace Okienka
             {
                 if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
                 {
-                    przenoszony.blok.Left = pozK[0].Left;
-                    przenoszony.blok.Top = pozK[0].Top;
+                    przenoszony.Left = pozK[0].Left;
+                    przenoszony.Top = pozK[0].Top;
                 }
                 if (przenoszony.typBloku == typeof(BlokObliczeniowy)) //nie działa
                 {
-                    ((BlokObliczeniowy)przenoszony.blok).ReDrawText();
-                    przenoszony.blok.Refresh();
+                    ((BlokObliczeniowy)przenoszony).ReDrawText();
+                    przenoszony.Refresh();
                 }
                 przenoszony.BringToFront();
                 przesun = false;
@@ -357,19 +348,31 @@ namespace Okienka
             }
         }
 
-        private void toolStripBlokStop_Click(object sender, EventArgs e)
+        private void dodajBlokStart_Click(object sender, EventArgs e)
+        {
+            typ = typeof(BlokSTART);
+            klik = true;
+        }
+
+        private void dodajBlokStop_Click(object sender, EventArgs e)
         {
             typ = typeof(BlokSTOP);
             klik = true;
         }
 
-        private void toolStripBlokDecyzyjny_Click(object sender, EventArgs e)
+        private void dodajBlokObliczeniowy_Click(object sender, EventArgs e)
+        {
+            typ = typeof(BlokObliczeniowy);
+            klik = true;
+        }
+
+        private void dodajBlokDecyzyjny_Click(object sender, EventArgs e)
         {
             typ = typeof(BlokDecyzyjny);
             klik = true;
         }
 
-        private void toolStripWeWy_Click(object sender, EventArgs e)
+        private void dodajBlokWeWy_Click(object sender, EventArgs e)
         {
             typ = typeof(BlokWeWy);
             klik = true;
@@ -388,6 +391,22 @@ namespace Okienka
 
         private void RysujPolaczenie()
         {
+            //tymczasowo testowo
+            float poczX, poczY, konX, konY;
+            poczX = polaczOD.Location.X;
+            poczY = polaczOD.Location.Y;
+            konX = polaczDO.Location.X;
+            konY = polaczDO.Location.Y;
+
+            polaczOD.nastepnyBlok = polaczDO;
+            polaczDO.poprzedniBlok = polaczOD;
+
+            Pen pn = new Pen(Color.Black, 2);
+
+            graph.DrawLine(pn, poczX, poczY, konX, konY);
+            panel1.Update();
+            //
+
            // if(polaczDO.Top - polaczOD.Top >=  )
 
 

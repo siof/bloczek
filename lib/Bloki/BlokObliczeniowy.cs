@@ -46,6 +46,7 @@ namespace libbloki
         public BlokObliczeniowy()
         {
             InitializeComponent();
+            graph = CreateGraphics();
             for (int i = 0; i < 5; i++)
             {
                 prlval[i] = "";
@@ -70,10 +71,18 @@ namespace libbloki
         {
             Font fnt = new Font("Verdana", 16);
             Graphics g = pe.Graphics;
+            SolidBrush brush = new SolidBrush(Color.Black);
+            switch (tryb)
+            {
+                case tryby.normal: brush.Color = Color.Wheat; break;
+                case tryby.zaznaczony: brush.Color = Color.Orange; break;
+                case tryby.aktualny: brush.Color = Color.Red; break;
+            }
+
             Pen pn = new Pen(Color.Brown,2);
             Rectangle rect = new Rectangle(2, 2, 148, 73);
             g.DrawRectangle(pn, rect); 
-            g.FillRectangle(new SolidBrush(Color.Wheat),rect);
+            g.FillRectangle(brush,rect);
         }
 
         private void UserControl1_MouseDoubleClick(object sender, MouseEventArgs e)

@@ -36,6 +36,14 @@ namespace libbloki
         {
             Font fnt = new Font("Verdana", 8);
             Graphics g = pe.Graphics;
+            SolidBrush brush = new SolidBrush(Color.Black);
+            switch (tryb)
+            {
+                case tryby.normal: brush.Color = Color.Wheat; break;
+                case tryby.zaznaczony: brush.Color = Color.Orange; break;
+                case tryby.aktualny: brush.Color = Color.Red; break;
+            }
+
             Pen pn = new Pen(Color.Brown, 2);
            // Rectangle rect = new Rectangle(1, 1, 150, 75);
             Point[] p = new Point[4];
@@ -45,7 +53,7 @@ namespace libbloki
             p[3].X = 19; p[3].Y = 37;
 
             g.DrawPolygon(pn, p);
-            g.FillPolygon(new SolidBrush(Color.Wheat), p);
+            g.FillPolygon(brush, p);
             g.DrawString("TAK", fnt, new SolidBrush(Color.Black), 170, 20);
             g.DrawString("NIE", fnt, new SolidBrush(Color.Black), 2, 20);
         }

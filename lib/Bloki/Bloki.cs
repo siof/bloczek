@@ -12,15 +12,11 @@ namespace libbloki
 
     public class Bloki : UserControl
     {
-        private BlokSTART blokStart;
-        private BlokSTOP blokStop;
-        private BlokDecyzyjny blokDecyzyjny;
-        private BlokObliczeniowy blokObliczeniowy;
-        private BlokWeWy blokWeWy;
-
         protected Type typ;
-        protected String nastepny;
-        protected String poprzedni;
+        //protected String nastepny;
+        //protected String poprzedni;
+        protected Bloki nastepny;
+        protected Bloki poprzedni;
         protected String nazwa;
 
         protected tryby _tryb;
@@ -53,65 +49,16 @@ namespace libbloki
             set { nazwa = value; }
         }
 
-        public String nastepnyBlok
+        public Bloki nastepnyBlok
         {
             get { return nastepny; }
             set { nastepny = value; }
         }
 
-        public String poprzedniBlok
+        public Bloki poprzedniBlok
         {
             get { return poprzedni; }
             set { poprzedni = value; }
-        }
-
-        public UserControl blok
-        {
-            get
-            {
-                if (typ == typeof(BlokSTART))
-                    return ((UserControl)blokStart);
-                else
-                {
-                    if (typ == typeof(BlokSTOP))
-                        return ((UserControl)blokStop);
-                    else
-                    {
-                        if (typ == typeof(BlokDecyzyjny))
-                            return ((UserControl)blokDecyzyjny);
-                        else
-                        {
-                            if (typ == typeof(BlokObliczeniowy))
-                                return ((UserControl)blokObliczeniowy);
-                            else
-                            {
-                                if (typ == typeof(BlokWeWy))
-                                    return ((UserControl)blokWeWy);
-                                else
-                                    return null;
-                            }
-                        }
-                    }
-                }
-            }
-
-            set
-            {
-                if (typ == typeof(BlokSTART))
-                    blokStart = (BlokSTART)value;
-
-                if (typ == typeof(BlokSTOP))
-                    blokStop = (BlokSTOP)value;
-
-                if (typ == typeof(BlokDecyzyjny))
-                    blokDecyzyjny = (BlokDecyzyjny)value;
-
-                if (typ == typeof(BlokObliczeniowy))
-                    blokObliczeniowy = (BlokObliczeniowy)value;
-
-                if (typ == typeof(BlokWeWy))
-                    blokWeWy = (BlokWeWy)value;
-            }
         }
     }
 }
