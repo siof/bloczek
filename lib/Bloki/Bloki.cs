@@ -13,17 +13,19 @@ namespace libbloki
     public class Bloki : UserControl
     {
         protected Type typ;
-        //protected String nastepny;
-        //protected String poprzedni;
+
         protected Bloki nastepny;
         protected Bloki poprzedni;
         protected String nazwa;
 
         protected tryby _tryb;
         protected Graphics graph;
+        protected IList<String> zmienne = new List<String>();
+
+        public IList<Zmienna> listaZmiennych;
+        public RichTextBox txt = new RichTextBox();
 
         protected Point[] punkty = new Point[2]; //polaczenia
-
         
         public tryby tryb
         {
@@ -59,6 +61,26 @@ namespace libbloki
         {
             get { return poprzedni; }
             set { poprzedni = value; }
+        }
+
+        public void Wykonaj()
+        {
+            //żeby nie wykonywać reszty kodu jeśli blok nic nie robi
+            if (typBloku == typeof(BlokSTART) || typBloku == typeof(BlokSTOP))
+                return;
+
+            if (typBloku == typeof(BlokObliczeniowy))
+            {
+                ((BlokObliczeniowy)this).Wykonaj();
+                return;
+            }
+
+            if (typBloku == typeof(BlokWeWy))
+            {
+                //sprawdzić akcje po kolei i wyświetlać lub pobierać dane (dodatkowe formy sie przydadzą)
+
+                return;
+            }
         }
     }
 }

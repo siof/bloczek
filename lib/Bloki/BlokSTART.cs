@@ -65,29 +65,12 @@ namespace libbloki
             Rectangle rect = new Rectangle(1, 1, 150, 75);
             g.DrawEllipse(pn, rect);
             g.FillEllipse(brush, rect);
-            g.DrawString("START", fnt,new SolidBrush(Color.Black), 40, 25);
+            g.DrawString("START", fnt, new SolidBrush(Color.Black), 40, 25);
+
+            pn.Dispose();
+            brush.Dispose();
+            g = null;
         }
-
-        //private void BlokSTART_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (klik)
-        //    {
-        //        this.Left = e.X + this.Left - klikoffset.X;
-        //        this.Top = e.Y + this.Top - klikoffset.Y;
-        //    }
-        //}
-
-        //private void BlokSTART_MouseUp(object sender, MouseEventArgs e)
-        //{
-        //    klik = false;
-        //}
-
-        //private void BlokSTART_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    klik = true;
-        //    klikoffset.X = e.X;
-        //    klikoffset.Y = e.Y;
-        //}
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
