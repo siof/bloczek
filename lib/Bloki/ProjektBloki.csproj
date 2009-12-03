@@ -86,6 +86,7 @@
     <Compile Include="BlokWeWy.Designer.cs">
       <DependentUpon>BlokWeWy.cs</DependentUpon>
     </Compile>
+    <Compile Include="DodatkoweKlasy.cs" />
     <Compile Include="Linia.cs">
       <SubType>UserControl</SubType>
     </Compile>
