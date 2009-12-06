@@ -14,14 +14,11 @@ namespace libbloki
     public partial class BlokObliczeniowy : Bloki
     {
         private BFopcje frmOpcje;
-        //Graphics graph = null;
+
         private String[] lval = new String[5];
         private int[] rval_a = new int[5];
         private int[] rval_b = new int[5];
         private String[] dzial = new String[5];
-
-        //private Point klikoffset;
-        //private bool klik;
 
         public String[] prlval
         {
@@ -46,6 +43,7 @@ namespace libbloki
         public BlokObliczeniowy()
         {
             InitializeComponent();
+            graph = CreateGraphics();
             for (int i = 0; i < 5; i++)
             {
                 prlval[i] = "";
@@ -70,10 +68,22 @@ namespace libbloki
         {
             Font fnt = new Font("Verdana", 16);
             Graphics g = pe.Graphics;
+            SolidBrush brush = new SolidBrush(Color.Black);
+            switch (tryb)
+            {
+                case tryby.normal: brush.Color = Color.Wheat; break;
+                case tryby.zaznaczony: brush.Color = Color.Orange; break;
+                case tryby.aktualny: brush.Color = Color.Red; break;
+            }
+
             Pen pn = new Pen(Color.Brown,2);
             Rectangle rect = new Rectangle(2, 2, 148, 73);
-            g.DrawRectangle(pn, rect); 
-            g.FillRectangle(new SolidBrush(Color.Wheat),rect);
+            g.DrawRectangle(pn, rect);
+            g.FillRectangle(brush, rect);
+
+            brush.Dispose();
+            pn.Dispose();
+            g = null;
         }
 
         private void UserControl1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -245,6 +255,7 @@ namespace libbloki
                 graph.DrawString(prlval[4] + " = " + prrval_a[4].ToString() + " " + prdzial[4] + " " + prrval_a[4].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
                 i += 15;
             }
+            pn.Dispose();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)

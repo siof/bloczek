@@ -12,23 +12,24 @@ namespace libbloki
 
     public class Bloki : UserControl
     {
-        private BlokSTART blokStart;
-        private BlokSTOP blokStop;
-        private BlokDecyzyjny blokDecyzyjny;
-        private BlokObliczeniowy blokObliczeniowy;
-        private BlokWeWy blokWeWy;
-
         protected Type typ;
-        protected String nastepny;
-        protected String poprzedni;
+
+        protected Bloki nastepny,_nastepnaLinia;
+        protected Bloki poprzedni,_poprzedniaLinia;
         protected String nazwa;
 
         protected tryby _tryb;
         protected Graphics graph;
+        protected IList<String> zmienne = new List<String>();
 
-        protected Point[] punkty = new Point[2]; //polaczenia
+        protected Point[] _punkty = new Point[2]; //polaczenia
 
-        
+        public Point[] punkty
+        {
+            get { return _punkty; }
+            set { _punkty = value; }
+        }
+
         public tryby tryb
         {
             get { return _tryb; }
@@ -53,65 +54,49 @@ namespace libbloki
             set { nazwa = value; }
         }
 
-        public String nastepnyBlok
+        public Bloki nastepnyBlok
         {
             get { return nastepny; }
             set { nastepny = value; }
         }
 
-        public String poprzedniBlok
+        public Bloki poprzedniBlok
         {
             get { return poprzedni; }
             set { poprzedni = value; }
         }
 
-        public UserControl blok
+        public Bloki nastepnaLinia
         {
-            get
+            get { return _nastepnaLinia; }
+            set { _nastepnaLinia = value; }
+        }
+        public Bloki poprzedniaLinia
+        {
+            get { return _poprzedniaLinia; }
+            set { _poprzedniaLinia = value; }
+        }
+
+        public void Wykonaj()
+        {
+            //żeby nie wykonywać reszty kodu jeśli blok nic nie robi
+            if (typBloku == typeof(BlokSTART) || typBloku == typeof(BlokSTOP))
+                return;
+
+            if (typBloku == typeof(BlokObliczeniowy))
             {
-                if (typ == typeof(BlokSTART))
-                    return ((UserControl)blokStart);
-                else
-                {
-                    if (typ == typeof(BlokSTOP))
-                        return ((UserControl)blokStop);
-                    else
-                    {
-                        if (typ == typeof(BlokDecyzyjny))
-                            return ((UserControl)blokDecyzyjny);
-                        else
-                        {
-                            if (typ == typeof(BlokObliczeniowy))
-                                return ((UserControl)blokObliczeniowy);
-                            else
-                            {
-                                if (typ == typeof(BlokWeWy))
-                                    return ((UserControl)blokWeWy);
-                                else
-                                    return null;
-                            }
-                        }
-                    }
-                }
+                //zaimplementować obliczenia
+
+                return;
             }
 
-            set
+            if (typBloku == typeof(BlokWeWy))
             {
-                if (typ == typeof(BlokSTART))
-                    blokStart = (BlokSTART)value;
+                //sprawdzić akcje po kolei i wyświetlać lub pobierać dane (dodatkowe formy sie przydadzą)
 
-                if (typ == typeof(BlokSTOP))
-                    blokStop = (BlokSTOP)value;
-
-                if (typ == typeof(BlokDecyzyjny))
-                    blokDecyzyjny = (BlokDecyzyjny)value;
-
-                if (typ == typeof(BlokObliczeniowy))
-                    blokObliczeniowy = (BlokObliczeniowy)value;
-
-                if (typ == typeof(BlokWeWy))
-                    blokWeWy = (BlokWeWy)value;
+                return;
             }
+
         }
     }
 }

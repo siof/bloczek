@@ -36,10 +36,18 @@ namespace libbloki
         {
             Font fnt = new Font("Verdana", 16);
             Graphics g = pe.Graphics;
+            SolidBrush brush = new SolidBrush(Color.Black);
+            switch (tryb)
+            {
+                case tryby.normal: brush.Color = Color.Wheat; break;
+                case tryby.zaznaczony: brush.Color = Color.Orange; break;
+                case tryby.aktualny: brush.Color = Color.Red; break;
+            }
+
             Pen pn = new Pen(Color.Brown, 2);
             Rectangle rect = new Rectangle(1, 1, 150, 75);
             g.DrawEllipse(pn, rect);
-            g.FillEllipse(new SolidBrush(Color.Wheat), rect);
+            g.FillEllipse(brush, rect);
             g.DrawString("STOP", fnt, new SolidBrush(Color.Black), 40, 25);
         }
 
