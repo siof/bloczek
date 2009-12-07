@@ -13,3 +13,8 @@ D:\Projekt\projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.pdb
 D:\Projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ResolveAssemblyReference.cache
 D:\Projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.dll
 D:\Projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.pdb
+D:\Projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.dll
+D:\Projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.pdb
+D:\Projekt\ProjektGenerowanieKodu\obj\Debug\ResolveAssemblyReference.cache
+D:\Projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.dll
+D:\Projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.pdb

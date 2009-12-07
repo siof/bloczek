@@ -11,14 +11,21 @@ namespace libbloki
 {
     public partial class LiniaPion : Bloki
     {
+        strzalkaUpDown _zakonczenie;
         //private Point klikoffset;
         //private bool klik;
         //Graphics graph;
 
-        public LiniaPion()
+        public strzalkaUpDown zakonczenie
+        {
+            get { return _zakonczenie; }
+            set { _zakonczenie = value; }
+        }
+        public LiniaPion(strzalkaUpDown zakonczenie)
         {
             InitializeComponent();
             graph = CreateGraphics();
+            this.zakonczenie = zakonczenie;
         }
 
         //private void Linia_MouseDown(object sender, MouseEventArgs e)
@@ -47,10 +54,27 @@ namespace libbloki
            
             Graphics graph = pe.Graphics;
             Pen pn = new Pen(Color.Black, 1);
+
             Point[] p = new Point[2];
-            p[0].X = 2; p[0].Y = 2;
-            p[1].X = 2; p[1].Y = this.Height - 2;
-            pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+            switch(zakonczenie)
+            {
+                case strzalkaUpDown.up:
+                            p[1].X = 2; p[1].Y = 2;
+                            p[0].X = 2; p[0].Y = this.Height - 2;
+                            pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                            break;
+                case strzalkaUpDown.down:
+                            p[0].X = 2; p[0].Y = 2;
+                            p[1].X = 2; p[1].Y = this.Height - 2;
+                            pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                            break;
+                default:
+                            p[0].X = 2; p[0].Y = 2;
+                            p[1].X = 2; p[1].Y = this.Height - 2;
+                            pn.EndCap = System.Drawing.Drawing2D.LineCap.NoAnchor;
+                            break;
+            }
+            
 
             graph.DrawLine(pn,p[0],p[1]);
             pn.Dispose();
@@ -59,10 +83,27 @@ namespace libbloki
         private void LiniaPion_Resize(object sender, EventArgs e)
         {
             Pen pn = new Pen(Color.Black, 1);
+
             Point[] p = new Point[2];
-            p[0].X = 2; p[0].Y = 2;
-            p[1].X = 2; p[1].Y = this.Height - 2;
-            pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+            switch (zakonczenie)
+            {
+                case strzalkaUpDown.up:
+                    p[1].X = 2; p[1].Y = 2;
+                    p[0].X = 2; p[0].Y = this.Height - 2;
+                    pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                    break;
+                case strzalkaUpDown.down:
+                    p[0].X = 2; p[0].Y = 2;
+                    p[1].X = 2; p[1].Y = this.Height - 2;
+                    pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                    break;
+                default:
+                    p[0].X = 2; p[0].Y = 2;
+                    p[1].X = 2; p[1].Y = this.Height - 2;
+                    pn.EndCap = System.Drawing.Drawing2D.LineCap.NoAnchor;
+                    break;
+            }
+
 
             graph.DrawLine(pn, p[0], p[1]);
             pn.Dispose();

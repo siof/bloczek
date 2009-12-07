@@ -9,6 +9,8 @@ using System.Drawing;
 namespace libbloki
 {
     public enum tryby { normal, zaznaczony, aktualny };
+    public enum strzalkaUpDown { up, down, none };
+    public enum strzalkaLeftRight { left, right, none };
 
     public class Bloki : UserControl
     {
