@@ -86,11 +86,17 @@
     <Compile Include="BlokWeWy.Designer.cs">
       <DependentUpon>BlokWeWy.cs</DependentUpon>
     </Compile>
-    <Compile Include="Linia.cs">
+    <Compile Include="LiniaPion.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Linia.Designer.cs">
-      <DependentUpon>Linia.cs</DependentUpon>
+    <Compile Include="LiniaPion.designer.cs">
+      <DependentUpon>LiniaPion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LiniaPoz.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LiniaPoz.designer.cs">
+      <DependentUpon>LiniaPoz.cs</DependentUpon>
     </Compile>
     <Compile Include="Pion.cs">
       <SubType>UserControl</SubType>
@@ -132,8 +138,11 @@
       <DependentUpon>BlokWeWy.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Linia.resx">
-      <DependentUpon>Linia.cs</DependentUpon>
+    <EmbeddedResource Include="LiniaPion.resx">
+      <DependentUpon>LiniaPion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LiniaPoz.resx">
+      <DependentUpon>LiniaPoz.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Pion.resx">

@@ -65,11 +65,18 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.symulacjaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pełnaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.krokowaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsPracaKrokowa = new System.Windows.Forms.ToolStrip();
+            this.poprzedni = new System.Windows.Forms.ToolStripButton();
+            this.nastepny = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tsPracaKrokowa.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -170,7 +177,8 @@
             this.editToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.helpToolStripMenuItem,
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.symulacjaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(718, 24);
@@ -384,6 +392,29 @@
             this.toolStripMenuItem1.Text = "toolStripMenuItem1";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // symulacjaToolStripMenuItem
+            // 
+            this.symulacjaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pełnaToolStripMenuItem,
+            this.krokowaToolStripMenuItem});
+            this.symulacjaToolStripMenuItem.Name = "symulacjaToolStripMenuItem";
+            this.symulacjaToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
+            this.symulacjaToolStripMenuItem.Text = "Symulacja";
+            // 
+            // pełnaToolStripMenuItem
+            // 
+            this.pełnaToolStripMenuItem.Name = "pełnaToolStripMenuItem";
+            this.pełnaToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.pełnaToolStripMenuItem.Text = "Pełna";
+            this.pełnaToolStripMenuItem.Click += new System.EventHandler(this.pełnaToolStripMenuItem_Click);
+            // 
+            // krokowaToolStripMenuItem
+            // 
+            this.krokowaToolStripMenuItem.Name = "krokowaToolStripMenuItem";
+            this.krokowaToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.krokowaToolStripMenuItem.Text = "Krokowa";
+            this.krokowaToolStripMenuItem.Click += new System.EventHandler(this.krokowaToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -400,12 +431,47 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(109, 17);
             this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
+            // tsPracaKrokowa
+            // 
+            this.tsPracaKrokowa.Dock = System.Windows.Forms.DockStyle.Right;
+            this.tsPracaKrokowa.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.poprzedni,
+            this.nastepny});
+            this.tsPracaKrokowa.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
+            this.tsPracaKrokowa.Location = new System.Drawing.Point(686, 24);
+            this.tsPracaKrokowa.Name = "tsPracaKrokowa";
+            this.tsPracaKrokowa.Size = new System.Drawing.Size(32, 323);
+            this.tsPracaKrokowa.TabIndex = 4;
+            this.tsPracaKrokowa.Text = "pracaKrokowa";
+            this.tsPracaKrokowa.Visible = false;
+            // 
+            // poprzedni
+            // 
+            this.poprzedni.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.poprzedni.Image = ((System.Drawing.Image)(resources.GetObject("poprzedni.Image")));
+            this.poprzedni.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.poprzedni.Name = "poprzedni";
+            this.poprzedni.Size = new System.Drawing.Size(21, 20);
+            this.poprzedni.Text = "Poprzedni";
+            this.poprzedni.Click += new System.EventHandler(this.poprzedni_Click);
+            // 
+            // nastepny
+            // 
+            this.nastepny.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.nastepny.Image = ((System.Drawing.Image)(resources.GetObject("nastepny.Image")));
+            this.nastepny.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.nastepny.Name = "nastepny";
+            this.nastepny.Size = new System.Drawing.Size(21, 20);
+            this.nastepny.Text = "Nastepny";
+            this.nastepny.Click += new System.EventHandler(this.nastepny_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(718, 369);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.tsPracaKrokowa);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -420,6 +486,8 @@
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tsPracaKrokowa.ResumeLayout(false);
+            this.tsPracaKrokowa.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -465,6 +533,12 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripButton Połączenie;
+        private System.Windows.Forms.ToolStripMenuItem symulacjaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pełnaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem krokowaToolStripMenuItem;
+        private System.Windows.Forms.ToolStrip tsPracaKrokowa;
+        private System.Windows.Forms.ToolStripButton poprzedni;
+        private System.Windows.Forms.ToolStripButton nastepny;
     }
 }
 

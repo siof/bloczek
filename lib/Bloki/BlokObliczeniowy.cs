@@ -14,14 +14,11 @@ namespace libbloki
     public partial class BlokObliczeniowy : Bloki
     {
         private BFopcje frmOpcje;
-        //Graphics graph = null;
+
         private String[] lval = new String[5];
         private int[] rval_a = new int[5];
         private int[] rval_b = new int[5];
         private String[] dzial = new String[5];
-
-        //private Point klikoffset;
-        //private bool klik;
 
         public String[] prlval
         {
@@ -81,8 +78,12 @@ namespace libbloki
 
             Pen pn = new Pen(Color.Brown,2);
             Rectangle rect = new Rectangle(2, 2, 148, 73);
-            g.DrawRectangle(pn, rect); 
+            g.DrawRectangle(pn, rect);
             g.FillRectangle(brush,rect);
+
+            brush.Dispose();
+            pn.Dispose();
+            g = null;
         }
 
         private void UserControl1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -254,6 +255,7 @@ namespace libbloki
                 graph.DrawString(prlval[4] + " = " + prrval_a[4].ToString() + " " + prdzial[4] + " " + prrval_a[4].ToString(), fnt, new SolidBrush(Color.Black), 20, i);
                 i += 15;
             }
+            pn.Dispose();
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
