@@ -76,6 +76,17 @@ namespace libbloki
                             break;
 
             }
+
+            switch (tryb)
+            {
+                case tryby.zaznaczony:
+                    pn.Color = Color.Red;
+                    break;
+                default:
+                    pn.Color = Color.Black;
+                    break;
+            }
+
             graph.DrawLine(pn,p[0],p[1]);
             pn.Dispose();
         }
@@ -84,9 +95,36 @@ namespace libbloki
         {
             Pen pn = new Pen(Color.Black, 1);
             Point[] p = new Point[2];
-            p[0].X = 2; p[0].Y = 2;
-            p[1].X = this.Width -2; p[1].Y = 2;
-            pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+            switch (zakonczenie)
+            {
+                case strzalkaLeftRight.left:
+                    p[1].X = 2; p[1].Y = 2;
+                    p[0].X = this.Width - 2; p[0].Y = 2;
+                    pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                    break;
+                case strzalkaLeftRight.right:
+                    p[0].X = 2; p[0].Y = 2;
+                    p[1].X = this.Width - 2; p[1].Y = 2;
+                    pn.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                    break;
+
+                default:
+                    p[0].X = 2; p[0].Y = 2;
+                    p[1].X = this.Width - 2; p[1].Y = 2;
+                    pn.EndCap = System.Drawing.Drawing2D.LineCap.NoAnchor;
+                    break;
+
+            }
+
+            switch (tryb)
+            {
+                case tryby.zaznaczony:
+                    pn.Color = Color.Red;
+                    break;
+                default:
+                    pn.Color = Color.Black;
+                    break;
+            }
 
             graph.DrawLine(pn, p[0], p[1]);
             pn.Dispose();

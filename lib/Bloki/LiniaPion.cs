@@ -74,7 +74,16 @@ namespace libbloki
                             pn.EndCap = System.Drawing.Drawing2D.LineCap.NoAnchor;
                             break;
             }
-            
+
+            switch (tryb)
+            {
+                case tryby.zaznaczony:
+                    pn.Color = Color.Red;
+                    break;
+                default:
+                    pn.Color = Color.Black;
+                    break;
+            }
 
             graph.DrawLine(pn,p[0],p[1]);
             pn.Dispose();
@@ -103,10 +112,19 @@ namespace libbloki
                     pn.EndCap = System.Drawing.Drawing2D.LineCap.NoAnchor;
                     break;
             }
-
+            switch (tryb)
+            {
+                case tryby.zaznaczony:
+                    pn.Color = Color.Red;
+                    break;
+                default:
+                    pn.Color = Color.Black;
+                    break;
+            }
 
             graph.DrawLine(pn, p[0], p[1]);
             pn.Dispose();
+
         }
     }
 }
