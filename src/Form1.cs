@@ -528,7 +528,7 @@ namespace Okienka
                     polaczDO.punkty[0].X = polaczDO.Width - (Int32)temp;
                     polaczDO.punkty[0].Y = 2;
 
-                    tmpLinia = new LiniaPion();
+                    tmpLinia = new LiniaPion(strzalkaUpDown.down);
 
                     tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
                     tmpLinia.Left = polaczOD.Left + polaczOD.punkty[1].X;
@@ -560,7 +560,7 @@ namespace Okienka
                     polaczDO.punkty[0].X = (Int32)temp;
                     polaczDO.punkty[0].Y = 2;
 
-                    tmpLinia = new LiniaPion();
+                    tmpLinia = new LiniaPion(strzalkaUpDown.down);
 
                     tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
                     tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
@@ -591,7 +591,7 @@ namespace Okienka
                     polaczDO.punkty[0].X = (Int32)temp;
                     polaczDO.punkty[0].Y = 2;
 
-                    tmpLinia = new LiniaPion();
+                    tmpLinia = new LiniaPion(strzalkaUpDown.down);
 
                     tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
                     tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
@@ -622,7 +622,7 @@ namespace Okienka
                     polaczDO.punkty[0].X = polaczDO.Width - (Int32)temp;
                     polaczDO.punkty[0].Y = 2;
 
-                    tmpLinia = new LiniaPion();
+                    tmpLinia = new LiniaPion(strzalkaUpDown.down);
 
                     tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
                     tmpLinia.Left = polaczOD.Left + polaczOD.punkty[1].X;
@@ -656,7 +656,7 @@ namespace Okienka
                     polaczDO.punkty[0].X = polaczDO.Width - (Int32)temp;
                     polaczDO.punkty[0].Y = polaczDO.Height - 2;
 
-                    tmpLinia = new LiniaPion();
+                    tmpLinia = new LiniaPion(strzalkaUpDown.up);
 
                     tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
                     tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
@@ -687,7 +687,7 @@ namespace Okienka
                     polaczDO.punkty[0].X = (Int32)temp;
                     polaczDO.punkty[0].Y = polaczOD.Height - 2;
 
-                    tmpLinia = new LiniaPion();
+                    tmpLinia = new LiniaPion(strzalkaUpDown.up);
 
                     tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
                     tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
@@ -718,7 +718,7 @@ namespace Okienka
                     polaczDO.punkty[0].X = (Int32)temp;
                     polaczDO.punkty[0].Y = polaczOD.Height - 2;
 
-                    tmpLinia = new LiniaPion();
+                    tmpLinia = new LiniaPion(strzalkaUpDown.up);
 
                     tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
                     tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
@@ -749,7 +749,7 @@ namespace Okienka
                     polaczDO.punkty[0].X = polaczDO.Width - (Int32)temp;
                     polaczDO.punkty[0].Y = polaczOD.Height - 2;
 
-                    tmpLinia = new LiniaPion();
+                    tmpLinia = new LiniaPion(strzalkaUpDown.up);
 
                     tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
                     tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
@@ -785,7 +785,7 @@ namespace Okienka
                         polaczDO.punkty[0].X = 2;
                         polaczDO.punkty[0].Y = polaczDO.Height - (Int32)temp;
 
-                        tmpLinia = new LiniaPoz();
+                        tmpLinia = new LiniaPoz(strzalkaLeftRight.right);
 
                         tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
                         tmpLinia.Left = polaczOD.Left + polaczOD.Width-2;
@@ -816,7 +816,7 @@ namespace Okienka
                         polaczDO.punkty[0].X = 2;
                         polaczDO.punkty[0].Y = (Int32)temp;
 
-                        tmpLinia = new LiniaPoz();
+                        tmpLinia = new LiniaPoz(strzalkaLeftRight.right);
 
                         tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
                         tmpLinia.Left = polaczOD.Left + polaczOD.Width - 2;
@@ -850,7 +850,7 @@ namespace Okienka
                         polaczDO.punkty[0].X = polaczDO.Left + polaczDO.Width;
                         polaczDO.punkty[0].Y = polaczDO.Height - (Int32)temp;
 
-                        tmpLinia = new LiniaPoz();
+                        tmpLinia = new LiniaPoz(strzalkaLeftRight.left);
 
                         tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
                         tmpLinia.Left = polaczDO.Left + polaczDO.Width-2;
@@ -881,7 +881,7 @@ namespace Okienka
                         polaczDO.punkty[0].X = polaczDO.Left + polaczDO.Width;
                         polaczDO.punkty[0].Y = (Int32)temp;
 
-                        tmpLinia = new LiniaPoz();
+                        tmpLinia = new LiniaPoz(strzalkaLeftRight.left);
 
                         tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
                         tmpLinia.Left = polaczDO.Left + polaczDO.Width - 2;
@@ -907,7 +907,7 @@ namespace Okienka
                 LiniaPion tmpPion;
                 LiniaPoz tmpPoz;
 
-                tmpPion = new LiniaPion();
+                tmpPion = new LiniaPion(strzalkaUpDown.none);
                 tmpPion.Top = polaczOD.Top + polaczOD.Height;
                 tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
                 tmpPion.Width = 4;
@@ -916,7 +916,7 @@ namespace Okienka
                 tmpPion.nastepnyBlok = null;
                 tmpPion.BringToFront();
 
-                tmpPoz = new LiniaPoz();
+                tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
                 tmpPoz.Top = tmpPion.Top + tmpPion.Height-2;
                 tmpPoz.Left = tmpPion.Left;
                 tmpPoz.Height = 4;
@@ -940,7 +940,7 @@ namespace Okienka
                 LiniaPion tmpPion;
                 LiniaPoz tmpPoz;
 
-                tmpPion = new LiniaPion();
+                tmpPion = new LiniaPion(strzalkaUpDown.none);
                 tmpPion.Top = polaczOD.Top + polaczOD.Height;
                 tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
                 tmpPion.Width = 4;
@@ -949,7 +949,7 @@ namespace Okienka
                 tmpPion.nastepnyBlok = null;
                 tmpPion.BringToFront();
 
-                tmpPoz = new LiniaPoz();
+                tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
                 tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
                 tmpPoz.Left = polaczDO.Left + polaczDO.Width;
                 tmpPoz.Height = 4;
@@ -973,7 +973,7 @@ namespace Okienka
                 LiniaPion tmpPion;
                 LiniaPoz tmpPoz;
 
-                tmpPion = new LiniaPion();
+                tmpPion = new LiniaPion(strzalkaUpDown.none);
                 tmpPion.Top = polaczDO.Top + polaczDO.Height / 2;
                 tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
                 tmpPion.Width = 4;
@@ -982,7 +982,7 @@ namespace Okienka
                 tmpPion.nastepnyBlok = null;
                 tmpPion.BringToFront();
 
-                tmpPoz = new LiniaPoz();
+                tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
                 tmpPoz.Top = tmpPion.Top;
                 tmpPoz.Left = polaczDO.Left + polaczDO.Width;
                 tmpPoz.Height = 4;
@@ -1006,7 +1006,7 @@ namespace Okienka
                 LiniaPion tmpPion;
                 LiniaPoz tmpPoz;
 
-                tmpPion = new LiniaPion();
+                tmpPion = new LiniaPion(strzalkaUpDown.none);
                 tmpPion.Top = polaczDO.Top + polaczDO.Height / 2;
                 tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
                 tmpPion.Width = 4;
@@ -1015,7 +1015,7 @@ namespace Okienka
                 tmpPion.nastepnyBlok = null;
                 tmpPion.BringToFront();
 
-                tmpPoz = new LiniaPoz();
+                tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
                 tmpPoz.Top = tmpPion.Top;
                 tmpPoz.Left = tmpPion.Left;
                 tmpPoz.Height = 4;
