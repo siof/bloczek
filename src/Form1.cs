@@ -23,8 +23,8 @@ namespace Okienka
         private bool ctrl = false;
         private bool przesun = false;
         private bool symuluj = false;
-		
-        private Bloki polaczOD = null, polaczDO = null;
+
+        private Bloki polaczOD = null, polaczDO = null, tmpPolOD = null, tmpPolDO = null, tmpZaznaczony = null;
 
         private int ile = 0;
         private int polowaX;
@@ -53,6 +53,43 @@ namespace Okienka
             numer = 0;
         }
 
+        private void WyczyscZaznaczenie()
+        {
+            if (zaznaczony != null)
+            {
+                if (zaznaczony.GetType() == typeof(LiniaPion) ||
+                    zaznaczony.GetType() == typeof(LiniaPoz))
+                {
+                    Bloki temp;
+                    //zaznaczony = (Bloki)sender;
+                    zaznaczony.tryb = tryby.normal;
+                    zaznaczony.Refresh();
+
+                    temp = zaznaczony;
+
+                    while (temp.poprzedniaLinia != null)
+                    {
+                        temp = temp.poprzedniaLinia;
+                        temp.tryb = tryby.normal; ;
+                        temp.Refresh();
+                    }
+                    temp = zaznaczony;
+                    while (temp.nastepnaLinia != null)
+                    {
+                        temp = temp.nastepnaLinia;
+                        temp.tryb = tryby.normal;
+                        temp.Refresh();
+                    }
+                    zaznaczony = null;
+                }
+                else
+                {
+                    zaznaczony.tryb = tryby.normal;
+                    zaznaczony = null;
+                    //panel1.Refresh();
+                }
+            }
+        }
         private int ZnajdzBlok(String nazwa)
         {
             int i;
@@ -71,10 +108,20 @@ namespace Okienka
             return false;
         }
 
-        private void UsunBlok(object sender, KeyEventArgs e)
+        private void UsunBlok(object sender, KeyEventArgs e)  //
         {
-            if (e.KeyCode == Keys.Delete)
+            if ((e.KeyCode == Keys.Delete) &&(zaznaczony != null))
             {
+                if (zaznaczony.nastepnaLinia != null)
+                {
+                    UsunLinie(zaznaczony.nastepnaLinia);
+                    zaznaczony = (Bloki)sender;
+                }
+                if (zaznaczony.poprzedniaLinia != null)
+                {
+                    UsunLinie(zaznaczony.poprzedniaLinia);
+                    zaznaczony = (Bloki)sender;
+                }
                 if (zaznaczony.Name.Equals(((Bloki)sender).Name))
                     zaznaczony = null;
 
@@ -175,11 +222,9 @@ namespace Okienka
                 if (ctrl != true)
                     klik = false;
             }
-            
-            if (zaznaczony != null)
+            else
             {
-                zaznaczony.tryb = tryby.normal;
-                zaznaczony = null;
+                WyczyscZaznaczenie();
             }
         }
 
@@ -193,11 +238,7 @@ namespace Okienka
 
         public void PrzesunStart(object sender, MouseEventArgs e)
         {
-            if (zaznaczony != null)
-            {
-                zaznaczony.tryb = tryby.normal;
-                zaznaczony = null;
-            }
+            WyczyscZaznaczenie();
 
             if (sender.GetType() == typeof(BlokSTART) ||
                 sender.GetType() == typeof(BlokSTOP) ||
@@ -208,83 +249,115 @@ namespace Okienka
             {
                 zaznaczony = (Bloki)sender;
                 zaznaczony.tryb = tryby.zaznaczony;
-
                 if (polacz == true)
                 {
-                    if (polaczOD == null)
+                    if ((polaczOD == null) && (zaznaczony.GetType() != typeof(BlokSTOP)))
                     {
                         polaczOD = zaznaczony;
                         return;
                     }
-                    if((polaczOD != null) && (polaczDO == null))
+                    if((polaczOD != null) && (polaczDO == null) && (zaznaczony.GetType() != typeof(BlokSTART)))
                     {
-                        polaczDO = zaznaczony;////////
-                        zaznaczony.poprzedniBlok = polaczOD;
-                        polaczOD.nastepnyBlok = polaczDO;
-                        RysujPolaczenie();
-                        polaczOD = null;
-                        polaczDO = null;
-                        polacz = false;
-                        return;
+                        polaczDO = zaznaczony;
+                        //tmpZaznaczony = zaznaczony;
+                        if (polaczOD.nastepnyBlok != null)
+                        {
+                            tmpPolDO = polaczDO;
+                            tmpPolOD = polaczOD;
+
+                            polaczDO = polaczOD.nastepnyBlok;
+
+                            UsunLinie(polaczOD.nastepnaLinia);
+
+                            polaczDO = tmpPolDO;
+                            polaczOD = tmpPolOD;
+                        }
+
+                        if ((polaczDO.nastepnyBlok != null))
+                        {
+                            if (polaczDO.nastepnyBlok != polaczOD)
+                            {                                
+                                polaczDO.poprzedniBlok = polaczOD;
+                                polaczOD.nastepnyBlok = polaczDO;
+                                RysujPolaczenie();
+                            }
+                        }
+                        else
+                        {
+                            polaczDO.poprzedniBlok = polaczOD;
+                            polaczOD.nastepnyBlok = polaczDO;
+                            RysujPolaczenie();
+                        }
+                    }
+                    polaczOD = null;
+                    polaczDO = null;
+                    polacz = false;
+                    return;
+                }
+
+
+
+                if (przesun == false)
+                {
+                    przesun = true;
+                    punktKlikuNaBlok = new Point();
+                    punktKlikuNaBlok.X = e.X;
+                    punktKlikuNaBlok.Y = e.Y;
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        pozK[i] = new Poziom();
+                        pioK[i] = new Pion();
+                    }
+
+                    polowaX = (zaznaczony.Width) / 2;
+                    polowaY = (zaznaczony.Height) / 2;
+
+                    pioK[0].Left = zaznaczony.Left;
+                    pioK[0].Top = zaznaczony.Top;
+
+                    pozK[0].Left = zaznaczony.Left;
+                    pozK[0].Top = zaznaczony.Top;
+
+
+                    pioK[1].Left = zaznaczony.Left;
+                    pioK[1].Top = zaznaczony.Top + (zaznaczony.Height - pioK[1].Height);
+
+                    pozK[1].Left = zaznaczony.Left;
+                    pozK[1].Top = zaznaczony.Top + (zaznaczony.Height - pozK[1].Height);
+
+
+                    pioK[2].Left = zaznaczony.Left + (zaznaczony.Width - pioK[2].Width);
+                    pioK[2].Top = zaznaczony.Top;
+
+                    pozK[2].Left = zaznaczony.Left + (zaznaczony.Width - pozK[2].Width);
+                    pozK[2].Top = zaznaczony.Top;
+
+
+                    pioK[3].Left = zaznaczony.Left + (zaznaczony.Width - pioK[3].Width);
+                    pioK[3].Top = zaznaczony.Top + (zaznaczony.Height - pioK[3].Height);
+
+                    pozK[3].Left = zaznaczony.Left + (zaznaczony.Width - pozK[3].Width);
+                    pozK[3].Top = zaznaczony.Top + (zaznaczony.Height - pozK[3].Height);
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        panel1.Controls.Add(pioK[i]);
+                        panel1.Controls.Add(pozK[i]);
                     }
                 }
             }
             else
             {
                 polacz = false;
+                
                 polaczOD = null;
                 polaczDO = null;
+                WyczyscZaznaczenie();
+                
             }
-
-            if (przesun == false)
-            {
-                przesun = true;
-                punktKlikuNaBlok = new Point();
-                punktKlikuNaBlok.X = e.X;
-                punktKlikuNaBlok.Y = e.Y;
-
-                for (int i = 0; i < 4; i++)
-                {
-                    pozK[i] = new Poziom();
-                    pioK[i] = new Pion();
-                }
-
-                polowaX = (zaznaczony.Width) / 2;
-                polowaY = (zaznaczony.Height) / 2;
-
-                pioK[0].Left = zaznaczony.Left;
-                pioK[0].Top = zaznaczony.Top;
-
-                pozK[0].Left = zaznaczony.Left;
-                pozK[0].Top = zaznaczony.Top;
-
-
-                pioK[1].Left = zaznaczony.Left;
-                pioK[1].Top = zaznaczony.Top + (zaznaczony.Height - pioK[1].Height);
-
-                pozK[1].Left = zaznaczony.Left;
-                pozK[1].Top = zaznaczony.Top + (zaznaczony.Height - pozK[1].Height);
-
-
-                pioK[2].Left = zaznaczony.Left + (zaznaczony.Width - pioK[2].Width);
-                pioK[2].Top = zaznaczony.Top;
-
-                pozK[2].Left = zaznaczony.Left + (zaznaczony.Width - pozK[2].Width);
-                pozK[2].Top = zaznaczony.Top;
-
-
-                pioK[3].Left = zaznaczony.Left + (zaznaczony.Width - pioK[3].Width);
-                pioK[3].Top = zaznaczony.Top + (zaznaczony.Height - pioK[3].Height);
-
-                pozK[3].Left = zaznaczony.Left + (zaznaczony.Width - pozK[3].Width);
-                pozK[3].Top = zaznaczony.Top + (zaznaczony.Height - pozK[3].Height);
-
-                for (int i = 0; i < 4; i++)
-                {
-                    panel1.Controls.Add(pioK[i]);
-                    panel1.Controls.Add(pozK[i]);
-                }
-            }
+            
+            
 
             //if (polaczDO != null && polaczOD != null)
             //{
@@ -350,8 +423,8 @@ namespace Okienka
         }
 
         private void panel1_MouseUp(object sender, MouseEventArgs e)
-        {                         
-            if (przesun == true)
+        {
+            if (przesun == true && zaznaczony != null)
             {
                 if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
                 {
@@ -380,13 +453,13 @@ namespace Okienka
                     RysujPolaczenie();
                     polaczOD = null;
                     polaczDO = null;
-                    
+
                 }
 
                 zaznaczony.BringToFront();
                 przesun = false;
                 //zaznaczony.tryb = tryby.normal;
-                
+
                 polowaX = 0;
                 polowaY = 0;
 
@@ -395,9 +468,10 @@ namespace Okienka
                     panel1.Controls.Remove(pozK[i]);
                     panel1.Controls.Remove(pioK[i]);
                 }
-                
                 panel1.Refresh();
+
             }
+            
         }
 
         private void dodajBlokStart_Click(object sender, EventArgs e)
@@ -442,8 +516,62 @@ namespace Okienka
             polaczDO = null;
             polaczOD = null;
         }
+        private void HandlerUsunLinie(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                UsunLinie(sender);
+            }
+        }
 
-        private void UsunLinie() //
+        private void UsunLinie(object sender)
+        {
+            Bloki temp;
+            temp = (Bloki)sender;
+
+            while (temp.poprzedniaLinia != null)
+            {
+                temp = temp.poprzedniaLinia;
+            }
+            temp = temp.poprzedniBlok;
+            polaczOD = temp;
+            polaczDO = polaczOD.nastepnyBlok;
+            WymazLinie();
+            polaczOD.nastepnyBlok = null;
+            polaczOD.nastepnaLinia = null;
+            polaczDO.poprzedniBlok = null;
+            polaczDO.poprzedniaLinia = null;
+            polaczDO = null;
+            polaczOD = null;
+            zaznaczony = null;
+        }
+
+        private void ZaznaczLinie(object sender, MouseEventArgs e)
+        {
+            WyczyscZaznaczenie();
+            Bloki temp;
+            zaznaczony = (Bloki)sender;
+            zaznaczony.tryb = tryby.zaznaczony;
+            zaznaczony.Refresh();
+
+            temp = zaznaczony;
+
+            while (temp.poprzedniaLinia != null)
+            {
+                temp = temp.poprzedniaLinia;
+                temp.tryb = tryby.zaznaczony;
+                temp.Refresh();
+            }
+            temp = zaznaczony;
+            while (temp.nastepnaLinia != null)
+            {
+                temp = temp.nastepnaLinia;
+                temp.tryb = tryby.zaznaczony;
+                temp.Refresh();
+            }
+        }
+
+        private void WymazLinie() //
         {
             if (polaczOD != null && polaczOD.nastepnaLinia != null)
             {
@@ -452,6 +580,7 @@ namespace Okienka
                 if (temp.nastepnyBlok != null)
                 {
                     temp.nastepnyBlok.poprzedniaLinia = null;
+                    panel1.Controls.Remove(temp);
                     temp.Dispose();
                     polaczOD.nastepnaLinia = null;
                 }
@@ -465,16 +594,13 @@ namespace Okienka
                     while (temp.poprzedniBlok == null)
                     {
                         temp = temp2.poprzedniaLinia;
+                        panel1.Controls.Remove(temp2);
                         temp2.Dispose();
                         temp2 = temp;
                     }
                     temp.poprzedniBlok.nastepnaLinia = null;
                     temp.Dispose();
                 }
-
-               // polaczOD.nastepnaLinia.nastepnyBlok.poprzedniaLinia = null;
-               // polaczOD.nastepnaLinia.Dispose();
-                //polaczOD.nastepnaLinia = null;
             }
             if (polaczDO != null && polaczDO.poprzedniaLinia != null)
             {
@@ -483,6 +609,7 @@ namespace Okienka
                 if (temp.poprzedniBlok != null)
                 {
                     temp.poprzedniBlok.nastepnaLinia = null;
+                    panel1.Controls.Remove(temp);
                     temp.Dispose();
                     polaczDO.poprzedniaLinia = null;
                 }
@@ -495,24 +622,21 @@ namespace Okienka
                     temp2 = temp;
                     while (temp.nastepnyBlok == null)
                     {
-                        temp = temp2.nastepnaLinia; ;
+                        temp = temp2.nastepnaLinia;
+                        panel1.Controls.Remove(temp2);
                         temp2.Dispose();
                         temp2 = temp;
                     }
                     temp.nastepnyBlok.poprzedniaLinia = null;
+                    panel1.Controls.Remove(temp);
                     temp.Dispose();
                 }
-
-                // Bloki temp;
-                //polaczDO.poprzedniaLinia.poprzedniBlok.nastepnaLinia = null;
-                //polaczDO.poprzedniaLinia.Dispose();
-                //polaczDO.poprzedniaLinia = null;
             }
         }
 
         private void RysujPolaczenie()//
         {
-            UsunLinie();
+            WymazLinie();
             
             if ((polaczOD.Top + polaczOD.Height) < polaczDO.Top)
             {
@@ -541,6 +665,8 @@ namespace Okienka
                     tmpLinia.nastepnyBlok = polaczDO;
                     polaczOD.nastepnaLinia = tmpLinia;
                     polaczDO.poprzedniaLinia = tmpLinia;
+                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                     //^^^^^^^^^^^^^^^
                     
                     
@@ -574,6 +700,8 @@ namespace Okienka
                     tmpLinia.nastepnyBlok = polaczDO;
                     polaczOD.nastepnaLinia = tmpLinia;
                     polaczDO.poprzedniaLinia = tmpLinia;
+                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                     //^^^^^^^^^^^^^^^
                     panel1.Controls.Add(tmpLinia);
                     tmpLinia = null;
@@ -605,6 +733,8 @@ namespace Okienka
                     tmpLinia.nastepnyBlok = polaczDO;
                     polaczOD.nastepnaLinia = tmpLinia;
                     polaczDO.poprzedniaLinia = tmpLinia;
+                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                     //^^^^^^^^^^^^^^^
                     panel1.Controls.Add(tmpLinia);
                     tmpLinia = null;
@@ -636,6 +766,8 @@ namespace Okienka
                     tmpLinia.nastepnyBlok = polaczDO;
                     polaczOD.nastepnaLinia = tmpLinia;
                     polaczDO.poprzedniaLinia = tmpLinia;
+                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                     //^^^^^^^^^^^^^^^
                     panel1.Controls.Add(tmpLinia);
                     tmpLinia = null;
@@ -670,6 +802,8 @@ namespace Okienka
                     tmpLinia.nastepnyBlok = polaczDO;
                     polaczOD.nastepnaLinia = tmpLinia;
                     polaczDO.poprzedniaLinia = tmpLinia;
+                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                     //^^^^^^^^^^^^^^^
                     panel1.Controls.Add(tmpLinia);
                     tmpLinia = null;
@@ -701,6 +835,8 @@ namespace Okienka
                     tmpLinia.nastepnyBlok = polaczDO;
                     polaczOD.nastepnaLinia = tmpLinia;
                     polaczDO.poprzedniaLinia = tmpLinia;
+                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                     //^^^^^^^^^^^^^^^
                     panel1.Controls.Add(tmpLinia);
                     tmpLinia = null;
@@ -732,6 +868,8 @@ namespace Okienka
                     tmpLinia.nastepnyBlok = polaczDO;
                     polaczOD.nastepnaLinia = tmpLinia;
                     polaczDO.poprzedniaLinia = tmpLinia;
+                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                     //^^^^^^^^^^^^^^^
                     panel1.Controls.Add(tmpLinia);
                     tmpLinia = null;
@@ -763,6 +901,8 @@ namespace Okienka
                     tmpLinia.nastepnyBlok = polaczDO;
                     polaczOD.nastepnaLinia = tmpLinia;
                     polaczDO.poprzedniaLinia = tmpLinia;
+                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                     //^^^^^^^^^^^^^^^
                     panel1.Controls.Add(tmpLinia);
                     tmpLinia = null;
@@ -799,6 +939,8 @@ namespace Okienka
                         tmpLinia.nastepnyBlok = polaczDO;
                         polaczOD.nastepnaLinia = tmpLinia;
                         polaczDO.poprzedniaLinia = tmpLinia;
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                         //^^^^^^^^^^^^^^^
                         panel1.Controls.Add(tmpLinia);
                         tmpLinia = null;
@@ -830,6 +972,8 @@ namespace Okienka
                         tmpLinia.nastepnyBlok = polaczDO;
                         polaczOD.nastepnaLinia = tmpLinia;
                         polaczDO.poprzedniaLinia = tmpLinia;
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                         //^^^^^^^^^^^^^^^
                         panel1.Controls.Add(tmpLinia);
                         tmpLinia = null;
@@ -864,6 +1008,8 @@ namespace Okienka
                         tmpLinia.nastepnyBlok = polaczDO;
                         polaczOD.nastepnaLinia = tmpLinia;
                         polaczDO.poprzedniaLinia = tmpLinia;
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                         //^^^^^^^^^^^^^^^
                         panel1.Controls.Add(tmpLinia);
                         tmpLinia = null;
@@ -895,6 +1041,8 @@ namespace Okienka
                         tmpLinia.nastepnyBlok = polaczDO;
                         polaczOD.nastepnaLinia = tmpLinia;
                         polaczDO.poprzedniaLinia = tmpLinia;
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
                         //^^^^^^^^^^^^^^^
                         panel1.Controls.Add(tmpLinia);
                         tmpLinia = null;
@@ -914,7 +1062,7 @@ namespace Okienka
                 tmpPion.Height = (polaczDO.Top + polaczDO.Height / 2) - tmpPion.Top;
                 tmpPion.poprzedniBlok = polaczOD;
                 tmpPion.nastepnyBlok = null;
-                tmpPion.BringToFront();
+                //tmpPion.BringToFront();
 
                 tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
                 tmpPoz.Top = tmpPion.Top + tmpPion.Height-2;
@@ -928,6 +1076,11 @@ namespace Okienka
 
                 polaczOD.nastepnaLinia = tmpPion;
                 polaczDO.poprzedniaLinia = tmpPoz;
+
+                tmpPion.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                tmpPion.MouseDown += new MouseEventHandler(ZaznaczLinie);
+                tmpPoz.MouseDown += new MouseEventHandler(ZaznaczLinie);
 
                 panel1.Controls.Add(tmpPion);
                 panel1.Controls.Add(tmpPoz);
@@ -947,7 +1100,7 @@ namespace Okienka
                 tmpPion.Height = (polaczDO.Top + polaczDO.Height / 2) - tmpPion.Top;
                 tmpPion.poprzedniBlok = polaczOD;
                 tmpPion.nastepnyBlok = null;
-                tmpPion.BringToFront();
+                //tmpPion.BringToFront();
 
                 tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
                 tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
@@ -961,6 +1114,11 @@ namespace Okienka
 
                 polaczOD.nastepnaLinia = tmpPion;
                 polaczDO.poprzedniaLinia = tmpPoz;
+
+                tmpPion.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                tmpPion.MouseDown += new MouseEventHandler(ZaznaczLinie);
+                tmpPoz.MouseDown += new MouseEventHandler(ZaznaczLinie);
 
                 panel1.Controls.Add(tmpPion);
                 panel1.Controls.Add(tmpPoz);
@@ -977,16 +1135,16 @@ namespace Okienka
                 tmpPion.Top = polaczDO.Top + polaczDO.Height / 2;
                 tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
                 tmpPion.Width = 4;
-                tmpPion.Height =polaczOD.Top - tmpPion.Top;
+                tmpPion.Height =polaczOD.Top - tmpPion.Top +4;
                 tmpPion.poprzedniBlok = polaczOD;
                 tmpPion.nastepnyBlok = null;
-                tmpPion.BringToFront();
+                //tmpPion.BringToFront();
 
                 tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
                 tmpPoz.Top = tmpPion.Top;
                 tmpPoz.Left = polaczDO.Left + polaczDO.Width;
                 tmpPoz.Height = 4;
-                tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+                tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
                 tmpPoz.nastepnyBlok = polaczDO;
                 tmpPoz.poprzedniaLinia = tmpPion;
 
@@ -995,8 +1153,14 @@ namespace Okienka
                 polaczOD.nastepnaLinia = tmpPion;
                 polaczDO.poprzedniaLinia = tmpPoz;
 
+                tmpPion.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                tmpPion.MouseDown += new MouseEventHandler(ZaznaczLinie);
+                tmpPoz.MouseDown += new MouseEventHandler(ZaznaczLinie);
+
                 panel1.Controls.Add(tmpPion);
                 panel1.Controls.Add(tmpPoz);
+
                 tmpPion = null;
                 tmpPoz = null;
                 return;
@@ -1010,16 +1174,16 @@ namespace Okienka
                 tmpPion.Top = polaczDO.Top + polaczDO.Height / 2;
                 tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
                 tmpPion.Width = 4;
-                tmpPion.Height = polaczOD.Top - tmpPion.Top;
+                tmpPion.Height = polaczOD.Top - tmpPion.Top +4;
                 tmpPion.poprzedniBlok = polaczOD;
                 tmpPion.nastepnyBlok = null;
-                tmpPion.BringToFront();
+                //tmpPion.BringToFront();
 
                 tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
                 tmpPoz.Top = tmpPion.Top;
                 tmpPoz.Left = tmpPion.Left;
                 tmpPoz.Height = 4;
-                tmpPoz.Width = polaczDO.Left - tmpPoz.Left;
+                tmpPoz.Width = polaczDO.Left - tmpPoz.Left+3;
                 tmpPoz.nastepnyBlok = polaczDO;
                 tmpPoz.poprzedniaLinia = tmpPion;
 
@@ -1027,6 +1191,11 @@ namespace Okienka
 
                 polaczOD.nastepnaLinia = tmpPion;
                 polaczDO.poprzedniaLinia = tmpPoz;
+
+                tmpPion.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunLinie);
+                tmpPion.MouseDown += new MouseEventHandler(ZaznaczLinie);
+                tmpPoz.MouseDown += new MouseEventHandler(ZaznaczLinie);
 
                 panel1.Controls.Add(tmpPion);
                 panel1.Controls.Add(tmpPoz);
