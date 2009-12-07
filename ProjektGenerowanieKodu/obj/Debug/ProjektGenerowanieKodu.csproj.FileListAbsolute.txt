@@ -1,0 +1,15 @@
+C:\Documents and Settings\student\Pulpit\projekt\projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.dll
+C:\Documents and Settings\student\Pulpit\projekt\projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.pdb
+C:\Documents and Settings\student\Pulpit\projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\student\Pulpit\projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.dll
+C:\Documents and Settings\student\Pulpit\projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.pdb
+C:\Users\Ja\Desktop\projekt temp\projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.dll
+C:\Users\Ja\Desktop\projekt temp\projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.pdb
+C:\Users\Ja\Desktop\projekt temp\projekt\ProjektGenerowanieKodu\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Ja\Desktop\projekt temp\projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.dll
+C:\Users\Ja\Desktop\projekt temp\projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.pdb
+D:\Projekt\projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.dll
+D:\Projekt\projekt\ProjektGenerowanieKodu\bin\Debug\ProjektGenerowanieKodu.pdb
+D:\Projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ResolveAssemblyReference.cache
+D:\Projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.dll
+D:\Projekt\projekt\ProjektGenerowanieKodu\obj\Debug\ProjektGenerowanieKodu.pdb

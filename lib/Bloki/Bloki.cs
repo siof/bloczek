@@ -13,18 +13,23 @@ namespace libbloki
     public class Bloki : UserControl
     {
         protected Type typ;
-        //protected String nastepny;
-        //protected String poprzedni;
-        protected Bloki nastepny;
-        protected Bloki poprzedni;
+
+        protected Bloki nastepny,_nastepnaLinia;
+        protected Bloki poprzedni,_poprzedniaLinia;
         protected String nazwa;
 
         protected tryby _tryb;
         protected Graphics graph;
+        protected IList<String> zmienne = new List<String>();
 
-        protected Point[] punkty = new Point[2]; //polaczenia
+        protected Point[] _punkty = new Point[2]; //polaczenia
 
-        
+        public Point[] punkty
+        {
+            get { return _punkty; }
+            set { _punkty = value; }
+        }
+
         public tryby tryb
         {
             get { return _tryb; }
@@ -59,6 +64,39 @@ namespace libbloki
         {
             get { return poprzedni; }
             set { poprzedni = value; }
+        }
+
+        public Bloki nastepnaLinia
+        {
+            get { return _nastepnaLinia; }
+            set { _nastepnaLinia = value; }
+        }
+        public Bloki poprzedniaLinia
+        {
+            get { return _poprzedniaLinia; }
+            set { _poprzedniaLinia = value; }
+        }
+
+        public void Wykonaj()
+        {
+            //żeby nie wykonywać reszty kodu jeśli blok nic nie robi
+            if (typBloku == typeof(BlokSTART) || typBloku == typeof(BlokSTOP))
+                return;
+
+            if (typBloku == typeof(BlokObliczeniowy))
+            {
+                //zaimplementować obliczenia
+
+                return;
+            }
+
+            if (typBloku == typeof(BlokWeWy))
+            {
+                //sprawdzić akcje po kolei i wyświetlać lub pobierać dane (dodatkowe formy sie przydadzą)
+
+                return;
+            }
+
         }
     }
 }
