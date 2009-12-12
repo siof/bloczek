@@ -11,10 +11,8 @@ namespace libbloki
 {
     public partial class BlokDecyzyjny : Bloki
     {
-        //Graphics graph;
-
-        //private Point klikoffset;
-        //private bool klik;
+        private BDOpcje frmOpcje;
+        public IList<Działanie> dzialania = new List<Działanie>();
 
         public BlokDecyzyjny()
         {
@@ -58,30 +56,15 @@ namespace libbloki
             g.DrawString("NIE", fnt, new SolidBrush(Color.Black), 2, 20);
         }
 
-        /*private void BlokDecyzyjny_MouseDown(object sender, MouseEventArgs e)
-        {
-            klik = true;
-            klikoffset.X = e.X;
-            klikoffset.Y = e.Y;
-        }
-
-        private void BlokDecyzyjny_MouseUp(object sender, MouseEventArgs e)
-        {
-            klik = false;
-        }
-
-        private void BlokDecyzyjny_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (klik)
-            {
-                this.Left = e.X + this.Left - klikoffset.X;
-                this.Top = e.Y + this.Top - klikoffset.Y;
-            }
-        }*/
-
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             // przezroczyste tlo
+        }
+
+        private void BlokDecyzyjny_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            frmOpcje = new BDOpcje(this);
+            frmOpcje.ShowDialog(this);
         }
     }
 }

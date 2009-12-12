@@ -15,6 +15,7 @@ namespace libbloki
     {
         private BOOpcje frmOpcje;
         public IList<Działanie> dzialania = new List<Działanie>();
+
         public void DodajDzialanie(Działanie dzialanie)
         {
             if (dzialanie != null)

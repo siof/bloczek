@@ -419,7 +419,7 @@ namespace Okienka
         {
             if (przesun == true && zaznaczony != null)
             {
-                if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
+                if (punktKlikuNaBlok.X != e.X || punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
                 {
                     zaznaczony.Left = pozK[0].Left;
                     zaznaczony.Top = pozK[0].Top;
@@ -447,7 +447,7 @@ namespace Okienka
                 przesun = false;
                 if (symuluj == false)
                     zaznaczony.tryb = tryby.normal;
-                zaznaczony = null;
+                //zaznaczony = null;
                 polowaX = 0;
                 polowaY = 0;
 
