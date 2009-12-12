@@ -13,7 +13,7 @@ namespace libbloki
 {
     public partial class BlokObliczeniowy : Bloki
     {
-        private BFopcje frmOpcje;
+        private BOOpcje frmOpcje;
         public IList<Działanie> dzialania = new List<Działanie>();
         public void DodajDzialanie(Działanie dzialanie)
         {
@@ -80,7 +80,7 @@ namespace libbloki
 
         private void UserControl1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            frmOpcje = new BFopcje(this);
+            frmOpcje = new BOOpcje(this);
             frmOpcje.ShowDialog(this);
 
             Pen pn = new Pen(Color.Brown, 2);

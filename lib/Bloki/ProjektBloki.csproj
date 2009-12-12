@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BDOpcje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BDOpcje.Designer.cs">
+      <DependentUpon>BDOpcje.cs</DependentUpon>
+    </Compile>
     <Compile Include="BlokDecyzyjny.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -61,12 +67,6 @@
     </Compile>
     <Compile Include="BlokSTART.Designer.cs">
       <DependentUpon>BlokSTART.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BFopcje.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BFopcje.Designer.cs">
-      <DependentUpon>BFopcje.cs</DependentUpon>
     </Compile>
     <Compile Include="BlokObliczeniowy.cs">
       <SubType>UserControl</SubType>
@@ -85,6 +85,18 @@
     </Compile>
     <Compile Include="BlokWeWy.Designer.cs">
       <DependentUpon>BlokWeWy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BOOpcje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BOOpcje.Designer.cs">
+      <DependentUpon>BOOpcje.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BWeWyOpcje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BWeWyOpcje.Designer.cs">
+      <DependentUpon>BWeWyOpcje.cs</DependentUpon>
     </Compile>
     <Compile Include="DodatkoweKlasy.cs" />
     <Compile Include="LiniaPion.cs">
@@ -115,16 +127,16 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BDOpcje.resx">
+      <DependentUpon>BDOpcje.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="BlokDecyzyjny.resx">
       <DependentUpon>BlokDecyzyjny.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="BlokSTART.resx">
       <DependentUpon>BlokSTART.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BFopcje.resx">
-      <DependentUpon>BFopcje.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="BlokObliczeniowy.resx">
@@ -137,6 +149,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BlokWeWy.resx">
       <DependentUpon>BlokWeWy.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BOOpcje.resx">
+      <DependentUpon>BOOpcje.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BWeWyOpcje.resx">
+      <DependentUpon>BWeWyOpcje.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LiniaPion.resx">

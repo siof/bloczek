@@ -350,8 +350,8 @@ namespace Okienka
                 }
             }
             else
-            {
                 polacz = false;
+
             if (polaczDO != null && polaczOD != null)
             {
                 RysujPolaczenie();
@@ -374,7 +374,7 @@ namespace Okienka
         {
             if (przesun == true)
             {
-                if (punktKlikuNaBlok.X != e.X && punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
+                if (punktKlikuNaBlok.X != e.X || punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
                 {
                     pozK[0].Left = e.X + zaznaczony.Left - polowaX;
                     pozK[0].Top = e.Y + zaznaczony.Top - polowaY;
