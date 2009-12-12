@@ -33,20 +33,25 @@ namespace libbloki
 
         private void btnDodaj_Click(object sender, EventArgs e)
         {
-            if (txtL.Text == "" || txtL.Text == " ")
+            if ((txtL.Text == "" || txtL.Text == " ") && (txtS.Text != "" || txtS.Text != " "))
                 return;
 
             String temp;
+            Działanie noweDzialanie = new Działanie();
 
-            temp = txtL.Text;
+            temp = txtL.Text + " := " + txtS.Text;
+            noweDzialanie.lewa = txtL.Text;
 
-            if (txtS.Text != "" || txtS.Text != " ")
+            noweDzialanie.dzialanie1 = ":=";
+            noweDzialanie.srodek = txtS.Text;
+
+            if (cbDzialanie.SelectedItem != null && cbDzialanie.SelectedText != "" && (txtP.Text != "" || txtP.Text != " "))
             {
-                temp += " := " + txtS.Text;
-
-                if (cbDzialanie.SelectedText != "" && (txtP.Text != "" || txtP.Text != " "))
-                    temp += " " + cbDzialanie.SelectedText + " " + txtP.Text;
+                temp += " " + cbDzialanie.SelectedText + " " + txtP.Text;
+                noweDzialanie.dzialanie2 = cbDzialanie.SelectedText;
+                noweDzialanie.prawa = txtP.Text;
             }
+
 
             listBox.Items.Add(temp);
         }

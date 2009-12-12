@@ -46,13 +46,28 @@ namespace libbloki
             if (comboBox1.SelectedText != "" && comboBox2.SelectedText != "" && txtBox.Text != "")
             {
                 temp = "";
+                Działanie noweDzialanie = new Działanie();
 
                 if (comboBox3.Visible == true)
+                {
                     temp = comboBox3.SelectedText + " ";
- 
-                temp += bDec.znacznikZmiennej + comboBox1.SelectedItem.ToString() + bDec.znacznikZmiennej + " " + comboBox2.SelectedItem.ToString() + " " + txtBox.Text;
+                    noweDzialanie.dodatkowe = comboBox3.SelectedText;
+                }
+
+                temp += bDec.znacznikZmiennej + comboBox1.SelectedText + bDec.znacznikZmiennej + " " + comboBox2.SelectedText + " " + txtBox.Text;
+                noweDzialanie.lewa = comboBox1.SelectedText;
+                noweDzialanie.dzialanie1 = comboBox2.SelectedText;
+                noweDzialanie.srodek = txtBox.Text;
+
+                if (noweDzialanie.srodek.Contains(bDec.znacznikZmiennej))
+                {
+                    noweDzialanie.srodek.Replace(bDec.znacznikZmiennej, "");
+                    noweDzialanie.srodekZmienna = true;
+                }
+
                 listBox.Items.Add(temp);
                 comboBox3.Visible = true;
+                bDec.dzialania.Add(noweDzialanie);
             }
         }
 
