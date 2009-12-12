@@ -9,13 +9,15 @@ using System.Drawing;
 namespace libbloki
 {
     public enum tryby { normal, zaznaczony, aktualny };
+    public enum strzalkaUpDown { up, down, none };
+    public enum strzalkaLeftRight { left, right, none };
 
     public class Bloki : UserControl
     {
         protected Type typ;
 
-        protected Bloki nastepny;
-        protected Bloki poprzedni;
+        protected Bloki nastepny,_nastepnaLinia;
+        protected Bloki poprzedni,_poprzedniaLinia;
         protected String nazwa;
 
         protected tryby _tryb;
@@ -23,10 +25,16 @@ namespace libbloki
         protected IList<String> zmienne = new List<String>();
 
         public IList<Zmienna> listaZmiennych;
+        protected Point[] _punkty = new Point[2]; //polaczenia
         public RichTextBox txt = new RichTextBox();
 
-        protected Point[] punkty = new Point[2]; //polaczenia
+        public Point[] punkty
         
+        {
+            get { return _punkty; }
+            set { _punkty = value; }
+        }
+
         public tryby tryb
         {
             get { return _tryb; }
@@ -63,6 +71,17 @@ namespace libbloki
             set { poprzedni = value; }
         }
 
+        public Bloki nastepnaLinia
+        {
+            get { return _nastepnaLinia; }
+            set { _nastepnaLinia = value; }
+        }
+        public Bloki poprzedniaLinia
+        {
+            get { return _poprzedniaLinia; }
+            set { _poprzedniaLinia = value; }
+        }
+
         public void Wykonaj()
         {
             //żeby nie wykonywać reszty kodu jeśli blok nic nie robi
@@ -72,6 +91,7 @@ namespace libbloki
             if (typBloku == typeof(BlokObliczeniowy))
             {
                 ((BlokObliczeniowy)this).Wykonaj();
+
                 return;
             }
 
@@ -81,6 +101,7 @@ namespace libbloki
 
                 return;
             }
+
         }
     }
 }
