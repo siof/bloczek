@@ -11,9 +11,8 @@ namespace libbloki
 {
     public partial class BlokWeWy : Bloki
     {
-        //private Point klikoffset;
-        //private bool klik;
-        //Graphics graph;
+        private BWeWyOpcje frmOpcje;
+        public IList<Działanie> dzialania = new List<Działanie>();
 
         public BlokWeWy()
         {
@@ -30,27 +29,6 @@ namespace libbloki
                 return cp;
             }
         }
-
-        /*private void BlokWeWy_MouseDown(object sender, MouseEventArgs e)
-        {
-            klik = true;
-            klikoffset.X = e.X;
-            klikoffset.Y = e.Y;
-        }
-
-        private void BlokWeWy_MouseUp(object sender, MouseEventArgs e)
-        {
-            klik = false;
-        }
-
-        private void BlokWeWy_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (klik)
-            {
-                this.Left = e.X + this.Left - klikoffset.X;
-                this.Top = e.Y + this.Top - klikoffset.Y;
-            }
-        }*/
 
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -79,6 +57,12 @@ namespace libbloki
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             // przezroczyste tlo
+        }
+
+        private void BlokWeWy_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            frmOpcje = new BWeWyOpcje(this);
+            frmOpcje.ShowDialog(this);
         }
     }
 }

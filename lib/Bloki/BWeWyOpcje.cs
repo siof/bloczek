@@ -26,6 +26,9 @@ namespace libbloki
 
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            if (listBox.SelectedItem == null)
+                return;
+
             if (comboBox1.SelectedText == "Czytaj")
             {
                 txtBox.Text = BWeWy.znacznikZmiennej + listBoxZmienne.SelectedItem.ToString() + BWeWy.znacznikZmiennej;
@@ -38,6 +41,9 @@ namespace libbloki
 
         private void Dodaj_Click(object sender, EventArgs e)
         {
+            if (comboBox1.SelectedItem == null)
+                return;
+
             String temp;
             temp = comboBox1.SelectedItem.ToString() + " : " + txtBox.Text;
             listBox.Items.Add(temp);

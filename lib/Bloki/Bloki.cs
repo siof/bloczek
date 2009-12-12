@@ -22,9 +22,9 @@ namespace libbloki
 
         protected tryby _tryb;
         protected Graphics graph;
-        protected IList<String> zmienne = new List<String>();
 
         public IList<Zmienna> listaZmiennych;
+
         protected Point[] _punkty = new Point[2]; //polaczenia
         public RichTextBox txt = new RichTextBox();
 

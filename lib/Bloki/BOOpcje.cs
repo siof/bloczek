@@ -7,13 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-
 namespace libbloki
 {
     public partial class BOOpcje : Form
     {
-        public String s;
         BlokObliczeniowy bObl;
+
         public BOOpcje(BlokObliczeniowy usr)
         {
             InitializeComponent();
@@ -54,6 +53,9 @@ namespace libbloki
 
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            if (listBox.SelectedItem == null)
+                return;
+
             if (txtL.Text == "" || txtL.Text == " ")
             {
                 txtL.Text = bObl.znacznikZmiennej + listBoxZmienne.SelectedItem.ToString() + bObl.znacznikZmiennej;
