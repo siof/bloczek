@@ -28,6 +28,8 @@ namespace libbloki
         protected Point[] _punkty = new Point[2]; //polaczenia
         public RichTextBox txt = new RichTextBox();
 
+        public String znacznikZmiennej = "~~";
+
         public Point[] punkty
         
         {
