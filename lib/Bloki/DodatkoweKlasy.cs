@@ -4,6 +4,17 @@ using System.Linq;
 
 namespace libbloki
 {
+    //niestety jeśli będziemy zmieniać znacznik zmiennej będziemy musieli robić to w dwóch miejscach (chyba że uda sie zrobić aby klasa Bloki dziedziczyła od 2 klas)
+    public class DodatkoweStale
+    {
+        protected String _znacznikZmiennej = "~~";
+
+        public String znacznikZmiennej
+        {
+            get { return _znacznikZmiennej; }
+        }
+    }
+
     public class Zmienna
     {
         private String _nazwa;
@@ -29,8 +40,10 @@ namespace libbloki
         }
     }
 
-    public class Działanie
+    public class Działanie : DodatkoweStale
     {
+        private String _dodatkowe;
+
         private bool _nowaZmienna = false;           //czy pierwszy z lewej jest nową zmienną (jeśli nie to listBox ze zmiennymi)
         private String _lewa;         //nazwa lewej zmiennej
 
@@ -89,7 +102,22 @@ namespace libbloki
         public String prawa
         {
             get { return _prawa; }
-            set { _prawa = value; }
+            set 
+            {
+                if (value.Contains(znacznikZmiennej) == true)
+                {
+                    prawaZmienna = true;
+                    value.Replace(znacznikZmiennej, "");
+                }
+
+                _prawa = value; 
+            }
+        }
+
+        public String dodatkowe
+        {
+            get { return _dodatkowe; }
+            set { _dodatkowe = value; }
         }
 
     }
