@@ -104,7 +104,94 @@ namespace libbloki
 
         private void Wykonaj()
         {
+            for (int i = 0; i < dzialania.Count; i++)
+            {
+                int index = ZnajdzZmienna(dzialania[i].lewa);
+                
+                if (index < 0)
+                    return;
 
+                Zmienna temp = listaZmiennych[index];
+
+                if (temp.typ == typeof(int))
+                {
+                    int tmpL = Convert.ToInt32(dzialania[i].srodek);
+
+                    if (dzialania[i].dzialanie2 == null)
+                        return;
+
+                    switch (dzialania[i].dzialanie2)
+                    {
+                        case "+":
+                            tmpL += Convert.ToInt32(dzialania[i].prawa);
+                            break;
+                        case "-":
+                            tmpL -= Convert.ToInt32(dzialania[i].prawa);
+                            break;
+                        case "*":
+                            tmpL *= Convert.ToInt32(dzialania[i].prawa);
+                            break;
+                        case "/":
+                            tmpL /= Convert.ToInt32(dzialania[i].prawa);
+                            break;
+                    }
+
+                    temp.wartosc = tmpL.ToString();
+                    return;
+                }
+
+                if (temp.typ == typeof(double))
+                {
+                    double tmpL = Convert.ToDouble(dzialania[i].srodek);
+
+                    if (dzialania[i].dzialanie2 == null)
+                        return;
+
+                    switch (dzialania[i].dzialanie2)
+                    {
+                        case "+":
+                            tmpL += Convert.ToDouble(dzialania[i].prawa);
+                            break;
+                        case "-":
+                            tmpL -= Convert.ToDouble(dzialania[i].prawa);
+                            break;
+                        case "*":
+                            tmpL *= Convert.ToDouble(dzialania[i].prawa);
+                            break;
+                        case "/":
+                            tmpL /= Convert.ToDouble(dzialania[i].prawa);
+                            break;
+                    }
+
+                    temp.wartosc = tmpL.ToString();
+                    return;
+                }
+
+                if (temp.typ == typeof(String))
+                {
+                    String tmpL = dzialania[i].srodek.ToString();
+
+                    if (dzialania[i].dzialanie2 == null)
+                        return;
+
+                    switch (dzialania[i].dzialanie2)
+                    {
+                        case "+":
+                            tmpL += dzialania[i].prawa;
+                            break;
+                        case "-":
+                            tmpL.Replace(dzialania[i].prawa, "");
+                            break;
+                        case "*":
+                            break;
+                        case "/":
+                            break;
+                    }
+
+                    temp.wartosc = tmpL.ToString();
+                    return;
+                }
+            }
         }
     }
 }
