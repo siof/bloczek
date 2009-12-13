@@ -135,6 +135,25 @@ namespace libbloki
             return false;
         }
 
+        public int ZnajdzZmienna(String zmienna)
+        {
+            if (zmienna == null)
+                return -1;
+            
+            String temp = zmienna.ToString();
+
+            if (temp.Contains(znacznikZmiennej) == true)
+                temp.Replace(znacznikZmiennej, "");
+
+            for (int i = 0; i < listaZmiennych.Count; i++)
+            {
+                if (listaZmiennych[i].nazwa.Equals(zmienna) == true)
+                    return i;
+            }
+
+            return -1;
+        }
+
         public void DodajNoweZmienne()
         {
             for (int i = 0; i < dzialania.Count; i++)
