@@ -84,6 +84,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(81, 21);
             this.comboBox1.TabIndex = 24;
+            this.comboBox1.Text = "Zmienna";
             // 
             // btnAnuluj
             // 
@@ -120,6 +121,7 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(44, 21);
             this.comboBox2.TabIndex = 31;
+            this.comboBox2.Text = "Dzial";
             // 
             // comboBox3
             // 

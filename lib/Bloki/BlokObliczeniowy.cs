@@ -14,7 +14,6 @@ namespace libbloki
     public partial class BlokObliczeniowy : Bloki
     {
         private BOOpcje frmOpcje;
-        public IList<Działanie> dzialania = new List<Działanie>();
 
         public void DodajDzialanie(Działanie dzialanie)
         {
@@ -95,12 +94,7 @@ namespace libbloki
         
         public void ReDrawText()
         {
-            txt.Clear();
-
-            for (int i = 0; i < dzialania.Count; i++)
-            {
-                txt.Text += dzialania[i].lewa.ToString() + " " + dzialania[i].dzialanie1.ToString() + " " + dzialania[i].srodek + " "  + dzialania[i].dzialanie2.ToString() + dzialania[i].prawa.ToString() + "\n";
-            }
+            
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)

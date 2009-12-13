@@ -78,6 +78,7 @@
             this.listBox.Name = "listBox";
             this.listBox.Size = new System.Drawing.Size(297, 186);
             this.listBox.TabIndex = 27;
+            this.listBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox_KeyDown);
             // 
             // listBoxZmienne
             // 
