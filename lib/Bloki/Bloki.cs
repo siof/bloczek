@@ -24,6 +24,7 @@ namespace libbloki
         protected Graphics graph;
 
         public IList<Zmienna> listaZmiennych;
+        public IList<Działanie> dzialania = new List<Działanie>();
 
         protected Point[] _punkty = new Point[2]; //polaczenia
         public RichTextBox txt = new RichTextBox();
@@ -46,6 +47,8 @@ namespace libbloki
                 Rectangle rect = new Rectangle(1, 1, 150, 75);
                 PaintEventArgs pe = new PaintEventArgs(graph, rect);
                 this.OnPaint(pe);
+
+                pe.Dispose();
             }
         }
 
@@ -100,10 +103,50 @@ namespace libbloki
             if (typBloku == typeof(BlokWeWy))
             {
                 //sprawdzić akcje po kolei i wyświetlać lub pobierać dane (dodatkowe formy sie przydadzą)
+                ((BlokWeWy)this).Wykonaj();
 
                 return;
             }
 
+            if (typBloku == typeof(BlokDecyzyjny))
+            {
+                ((BlokDecyzyjny)this).Wykonaj();
+
+                return;
+            }
+        }
+
+        public bool SprawdzCzyIstniejeZmienna(String zmienna)
+        {
+            if (zmienna == null)
+                return false;
+
+            String temp = zmienna.ToString();
+
+            if (temp.Contains(znacznikZmiennej) == true)
+                temp.Replace(znacznikZmiennej, "");
+
+            for (int i = 0; i < listaZmiennych.Count; i++)
+            {
+                if (listaZmiennych[i].nazwa.Equals(temp) == true)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void DodajNoweZmienne()
+        {
+            for (int i = 0; i < dzialania.Count; i++)
+            {
+                if (dzialania[i].nowaZmienna == true)
+                {
+                    Zmienna temp = new Zmienna();
+                    temp.nazwa = dzialania[i].lewa;
+
+                    listaZmiennych.Add(temp);
+                }
+            }
         }
     }
 }

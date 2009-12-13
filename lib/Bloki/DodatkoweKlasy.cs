@@ -66,7 +66,13 @@ namespace libbloki
         public String lewa
         {
             get { return _lewa; }
-            set { _lewa = value; }
+            set 
+            {
+                if (value.Contains(znacznikZmiennej) == true)
+                    value.Replace(znacznikZmiennej, "");
+
+                _lewa = value; 
+            }
         }
 
         public String dzialanie1
@@ -84,7 +90,16 @@ namespace libbloki
         public String srodek
         {
             get { return _srodek; }
-            set { _srodek = value; }
+            set 
+            {
+                if (value.Contains(znacznikZmiennej) == true)
+                {
+                    srodekZmienna = true;
+                    value.Replace(znacznikZmiennej, "");
+                }
+
+                _srodek = value; 
+            }
         }
 
         public String dzialanie2

@@ -12,6 +12,7 @@ namespace libbloki
     public partial class BWeWyOpcje : Form
     {
         BlokWeWy BWeWy;
+        IList<Działanie> dodaneDzialania = new List<Działanie>();
 
         public BWeWyOpcje()
         {
@@ -45,18 +46,54 @@ namespace libbloki
                 return;
 
             String temp;
+            Działanie noweDzialanie = new Działanie();
+
             temp = comboBox1.SelectedItem.ToString() + " : " + txtBox.Text;
+
+            noweDzialanie.dzialanie1 = comboBox1.SelectedItem.ToString();
+            noweDzialanie.srodek = txtBox.Text;
+
             listBox.Items.Add(temp);
+            BWeWy.dzialania.Add(noweDzialanie);
+            dodaneDzialania.Add(noweDzialanie);
         }
 
         private void btnAnuluj_Click(object sender, EventArgs e)
         {
+            //z racji że na bierząco aktualizuje działania to musze je usunąć z listy
+            for (int i = 0; i < dodaneDzialania.Count; i++)
+            {
+                BWeWy.dzialania.Remove(dodaneDzialania[i]);
+            }
+
+            dodaneDzialania.Clear(); //na wszelki wypadek
+
             BWeWyOpcje.ActiveForm.Close();
         }
 
         private void btnZapisz_Click(object sender, EventArgs e)
         {
+            //z racji że na bierząco aktualizuje dzialania to nie trzeba nic robić
+            //poza wyświetleniem działań na bloku
 
+            BWeWy.DodajNoweZmienne();
+            BWeWy.ReDrawText();
+
+            dodaneDzialania.Clear(); //na wszelki wypadek
+
+            BWeWyOpcje.ActiveForm.Close();
+        }
+
+        private void listBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (listBox.SelectedItem != null)
+            {
+                if (e.KeyCode == Keys.Delete)
+                {
+                    BWeWy.dzialania.RemoveAt(listBox.SelectedIndex);
+                    listBox.Items.Remove(listBox.SelectedItem);
+                }
+            }
         }
     }
 }

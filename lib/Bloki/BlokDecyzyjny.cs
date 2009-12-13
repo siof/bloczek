@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BlokDecyzyjny : Bloki
     {
         private BDOpcje frmOpcje;
-        public IList<Działanie> dzialania = new List<Działanie>();
+        //public IList<Działanie> dzialania = new List<Działanie>();
 
         public BlokDecyzyjny()
         {
@@ -65,6 +65,11 @@ namespace libbloki
         {
             frmOpcje = new BDOpcje(this);
             frmOpcje.ShowDialog(this);
+        }
+
+        public void ReDrawText()
+        {
+
         }
     }
 }

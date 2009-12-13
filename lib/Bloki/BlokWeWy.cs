@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BlokWeWy : Bloki
     {
         private BWeWyOpcje frmOpcje;
-        public IList<Działanie> dzialania = new List<Działanie>();
+        //public IList<Działanie> dzialania = new List<Działanie>();
 
         public BlokWeWy()
         {
@@ -63,6 +63,11 @@ namespace libbloki
         {
             frmOpcje = new BWeWyOpcje(this);
             frmOpcje.ShowDialog(this);
+        }
+
+        public void ReDrawText()
+        {
+            
         }
     }
 }
