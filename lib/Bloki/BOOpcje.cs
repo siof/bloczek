@@ -16,9 +16,32 @@ namespace libbloki
 
         public BOOpcje(BlokObliczeniowy usr)
         {
-            InitializeComponent();
-            this.bObl = usr;
+            bObl = usr;
+            String temp = "";
+
+            for (int i = 0; i < bObl.dzialania.Count; i++)
+            {
+                temp = bObl.dzialania[i].lewa + " := ";
+
+                if (bObl.dzialania[i].srodekZmienna == true)
+                    temp += bObl.znacznikZmiennej + bObl.dzialania[i].srodek + bObl.znacznikZmiennej;
+                else
+                    temp += bObl.dzialania[i].srodek;
+
+                if (bObl.dzialania[i].dzialanie2 != null)
+                {
+                    temp += " " + bObl.dzialania[i].dzialanie2 + " ";
+
+                    if (bObl.dzialania[i].prawaZmienna == true)
+                        temp += bObl.dzialania[i].znacznikZmiennej + bObl.dzialania[i].prawa + bObl.znacznikZmiennej;
+                    else
+                        temp += bObl.dzialania[i].prawa;
+                }
+
+                listBox.Items.Add(temp);
+            }
             
+            InitializeComponent();
         }
 
         private void btnAnuluj_Click(object sender, EventArgs e)

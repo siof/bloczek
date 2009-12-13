@@ -17,6 +17,24 @@ namespace libbloki
         public BDOpcje(BlokDecyzyjny usr)
         {
             bDec = usr;
+            String temp = "";
+
+            for (int i = 0; i < bDec.dzialania.Count; i++)
+            {
+                if (i != 0)
+                    temp = bDec.dzialania[i].dodatkowe.ToString() + " ";
+
+                temp += bDec.znacznikZmiennej.ToString() + bDec.dzialania[i].lewa.ToString() + bDec.znacznikZmiennej.ToString();
+                temp += " " + bDec.dzialania[i].dzialanie1.ToString() + " ";
+
+                if (bDec.dzialania[i].srodekZmienna == true)
+                    temp += bDec.znacznikZmiennej.ToString() + bDec.dzialania[i].srodek.ToString() + bDec.znacznikZmiennej.ToString();
+                else
+                    temp += bDec.dzialania[i].srodek.ToString();
+
+                listBox.Items.Add(temp);
+            }
+            
             InitializeComponent();
         }
 
@@ -85,12 +103,6 @@ namespace libbloki
                 noweDzialanie.lewa = comboBox1.SelectedItem.ToString();
                 noweDzialanie.dzialanie1 = comboBox2.SelectedItem.ToString();
                 noweDzialanie.srodek = txtBox.Text;
-
-                if (noweDzialanie.srodek.Contains(bDec.znacznikZmiennej))
-                {
-                    noweDzialanie.srodek.Replace(bDec.znacznikZmiennej, "");
-                    noweDzialanie.srodekZmienna = true;
-                }
 
                 listBox.Items.Add(temp);
                 comboBox3.Visible = true;
