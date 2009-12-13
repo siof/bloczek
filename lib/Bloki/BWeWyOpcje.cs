@@ -22,6 +22,20 @@ namespace libbloki
         public BWeWyOpcje(BlokWeWy blok)
         {
             BWeWy = blok;
+            String temp = "";
+
+            for (int i = 0; i < BWeWy.dzialania.Count; i++)
+            {
+                temp = BWeWy.dzialania[i].dzialanie1 + " : ";
+
+                if (BWeWy.dzialania[i].srodekZmienna == true)
+                    temp += BWeWy.znacznikZmiennej + BWeWy.dzialania[i].srodek + BWeWy.znacznikZmiennej;
+                else
+                    temp += BWeWy.dzialania[i].srodek;
+
+                listBox.Items.Add(temp);
+            }
+
             InitializeComponent();
         }
 
