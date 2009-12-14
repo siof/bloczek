@@ -434,6 +434,534 @@ namespace Okienka
                 panel1.Controls.Remove(p.RefLinia2);
                 p.RefLinia2.Dispose();
             }
+            if ((p.RefOD.GetType() == typeof(BlokDecyzyjny)) && (p.RefDO.GetType() == typeof(BlokDecyzyjny)))
+            {
+                if (p.IndeksOD == 0)    //NIE
+                {
+                    //linia lamana
+                    //p.RefDO = p.RefOD.nastepnyBlok[0];
+                    if ((p.RefOD.Left < p.RefDO.Left + p.RefDO.Width / 2) && (p.RefOD.Top+ p.RefOD.Height / 2 < p.RefDO.Top ))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left+p.RefDO.Width/2 - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+
+                    if ((p.RefOD.Left > p.RefDO.Left + p.RefDO.Width / 2) && (p.RefOD.Top + p.RefOD.Height / 2< p.RefDO.Top ))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefDO.Top - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width/2;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+
+                    if ((p.RefOD.Left > p.RefDO.Left + p.RefDO.Width / 2) && (p.RefOD.Top + p.RefOD.Height / 2 > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width/2;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+
+                    if ((p.RefOD.Left < p.RefDO.Left+p.RefDO.Width/2) && (p.RefOD.Top+p.RefOD.Height/2 > p.RefDO.Top))
+                    {
+
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left+p.RefDO.Width/2 - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                }
+
+                if (p.IndeksOD == 1)   //TAK
+                {
+                    p.RefDO = p.RefOD.nastepnyBlok[1];
+                    //linia lamana
+                    if ((p.RefOD.Left + p.RefOD.Width < p.RefDO.Left+ p.RefDO.Width/2) && (p.RefOD.Top+p.RefOD.Height/2 < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefDO.Top - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left+p.RefDO.Width/2 - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+
+                    if ((p.RefOD.Left + p.RefOD.Width > p.RefDO.Left + p.RefDO.Width / 2) && (p.RefOD.Top + p.RefOD.Height / 2 < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefDO.Top - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width/2;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+
+                    if ((p.RefOD.Left + p.RefOD.Width > p.RefDO.Left + p.RefDO.Width / 2) && (p.RefOD.Top + p.RefOD.Height / 2 > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width/2;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+
+                    if ((p.RefOD.Left + p.RefOD.Width < p.RefDO.Left + p.RefDO.Width / 2) && (p.RefOD.Top + p.RefOD.Height / 2 > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top - tmpPion.Top + 4;
+                        tmpPion.poprzedniBlok.Add(p.RefOD);
+                        //tmpPion.nastepnyBlok[0] = p.RefDO;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left + p.RefDO.Width/2 - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                }
+                return;
+            }
+
+
+            
+//////////////////////////////////////////////
+            if (p.RefOD.GetType() == typeof(BlokDecyzyjny))
+            {
+                if (p.IndeksOD == 0)    //NIE
+                {
+                    //linia lamana
+                    p.RefDO = p.RefOD.nastepnyBlok[0];
+                    if ((p.RefOD.Left < p.RefDO.Left) && (p.RefOD.Top < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+
+                    if ((p.RefOD.Left > p.RefDO.Left + 1) && (p.RefOD.Top < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+
+                    if ((p.RefOD.Left > p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top + p.RefDO.Height / 2 - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+
+                    if ((p.RefOD.Left < p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
+                    {
+
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top + p.RefOD.Height / 2 - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                }
+
+                if (p.IndeksOD == 1)   //TAK
+                {
+                    p.RefDO = p.RefOD.nastepnyBlok[1];
+                    //linia lamana
+                    if ((p.RefOD.Left + p.RefOD.Width < p.RefDO.Left) && (p.RefOD.Top < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+
+                    if ((p.RefOD.Left + p.RefOD.Width > p.RefDO.Left + 1) && (p.RefOD.Top < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+
+                    if ((p.RefOD.Left + p.RefOD.Width > p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top + p.RefDO.Height / 2 - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+
+                    if ((p.RefOD.Left + p.RefOD.Width < p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top + p.RefOD.Height / 2 - tmpPion.Top + 4;
+                        tmpPion.poprzedniBlok.Add(p.RefOD);
+                        tmpPion.nastepnyBlok[0] = p.RefDO;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                }
+                return;
+            }
+
+            
 //////////////////////////////////////////////
             if (p.RefDO.GetType() == typeof(BlokDecyzyjny))
             {
@@ -692,270 +1220,10 @@ namespace Okienka
                     tmpPion = null;
                     tmpPoz = null;
                 }
+                return;
             }
-            //////////////////////////////////////////////////
-            if (p.RefOD.GetType() == typeof(BlokDecyzyjny))
-            {
-                if (p.IndeksOD == 0)    //NIE
-                {
-                    //linia lamana
-                    p.RefDO = p.RefOD.nastepnyBlok[0];
-                    if ((p.RefOD.Left < p.RefDO.Left) && (p.RefOD.Top < p.RefDO.Top))
-                    {
-                        LiniaPion tmpPion;
-                        LiniaPoz tmpPoz;
-
-                        tmpPion = new LiniaPion(strzalkaUpDown.none);
-                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
-                        tmpPion.Left = p.RefOD.Left;
-                        tmpPion.Width = 4;
-                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
-
-                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
-                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
-                        tmpPoz.Left = tmpPion.Left;
-                        tmpPoz.Height = 4;
-                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left;
-
-                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        p.RefLinia1 = tmpPion;
-                        p.RefLinia2 = tmpPoz;
-
-                        panel1.Controls.Add(tmpPion);
-                        panel1.Controls.Add(tmpPoz);
-                        tmpPion = null;
-                        tmpPoz = null;
-
-                    }
-
-                    if ((p.RefOD.Left > p.RefDO.Left + 1) && (p.RefOD.Top < p.RefDO.Top))
-                    {
-                        LiniaPion tmpPion;
-                        LiniaPoz tmpPoz;
-
-                        tmpPion = new LiniaPion(strzalkaUpDown.none);
-                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
-                        tmpPion.Left = p.RefOD.Left;
-                        tmpPion.Width = 4;
-                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
-
-                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
-                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
-                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
-                        tmpPoz.Height = 4;
-                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
-
-                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        p.RefLinia1 = tmpPion;
-                        p.RefLinia2 = tmpPoz;
-
-                        panel1.Controls.Add(tmpPion);
-                        panel1.Controls.Add(tmpPoz);
-                        tmpPion = null;
-                        tmpPoz = null;
-                    }
-                    
-                    if ((p.RefOD.Left > p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
-                    {
-                        LiniaPion tmpPion;
-                        LiniaPoz tmpPoz;
-
-                        tmpPion = new LiniaPion(strzalkaUpDown.none);
-                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
-                        tmpPion.Left = p.RefOD.Left;
-                        tmpPion.Width = 4;
-                        tmpPion.Height = p.RefOD.Top + p.RefDO.Height / 2 - tmpPion.Top + 4;
-
-                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
-                        tmpPoz.Top = tmpPion.Top;
-                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
-                        tmpPoz.Height = 4;
-                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
-
-                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        p.RefLinia1 = tmpPion;
-                        p.RefLinia2 = tmpPoz;
-
-                        panel1.Controls.Add(tmpPion);
-                        panel1.Controls.Add(tmpPoz);
-
-                        tmpPion = null;
-                        tmpPoz = null;
-                    }
-                    
-                    if ((p.RefOD.Left < p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
-                    {
-
-                        LiniaPion tmpPion;
-                        LiniaPoz tmpPoz;
-
-                        tmpPion = new LiniaPion(strzalkaUpDown.none);
-                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
-                        tmpPion.Left = p.RefOD.Left;
-                        tmpPion.Width = 4;
-                        tmpPion.Height = p.RefOD.Top + p.RefOD.Height / 2 - tmpPion.Top + 4;
-
-                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
-                        tmpPoz.Top = tmpPion.Top;
-                        tmpPoz.Left = tmpPion.Left;
-                        tmpPoz.Height = 4;
-                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 3;
-
-                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        p.RefLinia1 = tmpPion;
-                        p.RefLinia2 = tmpPoz;
-
-                        panel1.Controls.Add(tmpPion);
-                        panel1.Controls.Add(tmpPoz);
-                        tmpPion = null;
-                        tmpPoz = null;
-                    }
-                }
-                
-                if (p.IndeksOD == 1)   //TAK
-                {
-                    p.RefDO = p.RefOD.nastepnyBlok[1];
-                    //linia lamana
-                    if ((p.RefOD.Left + p.RefOD.Width < p.RefDO.Left) && (p.RefOD.Top < p.RefDO.Top))
-                    {
-                        LiniaPion tmpPion;
-                        LiniaPoz tmpPoz;
-
-                        tmpPion = new LiniaPion(strzalkaUpDown.none);
-                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
-                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
-                        tmpPion.Width = 4;
-                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
-
-                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
-                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
-                        tmpPoz.Left = tmpPion.Left;
-                        tmpPoz.Height = 4;
-                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left;
-
-                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        p.RefLinia1 = tmpPion;
-                        p.RefLinia2 = tmpPoz;
-
-                        panel1.Controls.Add(tmpPion);
-                        panel1.Controls.Add(tmpPoz);
-                        tmpPion = null;
-                        tmpPoz = null;
-                    }
-                    
-                    if ((p.RefOD.Left + p.RefOD.Width > p.RefDO.Left + 1) && (p.RefOD.Top < p.RefDO.Top))
-                    {
-                        LiniaPion tmpPion;
-                        LiniaPoz tmpPoz;
-
-                        tmpPion = new LiniaPion(strzalkaUpDown.none);
-                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
-                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
-                        tmpPion.Width = 4;
-                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
-
-                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
-                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
-                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
-                        tmpPoz.Height = 4;
-                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
-
-                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        p.RefLinia1 = tmpPion;
-                        p.RefLinia2 = tmpPoz;
-
-                        panel1.Controls.Add(tmpPion);
-                        panel1.Controls.Add(tmpPoz);
-                        tmpPion = null;
-                        tmpPoz = null;
-
-                    }
-                    
-                    if ((p.RefOD.Left + p.RefOD.Width > p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
-                    {
-                        LiniaPion tmpPion;
-                        LiniaPoz tmpPoz;
-
-                        tmpPion = new LiniaPion(strzalkaUpDown.none);
-                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
-                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
-                        tmpPion.Width = 4;
-                        tmpPion.Height = p.RefOD.Top + p.RefDO.Height / 2 - tmpPion.Top + 4;
-
-                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
-                        tmpPoz.Top = tmpPion.Top;
-                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
-                        tmpPoz.Height = 4;
-                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
-
-                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        p.RefLinia1 = tmpPion;
-                        p.RefLinia2 = tmpPoz;
-
-                        panel1.Controls.Add(tmpPion);
-                        panel1.Controls.Add(tmpPoz);
-
-                        tmpPion = null;
-                        tmpPoz = null;
-
-                    }
-                    
-                    if ((p.RefOD.Left + p.RefOD.Width < p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
-                    {
-                        LiniaPion tmpPion;
-                        LiniaPoz tmpPoz;
-
-                        tmpPion = new LiniaPion(strzalkaUpDown.none);
-                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
-                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
-                        tmpPion.Width = 4;
-                        tmpPion.Height = p.RefOD.Top + p.RefOD.Height / 2 - tmpPion.Top + 4;
-                        tmpPion.poprzedniBlok.Add(p.RefOD);
-                        tmpPion.nastepnyBlok[0] = p.RefDO;
-
-                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
-                        tmpPoz.Top = tmpPion.Top;
-                        tmpPoz.Left = tmpPion.Left;
-                        tmpPoz.Height = 4;
-                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 3;
-
-                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
-                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
-                        p.RefLinia1 = tmpPion;
-                        p.RefLinia2 = tmpPoz;
-
-                        panel1.Controls.Add(tmpPion);
-                        panel1.Controls.Add(tmpPoz);
-                        tmpPion = null;
-                        tmpPoz = null;
-                    }
-                }
-            }
-
-//////////////////////////////////////////////
+//////////////////////////////////////////////////
+            
 
             if ((p.RefOD.GetType() != typeof(BlokDecyzyjny)) && (p.RefDO.GetType() != typeof(BlokDecyzyjny)))
             {
