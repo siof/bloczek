@@ -150,9 +150,6 @@ namespace Okienka
 
                 if (typ == typeof(BlokSTOP))
                 {
-                    if (JestBlokONazwie("STOP"))
-                        return;
-
                     BlokSTOP temp = new BlokSTOP();
 
                     temp2.typBloku = typeof(BlokSTOP);
