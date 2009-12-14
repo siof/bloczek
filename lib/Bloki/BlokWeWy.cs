@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BlokWeWy : Bloki
     {
         //private BWeWyOpcje frmOpcje;
-        //private Console frmConsole;
+        private Console frmConsole;
 
         //public IList<Działanie> dzialania = new List<Działanie>();
 
@@ -22,12 +22,12 @@ namespace libbloki
             graph = CreateGraphics();
         }
 
-        //public BlokWeWy(Console usr)
-        //{
-        //    InitializeComponent();
-        //    graph = CreateGraphics();
-        //    frmConsole = usr;
-        //}
+        public BlokWeWy(Console usr)
+        {
+            InitializeComponent();
+            graph = CreateGraphics();
+            frmConsole = usr;
+        }
 
         protected override CreateParams CreateParams
         {
@@ -157,11 +157,11 @@ namespace libbloki
                 {
                     if (dzialania[i].srodekZmienna == true)
                     {
-                        //frmConsole.richTextBox1.Text += listaZmiennych[temp].wartosc + '\n';
+                        frmConsole.richTextBox1.Text += listaZmiennych[temp].wartosc + '\n';
                     }
                     else
                     {
-                        //frmConsole.richTextBox1.Text += dzialania[i].srodek + '\n';
+                        frmConsole.richTextBox1.Text += dzialania[i].srodek + '\n';
                     }
                 }
                 else

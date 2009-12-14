@@ -16,8 +16,6 @@ namespace Okienka
     {
         private static int numer = 0;
 
-        public libbloki.Console okno = new libbloki.Console();
-
         private bool klik = false;
         private bool polacz = false;
         private bool ctrl = false;
@@ -33,6 +31,8 @@ namespace Okienka
         private BDOpcje bDOpcje;
         private BOOpcje bOOpcje;
         private BWeWyOpcje bWeWyOpcje;
+        private Czytaj czytaj;
+        private libbloki.Console console = new libbloki.Console(); 
 
        
         private IList<Bloki> tabBloki = new List<Bloki>();
