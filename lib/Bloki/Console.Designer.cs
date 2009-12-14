@@ -1,6 +1,6 @@
-﻿namespace Okienka
+﻿namespace libbloki
 {
-    partial class Watch
+    partial class Console
     {
         /// <summary>
         /// Required designer variable.
@@ -28,18 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // Watch
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.ForeColor = System.Drawing.Color.White;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.Size = new System.Drawing.Size(340, 263);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            // 
+            // Console
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(227, 183);
+            this.BackColor = System.Drawing.SystemColors.ControlText;
+            this.ClientSize = new System.Drawing.Size(340, 263);
+            this.Controls.Add(this.richTextBox1);
+            this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Watch";
-            this.Text = "Watch";
+            this.Name = "Console";
+            this.Text = "Console";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.Watch_Load);
             this.ResumeLayout(false);
@@ -47,6 +64,8 @@
         }
 
         #endregion
+
+        public System.Windows.Forms.RichTextBox richTextBox1;
 
 
 

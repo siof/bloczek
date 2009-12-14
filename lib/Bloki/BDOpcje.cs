@@ -16,6 +16,8 @@ namespace libbloki
 
         public BDOpcje(BlokDecyzyjny usr)
         {
+            InitializeComponent();
+
             bDec = usr;
             String temp = "";
 
@@ -34,8 +36,17 @@ namespace libbloki
 
                 listBox.Items.Add(temp);
             }
-            
-            InitializeComponent();
+
+            if (bDec.listaZmiennych != null)
+            {
+                //czytaj liste zmiennych i dodaj do combo/list boxow
+                for (int i = 0; i < bDec.listaZmiennych.Count; i++)
+                {
+                    temp = bDec.listaZmiennych[i].nazwa.ToString();
+                    listBoxZmienne.Items.Add(temp);
+                    comboBox1.Items.Add(temp);
+                }
+            }
         }
 
         public BDOpcje()

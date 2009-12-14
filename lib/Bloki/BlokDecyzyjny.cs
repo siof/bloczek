@@ -141,5 +141,202 @@ namespace libbloki
                 }
             }
         }
+
+        public bool Wykonaj()
+        {
+            int lZm, pZm;
+            bool aktualnyStan = false;
+            
+            for (int i = 0; i < dzialania.Count; i++)
+            {
+                bool tymczasowyStan = false;
+
+                pZm = -1;
+                lZm = ZnajdzZmienna(dzialania[i].lewa);
+                
+                if (dzialania[i].srodekZmienna == true)
+                    pZm = ZnajdzZmienna(dzialania[i].srodek);
+
+                if (listaZmiennych[lZm].typ == typeof(int))
+                {
+                    int tmp = Convert.ToInt32(listaZmiennych[lZm].wartosc);
+                    int tmp2 = 0;
+
+                    if (pZm != -1)
+                    {
+                        tmp2 = Convert.ToInt32(listaZmiennych[pZm].wartosc);
+                    }
+                    else
+                    {
+                        tmp2 = Convert.ToInt32(dzialania[i].srodek);
+                    }
+
+                    switch (dzialania[i].dzialanie1)
+                    {
+                        case "=":
+                            if (tmp == tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+                        
+                        case ">" :
+                            if (tmp > tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        case "<":
+                            if (tmp < tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        case ">=":
+                            if (tmp >= tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+                        
+                        case "<=":
+                            if (tmp <= tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+                        
+                        case "<>":
+                            if (tmp != tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+                    }
+                }
+
+                if (listaZmiennych[lZm].typ == typeof(double))
+                {
+                    double tmp = Convert.ToDouble(listaZmiennych[lZm].wartosc);
+                    double tmp2 = 0;
+
+                    if (pZm != -1)
+                    {
+                        tmp2 = Convert.ToDouble(listaZmiennych[pZm].wartosc);
+                    }
+                    else
+                    {
+                        tmp2 = Convert.ToDouble(dzialania[i].srodek);
+                    }
+
+                    switch (dzialania[i].dzialanie1)
+                    {
+                        case "=":
+                            if (tmp == tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        case ">":
+                            if (tmp > tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        case "<":
+                            if (tmp < tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        case ">=":
+                            if (tmp >= tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        case "<=":
+                            if (tmp <= tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        case "<>":
+                            if (tmp != tmp2)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+                    }
+                }
+
+                if (listaZmiennych[lZm].typ == typeof(String))
+                {
+                    String tmp = listaZmiennych[lZm].wartosc.ToString();
+                    String tmp2 = "";
+
+                    if (pZm != -1)
+                        tmp2 = listaZmiennych[pZm].wartosc.ToString();
+                    else
+                        tmp2 = dzialania[i].srodek.ToString();
+
+                    switch (dzialania[i].dzialanie1)
+                    {
+                        case "=":
+                            if (tmp.Equals(tmp2) == true)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        case "<>":
+                            if (tmp.Equals(tmp2) == false)
+                                tymczasowyStan = true;
+                            else
+                                tymczasowyStan = false;
+                            break;
+
+                        default:
+                            tymczasowyStan = false;
+                            break;
+                    }
+                }
+
+                if (dzialania[i].dodatkowe != null)
+                {
+                    switch (dzialania[i].dodatkowe)
+                    {
+                        case "AND":
+                            if (aktualnyStan == true && tymczasowyStan == true)
+                                aktualnyStan = true;
+                            else
+                                aktualnyStan = false;
+                            break;
+
+                        case "OR":
+                            if (aktualnyStan == false && tymczasowyStan == false)
+                                aktualnyStan = false;
+                            else
+                                aktualnyStan = true;
+                            break;
+
+                        default:
+                            aktualnyStan = tymczasowyStan;
+                            break;
+                    }
+                }
+                else
+                    aktualnyStan = tymczasowyStan;
+            }
+
+            return aktualnyStan;
+        }
     }
 }

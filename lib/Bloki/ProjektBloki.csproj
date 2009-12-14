@@ -98,6 +98,18 @@
     <Compile Include="BWeWyOpcje.Designer.cs">
       <DependentUpon>BWeWyOpcje.cs</DependentUpon>
     </Compile>
+    <Compile Include="Console.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Console.Designer.cs">
+      <DependentUpon>Console.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Czytaj.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Czytaj.Designer.cs">
+      <DependentUpon>Czytaj.cs</DependentUpon>
+    </Compile>
     <Compile Include="DodatkoweKlasy.cs" />
     <Compile Include="LiniaPion.cs">
       <SubType>UserControl</SubType>
@@ -157,6 +169,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BWeWyOpcje.resx">
       <DependentUpon>BWeWyOpcje.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Console.resx">
+      <DependentUpon>Console.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Czytaj.resx">
+      <DependentUpon>Czytaj.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LiniaPion.resx">

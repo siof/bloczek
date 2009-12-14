@@ -21,6 +21,8 @@ namespace libbloki
 
         public BWeWyOpcje(BlokWeWy blok)
         {
+            InitializeComponent();
+
             BWeWy = blok;
             String temp = "";
 
@@ -36,7 +38,15 @@ namespace libbloki
                 listBox.Items.Add(temp);
             }
 
-            InitializeComponent();
+            if (BWeWy.listaZmiennych != null)
+            {
+                //czytaj liste zmiennych i dodaj do combo/list boxow
+                for (int i = 0; i < BWeWy.listaZmiennych.Count; i++)
+                {
+                    temp = BWeWy.listaZmiennych[i].nazwa.ToString();
+                    listBoxZmienne.Items.Add(temp);
+                }
+            }
         }
 
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)

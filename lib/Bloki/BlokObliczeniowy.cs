@@ -127,7 +127,7 @@ namespace libbloki
             // przezroczyste tlo
         }
 
-        private void Wykonaj()
+        public void Wykonaj()
         {
             for (int i = 0; i < dzialania.Count; i++)
             {

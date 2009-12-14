@@ -82,10 +82,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Watch.resx">
-      <DependentUpon>Watch.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -99,12 +95,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Watch.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Watch.Designer.cs">
-      <DependentUpon>Watch.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

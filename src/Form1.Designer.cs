@@ -71,7 +71,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsPracaKrokowa = new System.Windows.Forms.ToolStrip();
-            this.poprzedni = new System.Windows.Forms.ToolStripButton();
             this.nastepny = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -92,7 +91,7 @@
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(32, 323);
+            this.toolStrip1.Size = new System.Drawing.Size(24, 323);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -102,7 +101,7 @@
             this.dodajBlokStart.Image = ((System.Drawing.Image)(resources.GetObject("dodajBlokStart.Image")));
             this.dodajBlokStart.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.dodajBlokStart.Name = "dodajBlokStart";
-            this.dodajBlokStart.Size = new System.Drawing.Size(29, 20);
+            this.dodajBlokStart.Size = new System.Drawing.Size(21, 20);
             this.dodajBlokStart.Text = "Blok Start";
             this.dodajBlokStart.Click += new System.EventHandler(this.dodajBlokStart_Click);
             // 
@@ -112,7 +111,7 @@
             this.dodajBlokStop.Image = ((System.Drawing.Image)(resources.GetObject("dodajBlokStop.Image")));
             this.dodajBlokStop.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.dodajBlokStop.Name = "dodajBlokStop";
-            this.dodajBlokStop.Size = new System.Drawing.Size(29, 20);
+            this.dodajBlokStop.Size = new System.Drawing.Size(21, 20);
             this.dodajBlokStop.Text = "Blok Stop";
             this.dodajBlokStop.Click += new System.EventHandler(this.dodajBlokStop_Click);
             // 
@@ -122,7 +121,7 @@
             this.dodajBlokObliczeniowy.Image = ((System.Drawing.Image)(resources.GetObject("dodajBlokObliczeniowy.Image")));
             this.dodajBlokObliczeniowy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.dodajBlokObliczeniowy.Name = "dodajBlokObliczeniowy";
-            this.dodajBlokObliczeniowy.Size = new System.Drawing.Size(29, 20);
+            this.dodajBlokObliczeniowy.Size = new System.Drawing.Size(21, 20);
             this.dodajBlokObliczeniowy.Text = "Blok Obliczeniowy";
             this.dodajBlokObliczeniowy.Click += new System.EventHandler(this.dodajBlokObliczeniowy_Click);
             // 
@@ -132,7 +131,7 @@
             this.dodajBlokDecyzyjny.Image = ((System.Drawing.Image)(resources.GetObject("dodajBlokDecyzyjny.Image")));
             this.dodajBlokDecyzyjny.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.dodajBlokDecyzyjny.Name = "dodajBlokDecyzyjny";
-            this.dodajBlokDecyzyjny.Size = new System.Drawing.Size(29, 20);
+            this.dodajBlokDecyzyjny.Size = new System.Drawing.Size(21, 20);
             this.dodajBlokDecyzyjny.Text = "Blok Decyzyjny";
             this.dodajBlokDecyzyjny.Click += new System.EventHandler(this.dodajBlokDecyzyjny_Click);
             // 
@@ -142,7 +141,7 @@
             this.dodajBlokWeWy.Image = ((System.Drawing.Image)(resources.GetObject("dodajBlokWeWy.Image")));
             this.dodajBlokWeWy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.dodajBlokWeWy.Name = "dodajBlokWeWy";
-            this.dodajBlokWeWy.Size = new System.Drawing.Size(29, 20);
+            this.dodajBlokWeWy.Size = new System.Drawing.Size(21, 20);
             this.dodajBlokWeWy.Text = "Blok Wejścia/Wyjścia";
             this.dodajBlokWeWy.Click += new System.EventHandler(this.dodajBlokWeWy_Click);
             // 
@@ -152,7 +151,7 @@
             this.Połączenie.Image = ((System.Drawing.Image)(resources.GetObject("Połączenie.Image")));
             this.Połączenie.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.Połączenie.Name = "Połączenie";
-            this.Połączenie.Size = new System.Drawing.Size(29, 20);
+            this.Połączenie.Size = new System.Drawing.Size(21, 20);
             this.Połączenie.Text = "toolStripButton6";
             this.Połączenie.Click += new System.EventHandler(this.Połączenie_Click);
             // 
@@ -161,9 +160,9 @@
             this.panel1.AutoScroll = true;
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(32, 24);
+            this.panel1.Location = new System.Drawing.Point(24, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(686, 323);
+            this.panel1.Size = new System.Drawing.Size(662, 323);
             this.panel1.TabIndex = 0;
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.panel1.Click += new System.EventHandler(this.panel1_Click);
@@ -435,7 +434,6 @@
             // 
             this.tsPracaKrokowa.Dock = System.Windows.Forms.DockStyle.Right;
             this.tsPracaKrokowa.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.poprzedni,
             this.nastepny});
             this.tsPracaKrokowa.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.tsPracaKrokowa.Location = new System.Drawing.Point(686, 24);
@@ -445,23 +443,13 @@
             this.tsPracaKrokowa.Text = "pracaKrokowa";
             this.tsPracaKrokowa.Visible = false;
             // 
-            // poprzedni
-            // 
-            this.poprzedni.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.poprzedni.Image = ((System.Drawing.Image)(resources.GetObject("poprzedni.Image")));
-            this.poprzedni.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.poprzedni.Name = "poprzedni";
-            this.poprzedni.Size = new System.Drawing.Size(21, 20);
-            this.poprzedni.Text = "Poprzedni";
-            this.poprzedni.Click += new System.EventHandler(this.poprzedni_Click);
-            // 
             // nastepny
             // 
             this.nastepny.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.nastepny.Image = ((System.Drawing.Image)(resources.GetObject("nastepny.Image")));
             this.nastepny.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.nastepny.Name = "nastepny";
-            this.nastepny.Size = new System.Drawing.Size(21, 20);
+            this.nastepny.Size = new System.Drawing.Size(29, 20);
             this.nastepny.Text = "Nastepny";
             this.nastepny.Click += new System.EventHandler(this.nastepny_Click);
             // 
@@ -537,7 +525,6 @@
         private System.Windows.Forms.ToolStripMenuItem pełnaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem krokowaToolStripMenuItem;
         private System.Windows.Forms.ToolStrip tsPracaKrokowa;
-        private System.Windows.Forms.ToolStripButton poprzedni;
         private System.Windows.Forms.ToolStripButton nastepny;
     }
 }
