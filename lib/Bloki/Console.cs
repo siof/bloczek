@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Okienka
+namespace libbloki
 {
-    public partial class Watch : Form
+    public partial class Console : Form
     {
-        public Watch()
+        public Console()
         {
             InitializeComponent();
         }

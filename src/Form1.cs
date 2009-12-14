@@ -16,7 +16,7 @@ namespace Okienka
     {
         private static int numer = 0;
 
-        Watch okno;
+        public libbloki.Console okno = new libbloki.Console();
 
         private bool klik = false;
         private bool polacz = false;
@@ -25,7 +25,7 @@ namespace Okienka
         private bool symuluj = false;
         private String blokDecTakNie = "";
 
-        private Bloki polaczOD = null, polaczDO = null, tmpPolOD = null, tmpPolDO = null, tmpZaznaczony = null;
+        private Bloki polaczOD = null, polaczDO = null;
         private int ile = 0;
         private int polowaX;
         private int polowaY;
@@ -178,7 +178,7 @@ namespace Okienka
 
                 if (typ == typeof(BlokWeWy))
                 {
-                    BlokWeWy temp = new BlokWeWy();
+                    BlokWeWy temp = new BlokWeWy(okno);
 
                     temp2.typBloku = typeof(BlokWeWy);
                     temp2 = (Bloki)temp;
@@ -2010,8 +2010,8 @@ namespace Okienka
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            okno = new Watch();
-            okno.Show();
+            //okno = new Console();
+            //okno.Show();
         }
 
         private void Połączenie_Click(object sender, EventArgs e)
@@ -2020,6 +2020,7 @@ namespace Okienka
             polaczDO = null;
             polaczOD = null;
         }
+
         private void HandlerUsunPolaczenie(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
@@ -2042,21 +2043,70 @@ namespace Okienka
 
             aktualnyBlok = tabBloki[ZnajdzBlok("START")];
             aktualnyBlok.tryb = tryby.aktualny;
+            bool dec = false;   //jesli false to wyszlo "NIE", jesli true to "TAK"
             
             while (aktualnyBlok.Name != "STOP" && symuluj == true)
             {
                 if (symuluj == false)
                     e.Cancel = true;
 
-                aktualnyBlok.Wykonaj();
-
-                if (aktualnyBlok.nastepnyBlok[0] == null)   //Dodac wybor nastepnego bloku dla Decyzyjnego
+                if (aktualnyBlok.typBloku == typeof(BlokObliczeniowy))
                 {
-                    e.Cancel = true;
-                    return;
+                    ((BlokObliczeniowy)aktualnyBlok).Wykonaj();
+
+                    if (aktualnyBlok.nastepnyBlok[0] == null)       //zatrzymaj jesli niema sciezki po ktorej masz isc
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
                 }
+
+                if (aktualnyBlok.typBloku == typeof(BlokWeWy))
+                {
+                    ((BlokWeWy)aktualnyBlok).Wykonaj();
+
+                    if (aktualnyBlok.nastepnyBlok[0] == null)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                }
+
+                if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
+                {
+                    dec = ((BlokDecyzyjny)aktualnyBlok).Wykonaj();
+
+                    if (dec == true)
+                    {
+                        if (aktualnyBlok.nastepnyBlok[1] == null)
+                        {
+                            e.Cancel = true;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (aktualnyBlok.nastepnyBlok[0] == null)
+                        {
+                            e.Cancel = true;
+                            return;
+                        }
+                    }
+                }
+
                 aktualnyBlok.tryb = tryby.normal;
-                aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+
+                                                            //wybór następnego bloku
+                if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
+                {
+                    if (dec == true)
+                        aktualnyBlok = aktualnyBlok.nastepnyBlok[1];
+                    else
+                        aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+                }
+                else
+                    aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+
                 aktualnyBlok.tryb = tryby.aktualny;
             }
 
@@ -2127,21 +2177,6 @@ namespace Okienka
             }
         }
 
-        private void poprzedni_Click(object sender, EventArgs e)
-        {
-      //      if (symuluj == true)
-      //      {
-      //          if (aktualnyBlok.poprzedniBlok != null)
-      //          {
-      //              aktualnyBlok.tryb = tryby.normal;
-
-      //              aktualnyBlok = aktualnyBlok.poprzedniBlok;
-      //              aktualnyBlok.tryb = tryby.aktualny;
-      //              aktualnyBlok.Wykonaj();
-      //         }
-      //      }
-        }
-
         private void nastepny_Click(object sender, EventArgs e)
         {
             if (symuluj == true)
@@ -2154,10 +2189,9 @@ namespace Okienka
                         
                         aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
                         aktualnyBlok.tryb = tryby.aktualny;
-                        aktualnyBlok.Wykonaj();
                     }
                 }
-                 else
+                else
                 {
                     if (aktualnyBlok.nastepnyBlok[0] != null)
                     {
@@ -2165,7 +2199,6 @@ namespace Okienka
 
                         aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
                         aktualnyBlok.tryb = tryby.aktualny;
-                        aktualnyBlok.Wykonaj();
                     }
                 }
             }

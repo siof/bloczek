@@ -16,6 +16,8 @@ namespace libbloki
 
         public BOOpcje(BlokObliczeniowy usr)
         {
+            InitializeComponent();
+
             bObl = usr;
             String temp = "";
 
@@ -40,8 +42,15 @@ namespace libbloki
 
                 listBox.Items.Add(temp);
             }
-            
-            InitializeComponent();
+            if (bObl.listaZmiennych != null)
+            {
+                //czytaj liste zmiennych i dodaj do combo/list boxow
+                for (int i = 0; i < bObl.listaZmiennych.Count; i++)
+                {
+                    temp = bObl.listaZmiennych[i].nazwa.ToString();
+                    listBoxZmienne.Items.Add(temp);
+                }
+            }
         }
 
         private void btnAnuluj_Click(object sender, EventArgs e)

@@ -135,39 +135,11 @@ namespace libbloki
             get { return _nastepnaLinia; }
             set { _nastepnaLinia = value; }
         }
+
         public IList<Bloki> poprzedniaLinia
         {
             get { return _poprzedniaLinia; }
             set { _poprzedniaLinia = value; }
-        }
-
-        public void Wykonaj()
-        {
-            //żeby nie wykonywać reszty kodu jeśli blok nic nie robi
-            if (typBloku == typeof(BlokSTART) || typBloku == typeof(BlokSTOP))
-                return;
-
-            if (typBloku == typeof(BlokObliczeniowy))
-            {
-                ((BlokObliczeniowy)this).Wykonaj();
-
-                return;
-            }
-
-            if (typBloku == typeof(BlokWeWy))
-            {
-                //sprawdzić akcje po kolei i wyświetlać lub pobierać dane (dodatkowe formy sie przydadzą)
-                ((BlokWeWy)this).Wykonaj();
-
-                return;
-            }
-
-            if (typBloku == typeof(BlokDecyzyjny))
-            {
-                ((BlokDecyzyjny)this).Wykonaj();
-
-                return;
-            }
         }
 
         public bool SprawdzCzyIstniejeZmienna(String zmienna)

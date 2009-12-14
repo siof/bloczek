@@ -12,12 +12,21 @@ namespace libbloki
     public partial class BlokWeWy : Bloki
     {
         private BWeWyOpcje frmOpcje;
+        private Console frmConsole;
+
         //public IList<Działanie> dzialania = new List<Działanie>();
 
         public BlokWeWy()
         {
             InitializeComponent();
             graph = CreateGraphics();
+        }
+
+        public BlokWeWy(Console usr)
+        {
+            InitializeComponent();
+            graph = CreateGraphics();
+            frmConsole = usr;
         }
 
         protected override CreateParams CreateParams
@@ -132,6 +141,44 @@ namespace libbloki
                     txtHint.SetToolTip(txt, tempString);
                     txtHint.SetToolTip(this, tempString);
 
+                }
+            }
+        }
+
+        public void Wykonaj()
+        {
+            int temp = -1;
+            for (int i = 0; i < dzialania.Count; i++)
+            {
+                if (dzialania[i].srodekZmienna == true)
+                    temp = ZnajdzZmienna(dzialania[i].srodek);
+
+                if (dzialania[i].dzialanie1 == "Wypisz")
+                {
+                    if (dzialania[i].srodekZmienna == true)
+                        frmConsole.richTextBox1.Text += listaZmiennych[temp].wartosc + '\n';
+                    else
+                        frmConsole.richTextBox1.Text += dzialania[i].srodek + '\n';
+                }
+                else
+                {
+                    String tmpString = "";
+                    Czytaj tmpOkno = new Czytaj(tmpString);
+                    tmpOkno.label1.Text = "Podaj " + dzialania[i].srodek + ":";
+
+                    if (listaZmiennych[temp].typ == typeof(int))
+                        tmpOkno.maskedTextBox1.Mask = "000000000000000";
+                    else
+                    {
+                        if (listaZmiennych[temp].typ == typeof(double))
+                            tmpOkno.maskedTextBox1.Mask = "000000000.0000";
+                        else
+                            tmpOkno.maskedTextBox1.Mask = "";
+                    }
+
+                    tmpOkno.ShowDialog();
+
+                    listaZmiennych[i].wartosc = tmpString;
                 }
             }
         }
