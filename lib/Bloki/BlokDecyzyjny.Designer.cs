@@ -28,13 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.txt = new System.Windows.Forms.Label();
+            this.txtHint = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
+            // 
+            // txt
+            // 
+            this.txt.BackColor = System.Drawing.Color.Wheat;
+            this.txt.Location = new System.Drawing.Point(49, 24);
+            this.txt.Name = "txt";
+            this.txt.Size = new System.Drawing.Size(95, 27);
+            this.txt.TabIndex = 0;
+            this.txt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.txt.MouseMove += new System.Windows.Forms.MouseEventHandler(this.txt_MouseMove);
+            this.txt.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDoubleClick);
+            this.txt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txt_MouseDown);
+            this.txt.MouseUp += new System.Windows.Forms.MouseEventHandler(this.txt_MouseUp);
             // 
             // BlokDecyzyjny
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
+            this.Controls.Add(this.txt);
             this.Name = "BlokDecyzyjny";
             this.Size = new System.Drawing.Size(197, 77);
             this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BlokDecyzyjny_MouseDoubleClick);
@@ -43,5 +60,8 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Label txt;
+        private System.Windows.Forms.ToolTip txtHint;
     }
 }
