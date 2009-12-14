@@ -30,6 +30,11 @@ namespace Okienka
         private int polowaX;
         private int polowaY;
 
+        private BDOpcje bDOpcje;
+        private BOOpcje bOOpcje;
+        private BWeWyOpcje bWeWyOpcje;
+
+       
         private IList<Bloki> tabBloki = new List<Bloki>();
         public IList<Zmienna> zmienne = new List<Zmienna>();
         protected IList<Polaczenie> Polaczenia = new List<Polaczenie>();
@@ -52,6 +57,42 @@ namespace Okienka
             InitializeComponent();
             graph = panel1.CreateGraphics();
             numer = 0;
+        }
+
+        private void WywolajBOOpcje(object sender, MouseEventArgs e)
+        {
+            if (bOOpcje != null)
+            {
+                bOOpcje.Dispose();
+            }
+
+            bOOpcje = new BOOpcje((BlokObliczeniowy)sender);
+            bOOpcje.ShowDialog();
+            bOOpcje.Dispose();
+        }
+
+        private void WywolajBDOpcje(object sender, MouseEventArgs e)
+        {
+            if (bDOpcje != null)
+            {
+                bDOpcje.Dispose();
+            }
+
+            bDOpcje = new BDOpcje((BlokDecyzyjny)sender);
+            bDOpcje.ShowDialog();
+            bDOpcje.Dispose();
+        }
+
+        private void WywolajBWeWyOpcje(object sender, MouseEventArgs e)
+        {
+            if (bWeWyOpcje != null)
+            {
+                bWeWyOpcje.Dispose();
+            }
+
+            bWeWyOpcje = new BWeWyOpcje((BlokWeWy)sender);
+            bWeWyOpcje.ShowDialog();
+            bWeWyOpcje.Dispose();
         }
 
         private void WyczyscZaznaczenie()
@@ -163,6 +204,7 @@ namespace Okienka
 
                     temp2.typBloku = typeof(BlokObliczeniowy);
                     temp2 = (Bloki)temp;
+                    temp2.MouseDoubleClick += new MouseEventHandler(WywolajBOOpcje);
                 }
 
                 if (typ == typeof(BlokDecyzyjny))
@@ -171,14 +213,16 @@ namespace Okienka
 
                     temp2.typBloku = typeof(BlokDecyzyjny);
                     temp2 = (Bloki)temp;
+                    temp2.MouseDoubleClick += new MouseEventHandler(WywolajBDOpcje);
                 }
 
                 if (typ == typeof(BlokWeWy))
                 {
-                    BlokWeWy temp = new BlokWeWy(okno);
+                    BlokWeWy temp = new BlokWeWy();//
 
                     temp2.typBloku = typeof(BlokWeWy);
                     temp2 = (Bloki)temp;
+                    temp2.MouseDoubleClick += new MouseEventHandler(WywolajBWeWyOpcje);
                 }
 
                 //globalne dla wszystkich bloków

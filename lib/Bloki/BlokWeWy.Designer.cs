@@ -54,7 +54,6 @@
             this.Controls.Add(this.txt);
             this.Name = "BlokWeWy";
             this.Size = new System.Drawing.Size(174, 77);
-            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BlokWeWy_MouseDoubleClick);
             this.ResumeLayout(false);
 
         }

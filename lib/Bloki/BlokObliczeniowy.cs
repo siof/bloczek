@@ -13,7 +13,7 @@ namespace libbloki
 {
     public partial class BlokObliczeniowy : Bloki
     {
-        private BOOpcje frmOpcje;
+        //private BOOpcje frmOpcje;
 
         public void DodajDzialanie(Działanie dzialanie)
         {
@@ -109,18 +109,17 @@ namespace libbloki
             g = null;
         }
 
-        private void UserControl1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            frmOpcje = new BOOpcje(this);
-            frmOpcje.ShowDialog(this);
+        //private void UserControl1_MouseDoubleClick(object sender, MouseEventArgs e)
+        //{
+        //    frmOpcje = new BOOpcje(this);
+        //    frmOpcje.ShowDialog(this);
 
-            Pen pn = new Pen(Color.Brown, 2);
-            Rectangle rect = new Rectangle(1, 1, 150, 75);
-            graph.DrawRectangle(pn, rect);
-            graph.FillRectangle(new SolidBrush(Color.Wheat), rect);
-            Font fnt = new Font("Verdana", 8);
-            
-        }
+        //    Pen pn = new Pen(Color.Brown, 2);
+        //    Rectangle rect = new Rectangle(1, 1, 150, 75);
+        //    graph.DrawRectangle(pn, rect);
+        //    graph.FillRectangle(new SolidBrush(Color.Wheat), rect);
+        //    Font fnt = new Font("Verdana", 8);
+        //}
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {

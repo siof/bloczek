@@ -54,7 +54,6 @@
             this.Controls.Add(this.txt);
             this.Name = "BlokDecyzyjny";
             this.Size = new System.Drawing.Size(197, 77);
-            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BlokDecyzyjny_MouseDoubleClick);
             this.ResumeLayout(false);
 
         }
