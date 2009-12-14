@@ -50,6 +50,11 @@ namespace libbloki
             p[2].X = 92; p[2].Y = 75;
             p[3].X = 19; p[3].Y = 37;
 
+            txt.BackColor = brush.Color;
+            txt.Refresh();
+
+            AktualizujTXT();
+
             g.DrawPolygon(pn, p);
             g.FillPolygon(brush, p);
             g.DrawString("TAK", fnt, new SolidBrush(Color.Black), 170, 20);
@@ -70,6 +75,71 @@ namespace libbloki
         public void ReDrawText()
         {
 
+        }
+
+        private void txt_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.OnMouseDoubleClick(e);
+        }
+
+        private void txt_MouseDown(object sender, MouseEventArgs e)
+        {
+            this.OnMouseDown(e);
+        }
+
+        private void txt_MouseMove(object sender, MouseEventArgs e)
+        {
+            this.OnMouseMove(e);
+        }
+
+        private void txt_MouseUp(object sender, MouseEventArgs e)
+        {
+            this.OnMouseUp(e);
+        }
+
+        public void AktualizujTXT()
+        {
+            if (this.dzialania != null)
+            {
+                this.txtHint.Active = false;
+
+                this.txt.Text = "";
+                int j,i = 0;
+                String tempString = "";
+                if (this.dzialania.Count > 2)
+                {
+                    j = 1;
+                }
+                else
+                {
+                    j = 2;
+                }
+                foreach (Działanie d in this.dzialania)
+                {
+                    tempString += d.dodatkowe +" " + d.lewa.ToString() +" "+ d.dzialanie1 +" "+ d.srodek.ToString() + "\n";
+                    i++;
+                    if (i >=j)
+                    {
+                        break;
+                    }
+                }
+                this.txt.Text = tempString.ToString();
+
+
+                if (this.dzialania.Count > 2)
+                {
+                    tempString = "";
+                    this.txt.Text += "...";
+                    foreach (Działanie d in this.dzialania)
+                    {
+                        tempString += d.dodatkowe + " " + d.lewa.ToString() +" "+ d.dzialanie1 +" "+ d.srodek.ToString() + "\n";
+                    }
+                    this.txtHint.Active = true;
+                    txtHint.SetToolTip(txt, tempString);
+                    txtHint.SetToolTip(this, tempString);
+
+                }
+            }
         }
     }
 }

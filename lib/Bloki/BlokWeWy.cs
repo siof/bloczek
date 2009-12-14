@@ -49,6 +49,11 @@ namespace libbloki
             p[1].X = 172; p[1].Y = 2;
             p[2].X = 152; p[2].Y = 75;
             p[3].X = 2; p[3].Y = 75;
+
+            txt.BackColor = brush.Color;
+            txt.Refresh();
+
+            AktualizujTXT();
             
             graph.DrawPolygon(pn, p);
             graph.FillPolygon(brush, p);
@@ -68,6 +73,67 @@ namespace libbloki
         public void ReDrawText()
         {
             
+        }
+
+        private void txt_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            sender = this;
+            this.OnMouseDoubleClick(e);
+        }
+
+        private void txt_MouseDown(object sender, MouseEventArgs e)
+        {
+            sender = this;
+            this.OnMouseDown(e);
+        }
+
+        private void txt_MouseMove(object sender, MouseEventArgs e)
+        {
+            sender = this;
+            this.OnMouseMove(e);
+        }
+
+        private void txt_MouseUp(object sender, MouseEventArgs e)
+        {
+            sender = this;
+            this.OnMouseUp(e);
+        }
+
+        public void AktualizujTXT()
+        {
+            if (this.dzialania != null)
+            {
+                this.txtHint.Active = false;
+
+                this.txt.Text = "";
+                int i = 0;
+                String tempString = "";
+                foreach (Działanie d in this.dzialania)
+                {
+                    tempString += d.dzialanie1 + ": \"" + d.srodek.ToString() + "\"\n";
+                    i++;
+                    if (i >= 3)
+                    {
+                        break;
+                    }
+                }
+                this.txt.Text = tempString.ToString();
+
+
+                if (this.dzialania.Count > 3)
+                {
+                    tempString = "";
+                    this.txt.Text += "...";
+                    foreach (Działanie d in this.dzialania)
+                    {
+                        tempString += d.dzialanie1 + ": \"" + d.srodek.ToString() + "\"\n";
+                    }
+                    this.txtHint.Active = true;
+                    txtHint.SetToolTip(txt, tempString);
+                    txtHint.SetToolTip(this, tempString);
+
+                }
+            }
         }
     }
 }

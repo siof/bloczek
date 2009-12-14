@@ -43,6 +43,45 @@ namespace libbloki
             }
         }
 
+        public void AktualizujTXT()
+        {
+            if (this.dzialania != null)
+            {
+                this.txtHint.Active = false;
+                
+                this.txt.Text = "";
+                int i=0;
+                String tempString="";
+                foreach (Działanie d in this.dzialania)
+                {
+                    tempString += d.lewa.ToString() + d.dzialanie1 + d.srodek.ToString() +
+                                    " " + d.dzialanie2 + " " + d.prawa +"\n";
+                    i++;
+                    if(i>=3)
+                    {
+                        break;
+                    }
+                }
+                this.txt.Text = tempString.ToString();
+                
+
+                if (this.dzialania.Count > 3) 
+                {
+                    tempString = "";
+                    this.txt.Text += "...";
+                    foreach (Działanie d in this.dzialania)
+                    {
+                        tempString += d.lewa.ToString() + d.dzialanie1 + d.srodek.ToString() +
+                                      " " + d.dzialanie2 + " " + d.prawa +"\n";
+                    }
+                    this.txtHint.Active = true;
+                    txtHint.SetToolTip(txt, tempString);
+                    txtHint.SetToolTip(this, tempString);
+
+                }
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs pe)
         {
             Font fnt = new Font("Verdana", 16);
@@ -54,6 +93,11 @@ namespace libbloki
                 case tryby.zaznaczony: brush.Color = Color.Orange; break;
                 case tryby.aktualny: brush.Color = Color.Red; break;
             }
+
+            txt.BackColor = brush.Color;
+            txt.Refresh();
+
+            AktualizujTXT();
 
             Pen pn = new Pen(Color.Brown,2);
             Rectangle rect = new Rectangle(2, 2, 148, 73);
@@ -75,12 +119,6 @@ namespace libbloki
             graph.DrawRectangle(pn, rect);
             graph.FillRectangle(new SolidBrush(Color.Wheat), rect);
             Font fnt = new Font("Verdana", 8);
-            
-            ReDrawText();
-        }
-        
-        public void ReDrawText()
-        {
             
         }
 
@@ -179,6 +217,30 @@ namespace libbloki
                     return;
                 }
             }
+        }
+
+        private void txt_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            sender = this;
+            this.OnMouseDoubleClick(e);
+        }
+
+        private void txt_MouseDown(object sender, MouseEventArgs e)
+        {
+            sender = this;
+            this.OnMouseDown(e);
+        }
+
+        private void txt_MouseMove(object sender, MouseEventArgs e)
+        {
+            sender = this;
+            this.OnMouseMove(e);
+        }
+
+        private void txt_MouseUp(object sender, MouseEventArgs e)
+        {
+            sender = this;
+            this.OnMouseUp(e);
         }
     }
 }

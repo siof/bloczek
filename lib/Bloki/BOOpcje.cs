@@ -63,7 +63,7 @@ namespace libbloki
             //poza wyświetleniem działań na bloku
 
             bObl.DodajNoweZmienne();
-            bObl.ReDrawText();
+            bObl.AktualizujTXT();
 
             dodaneDzialania.Clear(); //na wszelki wypadek
 
