@@ -58,7 +58,6 @@
             this.Name = "BlokObliczeniowy";
             this.Size = new System.Drawing.Size(152, 77);
             this.txtHint.SetToolTip(this, "tooltip\r\naaaaa");
-            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.UserControl1_MouseDoubleClick);
             this.ResumeLayout(false);
 
         }

@@ -11,7 +11,7 @@ namespace libbloki
 {
     public partial class BlokDecyzyjny : Bloki
     {
-        private BDOpcje frmOpcje;
+        //private BDOpcje frmOpcje;
         //public IList<Działanie> dzialania = new List<Działanie>();
 
         public BlokDecyzyjny()
@@ -66,11 +66,11 @@ namespace libbloki
             // przezroczyste tlo
         }
 
-        private void BlokDecyzyjny_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            frmOpcje = new BDOpcje(this);
-            frmOpcje.ShowDialog(this);
-        }
+        //private void BlokDecyzyjny_MouseDoubleClick(object sender, MouseEventArgs e)
+        //{
+        //    frmOpcje = new BDOpcje(this);
+        //    frmOpcje.ShowDialog(this);
+        //}
 
         public void ReDrawText()
         {

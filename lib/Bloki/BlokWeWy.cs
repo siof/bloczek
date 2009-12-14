@@ -11,8 +11,8 @@ namespace libbloki
 {
     public partial class BlokWeWy : Bloki
     {
-        private BWeWyOpcje frmOpcje;
-        private Console frmConsole;
+        //private BWeWyOpcje frmOpcje;
+        //private Console frmConsole;
 
         //public IList<Działanie> dzialania = new List<Działanie>();
 
@@ -22,12 +22,12 @@ namespace libbloki
             graph = CreateGraphics();
         }
 
-        public BlokWeWy(Console usr)
-        {
-            InitializeComponent();
-            graph = CreateGraphics();
-            frmConsole = usr;
-        }
+        //public BlokWeWy(Console usr)
+        //{
+        //    InitializeComponent();
+        //    graph = CreateGraphics();
+        //    frmConsole = usr;
+        //}
 
         protected override CreateParams CreateParams
         {
@@ -73,11 +73,11 @@ namespace libbloki
             // przezroczyste tlo
         }
 
-        private void BlokWeWy_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            frmOpcje = new BWeWyOpcje(this);
-            frmOpcje.ShowDialog(this);
-        }
+        //private void BlokWeWy_MouseDoubleClick(object sender, MouseEventArgs e)
+        //{
+        //    frmOpcje = new BWeWyOpcje(this);
+        //    frmOpcje.ShowDialog(this);
+        //}
 
         public void ReDrawText()
         {
@@ -156,9 +156,13 @@ namespace libbloki
                 if (dzialania[i].dzialanie1 == "Wypisz")
                 {
                     if (dzialania[i].srodekZmienna == true)
-                        frmConsole.richTextBox1.Text += listaZmiennych[temp].wartosc + '\n';
+                    {
+                        //frmConsole.richTextBox1.Text += listaZmiennych[temp].wartosc + '\n';
+                    }
                     else
-                        frmConsole.richTextBox1.Text += dzialania[i].srodek + '\n';
+                    {
+                        //frmConsole.richTextBox1.Text += dzialania[i].srodek + '\n';
+                    }
                 }
                 else
                 {

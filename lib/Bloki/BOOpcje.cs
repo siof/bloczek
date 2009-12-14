@@ -51,6 +51,7 @@ namespace libbloki
                     listBoxZmienne.Items.Add(temp);
                 }
             }
+            
         }
 
         private void btnAnuluj_Click(object sender, EventArgs e)
