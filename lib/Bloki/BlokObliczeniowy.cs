@@ -31,19 +31,6 @@ namespace libbloki
         {
             InitializeComponent();
             graph = CreateGraphics();
-
-            txt.Visible = true;
-            txt.ReadOnly = true;
-            txt.Left = this.Left + 10;
-            txt.Top = this.Top + 10;
-            txt.Height = this.Height - 20;
-            txt.Width = this.Width - 20;
-            txt.Parent = this;
-            txt.ScrollBars = RichTextBoxScrollBars.Both;            
-            txt.BringToFront();
-            txt.Enabled = false;
-            txt.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(UserControl1_MouseDoubleClick);
-            this.Controls.Add(txt);
         }
 
         protected override CreateParams CreateParams
