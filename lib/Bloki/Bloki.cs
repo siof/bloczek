@@ -11,13 +11,68 @@ namespace libbloki
     public enum tryby { normal, zaznaczony, aktualny };
     public enum strzalkaUpDown { up, down, none };
     public enum strzalkaLeftRight { left, right, none };
+    public class Polaczenie
+    {
+        private Bloki _refOD, _refDO, _refLinia1, _refLinia2;
+        private int _indeksOD, _indeksDO;
 
+        public int IndeksDO
+        {
+            get { return _indeksDO; }
+            set { _indeksDO = value; }
+        }
+
+        public int IndeksOD
+        {
+            get { return _indeksOD; }
+            set { _indeksOD = value; }
+        }
+
+        public Bloki RefLinia2
+        {
+            get { return _refLinia2; }
+            set { _refLinia2 = value; }
+        }
+
+        public Bloki RefLinia1
+        {
+            get { return _refLinia1; }
+            set { _refLinia1 = value; }
+        }
+        
+
+        public Bloki RefDO
+        {
+            get { return _refDO; }
+            set { _refDO = value; }
+        }
+
+        public Bloki RefOD
+        {
+            get { return _refOD; }
+            set { _refOD = value; }
+        }
+
+        public Polaczenie(Bloki RefOD, int IndeksOD, Bloki RefDO, int IndeksDO, Bloki RefLinia1, Bloki RefLinia2)
+        {
+            this.RefOD = RefOD;
+            this.IndeksOD = IndeksOD;
+            this.RefDO = RefDO;
+            this.IndeksDO = IndeksDO;
+            this.RefLinia1 = RefLinia1;
+            this.RefLinia2 = RefLinia2;
+        }
+    }
+	
     public class Bloki : UserControl
     {
         protected Type typ;
 
-        protected Bloki nastepny,_nastepnaLinia;
-        protected Bloki poprzedni,_poprzedniaLinia;
+        protected Bloki[] nastepny = new Bloki[2];
+        protected Bloki[] _nastepnaLinia = new Bloki[2];
+        protected IList<Bloki> poprzedni = new List<Bloki>();
+        protected IList<Bloki> _poprzedniaLinia = new List<Bloki>();
+		
         protected String nazwa;
 
         protected tryby _tryb;
@@ -27,7 +82,6 @@ namespace libbloki
         public IList<Działanie> dzialania = new List<Działanie>();
 
         protected Point[] _punkty = new Point[2]; //polaczenia
-        public RichTextBox txt = new RichTextBox();
 
         public String znacznikZmiennej = "~~";
 
@@ -64,24 +118,24 @@ namespace libbloki
             set { nazwa = value; }
         }
 
-        public Bloki nastepnyBlok
+        public Bloki[] nastepnyBlok
         {
             get { return nastepny; }
             set { nastepny = value; }
         }
 
-        public Bloki poprzedniBlok
+        public IList<Bloki> poprzedniBlok
         {
             get { return poprzedni; }
             set { poprzedni = value; }
         }
 
-        public Bloki nastepnaLinia
+        public Bloki[] nastepnaLinia
         {
             get { return _nastepnaLinia; }
             set { _nastepnaLinia = value; }
         }
-        public Bloki poprzedniaLinia
+        public IList<Bloki> poprzedniaLinia
         {
             get { return _poprzedniaLinia; }
             set { _poprzedniaLinia = value; }

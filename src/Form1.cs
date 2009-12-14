@@ -23,6 +23,7 @@ namespace Okienka
         private bool ctrl = false;
         private bool przesun = false;
         private bool symuluj = false;
+        private String blokDecTakNie = "";
 
         private Bloki polaczOD = null, polaczDO = null, tmpPolOD = null, tmpPolDO = null, tmpZaznaczony = null;
         private int ile = 0;
@@ -31,6 +32,7 @@ namespace Okienka
 
         private IList<Bloki> tabBloki = new List<Bloki>();
         public IList<Zmienna> zmienne = new List<Zmienna>();
+        protected IList<Polaczenie> Polaczenia = new List<Polaczenie>();
 
         private Graphics graph;
 
@@ -59,36 +61,19 @@ namespace Okienka
                 if (zaznaczony.GetType() == typeof(LiniaPion) ||
                     zaznaczony.GetType() == typeof(LiniaPoz))
                 {
-                    Bloki temp;
-                    //zaznaczony = (Bloki)sender;
-                    zaznaczony.tryb = tryby.normal;
-                    zaznaczony.Refresh();
-
-                    temp = zaznaczony;
-
-                    while (temp.poprzedniaLinia != null)
-                    {
-                        temp = temp.poprzedniaLinia;
-                        temp.tryb = tryby.normal; ;
-                        temp.Refresh();
-                    }
-                    temp = zaznaczony;
-                    while (temp.nastepnaLinia != null)
-                    {
-                        temp = temp.nastepnaLinia;
-                        temp.tryb = tryby.normal;
-                        temp.Refresh();
-                    }
+                    Polaczenie tmpPol = new Polaczenie(null, 0, null, 0, zaznaczony, null);
+                    OdznaczPolaczenie(tmpPol);
+                    
                     zaznaczony = null;
                 }
                 else
                 {
                     zaznaczony.tryb = tryby.normal;
                     zaznaczony = null;
-                    //panel1.Refresh();
                 }
             }
         }
+        
         private int ZnajdzBlok(String nazwa)
         {
             int i;
@@ -111,16 +96,12 @@ namespace Okienka
         {
             if ((e.KeyCode == Keys.Delete) &&(zaznaczony != null))
             {
-                if (zaznaczony.nastepnaLinia != null)
-                {
-                    UsunLinie(zaznaczony.nastepnaLinia);
-                    zaznaczony = (Bloki)sender;
-                }
-                if (zaznaczony.poprzedniaLinia != null)
-                {
-                    UsunLinie(zaznaczony.poprzedniaLinia);
-                    zaznaczony = (Bloki)sender;
-                }
+                Polaczenie tmpPol = new Polaczenie((Bloki)sender, 0, null, 0, null, null);
+                UsunPolaczenia(tmpPol);
+                tmpPol.RefOD = null;
+                tmpPol.RefDO = (Bloki)sender;
+                UsunPolaczenia(tmpPol);
+
                 if (zaznaczony.Name.Equals(((Bloki)sender).Name))
                     zaznaczony = null;
 
@@ -235,6 +216,1244 @@ namespace Okienka
                 c.Update();
             }
         }
+    
+        private void DodajPolaczenie(Polaczenie p)
+        {
+            if (p.RefOD == p.RefDO)
+                return;
+            if (p.RefOD == null || p.RefDO == null)
+                return;
+
+                Polaczenie tmpPol = new Polaczenie(p.RefOD,p.IndeksOD,null,0,null,null);
+                List<Polaczenie> tmpList = ZnajdzPolaczenia(tmpPol);
+                if(tmpList.Count > 0 )
+                {
+                    UsunPolaczenie(tmpList.First());
+                }
+            
+            p.RefOD.nastepnyBlok[p.IndeksOD] = p.RefDO;
+            p.RefDO.poprzedniBlok.Add(p.RefOD);
+            p.IndeksDO = p.RefDO.poprzedniBlok.IndexOf(p.RefOD);            
+            Polaczenia.Add(p);
+            RysujPolaczenia(p);
+        }
+
+        private void UsunPolaczenia(Polaczenie p)
+        {
+            List<Polaczenie> tmpList;
+            tmpList = ZnajdzPolaczenia(p);
+            if (tmpList.Count > 0)
+            {
+                foreach (Polaczenie pol in tmpList)
+                {
+                    UsunPolaczenie(pol);
+                }
+            }
+        }
+
+        private void UsunPolaczenie(Polaczenie p)
+        {
+            int i;
+            i = Polaczenia.IndexOf(p);
+            if (i>=0)
+            {
+                if (Polaczenia[i].RefLinia1 != null)
+                {
+                    panel1.Controls.Remove(Polaczenia[i].RefLinia1);
+                    Polaczenia[i].RefLinia1.Dispose();
+                }
+
+                if (Polaczenia[i].RefLinia2 != null)
+                {
+                    panel1.Controls.Remove(Polaczenia[i].RefLinia2);
+                    Polaczenia[i].RefLinia2.Dispose();
+                }
+                Polaczenia[i].RefOD.nastepnyBlok[Polaczenia[i].IndeksOD] = null;
+                Polaczenia[i].RefDO.poprzedniBlok.Remove(Polaczenia[i].RefOD);
+                Polaczenia.RemoveAt(i);
+            }
+        }
+
+        private List<Polaczenie> ZnajdzPolaczenia(Polaczenie p)
+        {
+            List<Polaczenie> tmpList = new List<Polaczenie>();
+            if (p.RefOD != null && p.RefDO != null)
+            {
+                foreach (Polaczenie pol in Polaczenia)
+                {
+                    if (p.RefOD == pol.RefOD && p.RefDO == pol.RefDO)
+                    {
+                        tmpList.Add(pol);
+                    }
+                }
+            }
+            else
+            {
+                if (p.RefOD != null)
+                {
+                    foreach (Polaczenie pol in Polaczenia)
+                    {
+                        if (p.RefOD == pol.RefOD && p.IndeksOD == pol.IndeksOD)
+                            tmpList.Add(pol);
+                    }
+                }
+
+                if (p.RefDO != null)
+                {
+                    foreach (Polaczenie pol in Polaczenia)
+                    {
+                        if (p.RefDO == pol.RefDO)
+                            tmpList.Add(pol);
+                    }
+                }
+
+                if (p.RefLinia1 != null)
+                {
+                    foreach (Polaczenie pol in Polaczenia)
+                    {
+                        if (p.RefLinia1 == pol.RefLinia1 || p.RefLinia1 == pol.RefLinia2)
+                            tmpList.Add(pol);
+                    }
+                }
+
+                if (p.RefLinia2 != null)
+                {
+                    foreach (Polaczenie pol in Polaczenia)
+                    {
+                        if (p.RefLinia2 == pol.RefLinia1 || p.RefLinia2 == pol.RefLinia2)
+                            tmpList.Add(pol);
+                    }
+                }
+            }
+            return tmpList;
+        }
+
+        private void ZaznaczPolaczenie(object sender, MouseEventArgs e)
+        {
+            zaznaczony = (Bloki)sender;
+            Polaczenie tmpPol = new Polaczenie(null,0,null,0,(Bloki)sender,null);
+            List<Polaczenie> tmpList;
+            tmpList = ZnajdzPolaczenia(tmpPol);
+            if (tmpList.Count > 0)
+            {
+                if (tmpList.First().RefLinia1 != null)
+                {
+                    tmpList.First().RefLinia1.tryb = tryby.zaznaczony;
+                    tmpList.First().RefLinia1.Refresh();
+                }
+                
+                if (tmpList.First().RefLinia2 != null)
+                {
+                    tmpList.First().RefLinia2.tryb = tryby.zaznaczony;
+                    tmpList.First().RefLinia2.Refresh();
+                }
+            }
+        }
+
+        private void OdznaczPolaczenie(Polaczenie p)
+        {
+            List<Polaczenie> tmpList;
+            tmpList = ZnajdzPolaczenia(p);
+            if (tmpList.Count > 0)
+            {
+                if (tmpList.First().RefLinia1 != null)
+                {
+                    tmpList.First().RefLinia1.tryb = tryby.normal;
+                    tmpList.First().RefLinia1.Refresh();
+                }
+               
+               if (tmpList.First().RefLinia2 != null)
+                {
+                    tmpList.First().RefLinia2.tryb = tryby.normal;
+                    tmpList.First().RefLinia2.Refresh();
+                }
+            }
+        }
+
+        private void RysujPolaczenia(Polaczenie p)
+        {
+            List<Polaczenie> tmpList = new List<Polaczenie>();
+            if (p.RefOD != null && p.RefDO != null)
+            {
+                foreach (Polaczenie pol in Polaczenia)
+                {
+                    if (p.RefOD == pol.RefOD && p.RefDO == pol.RefDO)
+                        RysujPolaczenie(pol);
+                }
+            }
+            else
+            {
+                if (p.RefOD != null)
+                {
+                    foreach (Polaczenie pol in Polaczenia)
+                    {
+                        if (p.RefOD == pol.RefOD)
+                            RysujPolaczenie(pol);
+                    }
+                }
+               
+               if (p.RefDO != null)
+                {
+                    foreach (Polaczenie pol in Polaczenia)
+                    {
+                        if (p.RefDO == pol.RefDO)
+                            RysujPolaczenie(pol);
+                    }
+                }
+               
+                if (p.RefLinia1 != null)
+                {
+                    foreach (Polaczenie pol in Polaczenia)
+                    {
+                        if (p.RefLinia1 == pol.RefLinia1 || p.RefLinia1 == pol.RefLinia2)
+                            RysujPolaczenie(pol);
+                    }
+                }
+                
+                if (p.RefLinia2 != null)
+                {
+                    foreach (Polaczenie pol in Polaczenia)
+                    {
+                        if (p.RefLinia2 == pol.RefLinia1 || p.RefLinia2 == pol.RefLinia2)
+                            RysujPolaczenie(pol);
+                    }
+                }
+            }
+        }
+
+        private void RysujPolaczenie(Polaczenie p)
+        {
+            if (p.RefLinia1 != null)
+            {
+                panel1.Controls.Remove(p.RefLinia1);
+                p.RefLinia1.Dispose();
+            }
+            
+            if (p.RefLinia2 != null)
+            {
+                panel1.Controls.Remove(p.RefLinia2);
+                p.RefLinia2.Dispose();
+            }
+//////////////////////////////////////////////
+            if (p.RefDO.GetType() == typeof(BlokDecyzyjny))
+            {
+                if (((p.RefOD.Top + p.RefOD.Height) >= p.RefDO.Top) && (p.RefOD.Top <= (p.RefDO.Top)))
+                {
+                    if ((p.RefOD.Left + p.RefOD.Width) < p.RefDO.Left)
+                    {
+                        if (p.RefOD.Top <= p.RefDO.Top)
+                        {
+                            double temp;
+                            LiniaPoz tmpLinia;
+
+                            temp = ((p.RefOD.Top + p.RefDO.Top + p.RefDO.Height) / 2) - p.RefOD.Top;
+                            p.RefOD.punkty[1].X = p.RefOD.Left + p.RefOD.Width;
+                            p.RefOD.punkty[1].Y = (Int32)temp;
+
+                            p.RefDO.punkty[0].X = 93;
+                            p.RefDO.punkty[0].Y = 2;
+
+                            tmpLinia = new LiniaPoz(strzalkaLeftRight.right);
+
+                            tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y - 2;
+                            tmpLinia.Left = p.RefOD.Left + p.RefOD.Width - 2;
+
+                            tmpLinia.Width = p.RefDO.Left - tmpLinia.Left + p.RefDO.punkty[0].X - 2;
+                            tmpLinia.Height = 3;
+
+                            tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                            tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                            p.RefLinia1 = tmpLinia;
+                            p.RefLinia2 = null;
+
+                            panel1.Controls.Add(tmpLinia);
+                            tmpLinia = null;
+
+                        }
+                        if (p.RefOD.Top > p.RefDO.Top)
+                        {
+                            double temp;
+                            LiniaPoz tmpLinia;
+
+                            temp = ((p.RefDO.Top + p.RefOD.Top + p.RefOD.Height) / 2) - p.RefDO.Top;
+                            p.RefOD.punkty[1].X = p.RefOD.Left + p.RefOD.Width;
+                            p.RefOD.punkty[1].Y = p.RefOD.Height - (Int32)temp;
+
+                            p.RefDO.punkty[0].X = 93;
+                            p.RefDO.punkty[0].Y = 2;
+
+                            tmpLinia = new LiniaPoz(strzalkaLeftRight.right);
+
+                            tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                            tmpLinia.Left = p.RefOD.Left + p.RefOD.Width - 2;
+
+                            tmpLinia.Width = p.RefDO.Left - tmpLinia.Left;
+                            tmpLinia.Height = 3;
+                            
+
+                            tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                            tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                            p.RefLinia1 = tmpLinia;
+                            p.RefLinia2 = null;
+
+                            panel1.Controls.Add(tmpLinia);
+                            tmpLinia = null;
+
+                        }
+                    }
+                    else if (p.RefOD.Left > (p.RefDO.Left + p.RefDO.Width))
+                    {
+                        if (p.RefOD.Top <= p.RefDO.Top)
+                        {
+                            double temp;
+                            LiniaPoz tmpLinia;
+
+                            temp = ((p.RefOD.Top + p.RefDO.Top + p.RefDO.Height) / 2) - p.RefOD.Top;
+                            p.RefOD.punkty[1].X = 2;
+                            p.RefOD.punkty[1].Y = (Int32)temp;
+
+                            p.RefDO.punkty[0].X = 93;
+                            p.RefDO.punkty[0].Y = 2;
+
+                            tmpLinia = new LiniaPoz(strzalkaLeftRight.left);
+
+                            tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                            tmpLinia.Left = p.RefDO.Left + p.RefDO.Width / 2 - 2;
+
+                            tmpLinia.Width = p.RefOD.Left - tmpLinia.Left;
+                            tmpLinia.Height = 3;
+
+                            tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                            tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                            p.RefLinia1 = tmpLinia;
+                            p.RefLinia2 = null;
+
+                            panel1.Controls.Add(tmpLinia);
+                            tmpLinia = null;
+
+                        }
+                        if (p.RefOD.Top > p.RefDO.Top)
+                        {
+                            double temp;
+                            LiniaPoz tmpLinia;
+
+                            temp = ((p.RefDO.Top + p.RefOD.Top + p.RefOD.Height) / 2) - p.RefDO.Top;
+                            p.RefOD.punkty[1].X = 2;
+                            p.RefOD.punkty[1].Y = p.RefOD.Height - (Int32)temp;
+
+                            p.RefDO.punkty[0].X = 93;
+                            p.RefDO.punkty[0].Y = 2;
+
+                            tmpLinia = new LiniaPoz(strzalkaLeftRight.left);
+
+                            tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                            tmpLinia.Left = p.RefDO.Left + p.RefDO.Width - 2;
+
+                            tmpLinia.Width = p.RefOD.Left - tmpLinia.Left;
+                            tmpLinia.Height = 3;
+                            
+
+                            tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                            tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                            p.RefLinia1 = tmpLinia;
+                            p.RefLinia2 = null;
+
+                            panel1.Controls.Add(tmpLinia);
+                            tmpLinia = null;
+                        }
+                    }
+                }
+
+                //linia lamana
+                if (((p.RefOD.Left + p.RefOD.Width / 2) < p.RefDO.Left + (p.RefDO.Width / 2)) && ((p.RefOD.Top + p.RefOD.Height) < p.RefDO.Top))
+                {
+                    LiniaPion tmpPion;
+                    LiniaPoz tmpPoz;
+
+                    tmpPion = new LiniaPion(strzalkaUpDown.none);
+                    tmpPion.Top = p.RefOD.Top + p.RefOD.Height;
+                    tmpPion.Left = p.RefOD.Left + p.RefOD.Width / 2;
+                    tmpPion.Width = 4;
+                    tmpPion.Height = p.RefDO.Top - tmpPion.Top;
+
+
+                    tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                    tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                    tmpPoz.Left = tmpPion.Left;
+                    tmpPoz.Height = 4;
+                    tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 92;
+
+                    tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    p.RefLinia1 = tmpPion;
+                    p.RefLinia2 = tmpPoz;
+
+                    panel1.Controls.Add(tmpPion);
+                    panel1.Controls.Add(tmpPoz);
+                    tmpPion = null;
+                    tmpPoz = null;
+                }
+           
+                if ((p.RefOD.Left + p.RefOD.Width / 2 > (p.RefDO.Left + p.RefDO.Width / 2)) && ((p.RefOD.Top + p.RefOD.Height) < p.RefDO.Top))
+                {
+                    LiniaPion tmpPion;
+                    LiniaPoz tmpPoz;
+
+                    tmpPion = new LiniaPion(strzalkaUpDown.none);
+                    tmpPion.Top = p.RefOD.Top + p.RefOD.Height;
+                    tmpPion.Left = p.RefOD.Left + p.RefOD.Width / 2;
+                    tmpPion.Width = 4;
+                    tmpPion.Height = p.RefDO.Top - tmpPion.Top;
+
+
+                    tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                    tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                    tmpPoz.Left = p.RefDO.Left + (p.RefDO.Width / 2);
+                    tmpPoz.Height = 4;
+                    tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                    tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    p.RefLinia1 = tmpPion;
+                    p.RefLinia2 = tmpPoz;
+
+                    panel1.Controls.Add(tmpPion);
+                    panel1.Controls.Add(tmpPoz);
+                    tmpPion = null;
+                    tmpPoz = null;
+
+                }
+                if ((p.RefOD.Left + p.RefOD.Width / 2 > (p.RefDO.Left + p.RefDO.Width / 2)) && (p.RefOD.Top > p.RefDO.Top))
+                {
+                    LiniaPion tmpPion;
+                    LiniaPoz tmpPoz;
+
+                    tmpPion = new LiniaPion(strzalkaUpDown.none);
+                    tmpPion.Top = p.RefDO.Top;
+                    tmpPion.Left = p.RefOD.Left + p.RefOD.Width / 2;
+                    tmpPion.Width = 4;
+                    tmpPion.Height = p.RefOD.Top - tmpPion.Top + 4;
+   
+
+                    tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                    tmpPoz.Top = tmpPion.Top;
+                    tmpPoz.Left = p.RefDO.Left + 92;
+                    tmpPoz.Height = 4;
+                    tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                    tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    p.RefLinia1 = tmpPion;
+                    p.RefLinia2 = tmpPoz;
+
+                    panel1.Controls.Add(tmpPion);
+                    panel1.Controls.Add(tmpPoz);
+
+                    tmpPion = null;
+                    tmpPoz = null;
+                }
+                
+                if (((p.RefOD.Left + p.RefOD.Width / 2) < p.RefDO.Left + p.RefDO.Width / 2) && (p.RefOD.Top > p.RefDO.Top))
+                {
+                    LiniaPion tmpPion;
+                    LiniaPoz tmpPoz;
+
+                    tmpPion = new LiniaPion(strzalkaUpDown.none);
+                    tmpPion.Top = p.RefDO.Top;// +p.RefDO.Height / 2;
+                    tmpPion.Left = p.RefOD.Left + p.RefOD.Width / 2;
+                    tmpPion.Width = 4;
+                    tmpPion.Height = p.RefOD.Top - tmpPion.Top + 4;
+
+                    tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                    tmpPoz.Top = tmpPion.Top;
+                    tmpPoz.Left = tmpPion.Left;
+                    tmpPoz.Height = 4;
+                    tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 92;
+
+                    tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    p.RefLinia1 = tmpPion;
+                    p.RefLinia2 = tmpPoz;
+
+                    panel1.Controls.Add(tmpPion);
+                    panel1.Controls.Add(tmpPoz);
+                    tmpPion = null;
+                    tmpPoz = null;
+                }
+            }
+            //////////////////////////////////////////////////
+            if (p.RefOD.GetType() == typeof(BlokDecyzyjny))
+            {
+                if (p.IndeksOD == 0)    //NIE
+                {
+                    //linia lamana
+                    p.RefDO = p.RefOD.nastepnyBlok[0];
+                    if ((p.RefOD.Left < p.RefDO.Left) && (p.RefOD.Top < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+
+                    if ((p.RefOD.Left > p.RefDO.Left + 1) && (p.RefOD.Top < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                    
+                    if ((p.RefOD.Left > p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top + p.RefDO.Height / 2 - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                    
+                    if ((p.RefOD.Left < p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
+                    {
+
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                        tmpPion.Left = p.RefOD.Left;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top + p.RefOD.Height / 2 - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                }
+                
+                if (p.IndeksOD == 1)   //TAK
+                {
+                    p.RefDO = p.RefOD.nastepnyBlok[1];
+                    //linia lamana
+                    if ((p.RefOD.Left + p.RefOD.Width < p.RefDO.Left) && (p.RefOD.Top < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                    
+                    if ((p.RefOD.Left + p.RefOD.Width > p.RefDO.Left + 1) && (p.RefOD.Top < p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefOD.Top + p.RefOD.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+                    
+                    if ((p.RefOD.Left + p.RefOD.Width > p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top + p.RefDO.Height / 2 - tmpPion.Top + 4;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+
+                        tmpPion = null;
+                        tmpPoz = null;
+
+                    }
+                    
+                    if ((p.RefOD.Left + p.RefOD.Width < p.RefDO.Left) && (p.RefOD.Top > p.RefDO.Top))
+                    {
+                        LiniaPion tmpPion;
+                        LiniaPoz tmpPoz;
+
+                        tmpPion = new LiniaPion(strzalkaUpDown.none);
+                        tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                        tmpPion.Left = p.RefOD.Left + p.RefOD.Width;
+                        tmpPion.Width = 4;
+                        tmpPion.Height = p.RefOD.Top + p.RefOD.Height / 2 - tmpPion.Top + 4;
+                        tmpPion.poprzedniBlok.Add(p.RefOD);
+                        tmpPion.nastepnyBlok[0] = p.RefDO;
+
+                        tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                        tmpPoz.Top = tmpPion.Top;
+                        tmpPoz.Left = tmpPion.Left;
+                        tmpPoz.Height = 4;
+                        tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 3;
+
+                        tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                        p.RefLinia1 = tmpPion;
+                        p.RefLinia2 = tmpPoz;
+
+                        panel1.Controls.Add(tmpPion);
+                        panel1.Controls.Add(tmpPoz);
+                        tmpPion = null;
+                        tmpPoz = null;
+                    }
+                }
+            }
+
+//////////////////////////////////////////////
+
+            if ((p.RefOD.GetType() != typeof(BlokDecyzyjny)) && (p.RefDO.GetType() != typeof(BlokDecyzyjny)))
+            {
+                if ((p.RefOD.Top + p.RefOD.Height) < p.RefDO.Top)
+                {
+                    if ((p.RefOD.Left <= (p.RefDO.Left + p.RefDO.Width)) && (p.RefOD.Left >= (p.RefDO.Left + ((p.RefDO.Width) / 2))))
+                    {
+                        double temp;
+                        LiniaPion tmpLinia;
+
+                        temp = ((p.RefOD.Left + p.RefDO.Left + p.RefDO.Width) / 2) - p.RefOD.Left;
+                        p.RefOD.punkty[1].X = (Int32)temp;
+                        p.RefOD.punkty[1].Y = p.RefOD.Height - 2;
+
+                        p.RefDO.punkty[0].X = p.RefDO.Width - (Int32)temp;
+                        p.RefDO.punkty[0].Y = 2;
+
+                        tmpLinia = new LiniaPion(strzalkaUpDown.down);
+
+                        tmpLinia.Top = p.RefOD.Top + p.RefOD.punkty[1].Y;
+                        tmpLinia.Left = p.RefOD.Left + p.RefOD.punkty[1].X;
+
+                        tmpLinia.Width = 3;
+                        tmpLinia.Height = p.RefDO.Top - tmpLinia.Top;
+
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                        p.RefLinia1 = tmpLinia;
+                        p.RefLinia2 = null;
+
+                        panel1.Controls.Add(tmpLinia);
+                        tmpLinia = null;
+                    }
+                    
+                    if ((p.RefDO.Left <= (p.RefOD.Left + p.RefOD.Width)) && (p.RefDO.Left >= (p.RefOD.Left + ((p.RefOD.Width) / 2))))
+                    {
+                        double temp;
+                        LiniaPion tmpLinia;
+
+                        temp = ((p.RefDO.Left + p.RefOD.Left + p.RefOD.Width) / 2) - p.RefDO.Left;
+                        p.RefOD.punkty[1].X = p.RefDO.Width - (Int32)temp;
+                        p.RefOD.punkty[1].Y = p.RefOD.Height - 2;
+
+                        p.RefDO.punkty[0].X = (Int32)temp;
+                        p.RefDO.punkty[0].Y = 2;
+
+                        tmpLinia = new LiniaPion(strzalkaUpDown.down);
+
+                        tmpLinia.Top = p.RefOD.Top + p.RefOD.punkty[1].Y;
+                        tmpLinia.Left = p.RefDO.Left + p.RefDO.punkty[0].X;
+
+                        tmpLinia.Width = 3;
+                        tmpLinia.Height = p.RefDO.Top - tmpLinia.Top;
+
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                        p.RefLinia1 = tmpLinia;
+                        p.RefLinia2 = null;
+
+                        panel1.Controls.Add(tmpLinia);
+                        tmpLinia = null;
+                    }
+                    
+                    if ((p.RefDO.Left <= (p.RefOD.Left + (p.RefOD.Width) / 2)) && (p.RefDO.Left >= p.RefOD.Left))
+                    {
+                        double temp;
+                        LiniaPion tmpLinia;
+
+                        temp = ((p.RefDO.Left + p.RefOD.Left + p.RefOD.Width) / 2) - p.RefDO.Left;
+                        p.RefOD.punkty[1].X = p.RefDO.Width - (Int32)temp;
+                        p.RefOD.punkty[1].Y = p.RefOD.Height - 2;
+
+                        p.RefDO.punkty[0].X = (Int32)temp;
+                        p.RefDO.punkty[0].Y = 2;
+
+                        tmpLinia = new LiniaPion(strzalkaUpDown.down);
+
+                        tmpLinia.Top = p.RefOD.Top + p.RefOD.punkty[1].Y;
+                        tmpLinia.Left = p.RefDO.Left + p.RefDO.punkty[0].X;
+
+                        tmpLinia.Width = 3;
+                        tmpLinia.Height = p.RefDO.Top - tmpLinia.Top;
+
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                        p.RefLinia1 = tmpLinia;
+                        p.RefLinia2 = null;
+
+                        panel1.Controls.Add(tmpLinia);
+                        tmpLinia = null;
+                    }
+
+                    if ((p.RefOD.Left <= (p.RefDO.Left + (p.RefDO.Width) / 2)) && (p.RefOD.Left >= p.RefDO.Left))
+                    {
+                        double temp;
+                        LiniaPion tmpLinia;
+
+                        temp = ((p.RefOD.Left + p.RefDO.Left + p.RefDO.Width) / 2) - p.RefOD.Left;
+                        p.RefOD.punkty[1].X = (Int32)temp;
+                        p.RefOD.punkty[1].Y = p.RefOD.Height - 2;
+
+                        p.RefDO.punkty[0].X = p.RefDO.Width - (Int32)temp;
+                        p.RefDO.punkty[0].Y = 2;
+
+                        tmpLinia = new LiniaPion(strzalkaUpDown.down);
+
+                        tmpLinia.Top = p.RefOD.Top + p.RefOD.punkty[1].Y;
+                        tmpLinia.Left = p.RefOD.Left + p.RefOD.punkty[1].X;
+
+                        tmpLinia.Width = 3;
+                        tmpLinia.Height = p.RefDO.Top - tmpLinia.Top;
+
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                        p.RefLinia1 = tmpLinia;
+                        p.RefLinia2 = null;
+                        panel1.Controls.Add(tmpLinia);
+                        tmpLinia = null;
+                    }
+                }
+                else if (p.RefOD.Top > (p.RefDO.Top + p.RefDO.Height))
+                {
+                    if ((p.RefOD.Left <= (p.RefDO.Left + p.RefDO.Width)) && (p.RefOD.Left >= (p.RefDO.Left + ((p.RefDO.Width) / 2))))
+                    {
+                        double temp;
+                        LiniaPion tmpLinia;
+
+                        temp = ((p.RefOD.Left + p.RefDO.Left + p.RefDO.Width) / 2) - p.RefOD.Left;
+                        p.RefOD.punkty[1].X = (Int32)temp;
+                        p.RefOD.punkty[1].Y = 2;
+
+                        p.RefDO.punkty[0].X = p.RefDO.Width - (Int32)temp;
+                        p.RefDO.punkty[0].Y = p.RefDO.Height - 2;
+
+                        tmpLinia = new LiniaPion(strzalkaUpDown.up);
+
+                        tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                        tmpLinia.Left = p.RefDO.Left + p.RefDO.punkty[0].X;
+
+                        tmpLinia.Width = 3;
+                        tmpLinia.Height = p.RefOD.Top - tmpLinia.Top;
+
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                        p.RefLinia1 = tmpLinia;
+                        p.RefLinia2 = null;
+
+                        panel1.Controls.Add(tmpLinia);
+                        tmpLinia = null;
+                    }
+                    
+                    if ((p.RefDO.Left <= (p.RefOD.Left + p.RefOD.Width)) && (p.RefDO.Left >= (p.RefOD.Left + ((p.RefOD.Width) / 2))))
+                    {
+                        double temp;
+                        LiniaPion tmpLinia;
+
+                        temp = ((p.RefDO.Left + p.RefOD.Left + p.RefOD.Width) / 2) - p.RefDO.Left;
+                        p.RefOD.punkty[1].X = p.RefDO.Width - (Int32)temp;
+                        p.RefOD.punkty[1].Y = 2;
+
+                        p.RefDO.punkty[0].X = (Int32)temp;
+                        p.RefDO.punkty[0].Y = p.RefOD.Height - 2;
+
+                        tmpLinia = new LiniaPion(strzalkaUpDown.up);
+
+                        tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                        tmpLinia.Left = p.RefDO.Left + p.RefDO.punkty[0].X;
+
+                        tmpLinia.Width = 3;
+                        tmpLinia.Height = p.RefOD.Top - tmpLinia.Top;
+
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                        p.RefLinia1 = tmpLinia;
+                        p.RefLinia2 = null;
+
+                        panel1.Controls.Add(tmpLinia);
+                        tmpLinia = null;
+                    }
+                    
+                    if ((p.RefDO.Left <= (p.RefOD.Left + (p.RefOD.Width) / 2)) && (p.RefDO.Left >= p.RefOD.Left))
+                    {
+                        double temp;
+                        LiniaPion tmpLinia;
+
+                        temp = ((p.RefDO.Left + p.RefOD.Left + p.RefOD.Width) / 2) - p.RefDO.Left;
+                        p.RefOD.punkty[1].X = p.RefDO.Width - (Int32)temp;
+                        p.RefOD.punkty[1].Y = 2;
+
+                        p.RefDO.punkty[0].X = (Int32)temp;
+                        p.RefDO.punkty[0].Y = p.RefOD.Height - 2;
+
+                        tmpLinia = new LiniaPion(strzalkaUpDown.up);
+
+                        tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                        tmpLinia.Left = p.RefDO.Left + p.RefDO.punkty[0].X;
+
+                        tmpLinia.Width = 3;
+                        tmpLinia.Height = p.RefOD.Top - tmpLinia.Top;
+
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                        p.RefLinia1 = tmpLinia;
+                        p.RefLinia2 = null;
+
+                        panel1.Controls.Add(tmpLinia);
+                        tmpLinia = null;
+                    }
+                    
+                    if ((p.RefOD.Left <= (p.RefDO.Left + (p.RefDO.Width) / 2)) && (p.RefOD.Left >= p.RefDO.Left))
+                    {
+                        double temp;
+                        LiniaPion tmpLinia;
+
+                        temp = ((p.RefOD.Left + p.RefDO.Left + p.RefDO.Width) / 2) - p.RefOD.Left;
+                        p.RefOD.punkty[1].X = (Int32)temp;
+                        p.RefOD.punkty[1].Y = 2;
+
+                        p.RefDO.punkty[0].X = p.RefDO.Width - (Int32)temp;
+                        p.RefDO.punkty[0].Y = p.RefOD.Height - 2;
+
+                        tmpLinia = new LiniaPion(strzalkaUpDown.up);
+
+                        tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                        tmpLinia.Left = p.RefDO.Left + p.RefDO.punkty[0].X;
+
+                        tmpLinia.Width = 3;
+                        tmpLinia.Height = p.RefOD.Top - tmpLinia.Top;
+
+                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                        p.RefLinia1 = tmpLinia;
+                        p.RefLinia2 = null;
+
+                        panel1.Controls.Add(tmpLinia);
+                        tmpLinia = null;
+                    }
+                }
+                else if (((p.RefOD.Top + p.RefOD.Height) >= p.RefDO.Top) && (p.RefOD.Top <= (p.RefDO.Top + p.RefDO.Height)))
+                {
+                    if ((p.RefOD.Left + p.RefOD.Width) < p.RefDO.Left)
+                    {
+                        if (p.RefOD.Top <= p.RefDO.Top)
+                        {
+                            double temp;
+                            LiniaPoz tmpLinia;
+
+                            temp = ((p.RefOD.Top + p.RefDO.Top + p.RefDO.Height) / 2) - p.RefOD.Top;
+                            p.RefOD.punkty[1].X = p.RefOD.Left + p.RefOD.Width;
+                            p.RefOD.punkty[1].Y = (Int32)temp;
+
+                            p.RefDO.punkty[0].X = 2;
+                            p.RefDO.punkty[0].Y = p.RefDO.Height - (Int32)temp;
+
+                            tmpLinia = new LiniaPoz(strzalkaLeftRight.right);
+
+                            tmpLinia.Top = p.RefOD.Top + p.RefOD.punkty[1].Y;
+                            tmpLinia.Left = p.RefOD.Left + p.RefOD.Width - 2;
+
+                            tmpLinia.Width = p.RefDO.Left - tmpLinia.Left;
+                            tmpLinia.Height = 3;
+
+                            tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                            tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                            p.RefLinia1 = tmpLinia;
+                            p.RefLinia2 = null;
+
+                            panel1.Controls.Add(tmpLinia);
+                            tmpLinia = null;
+                        }
+                        
+                        if (p.RefOD.Top > p.RefDO.Top)
+                        {
+                            double temp;
+                            LiniaPoz tmpLinia;
+
+                            temp = ((p.RefDO.Top + p.RefOD.Top + p.RefOD.Height) / 2) - p.RefDO.Top;
+                            p.RefOD.punkty[1].X = p.RefOD.Left + p.RefOD.Width;
+                            p.RefOD.punkty[1].Y = p.RefOD.Height - (Int32)temp;
+
+                            p.RefDO.punkty[0].X = 2;
+                            p.RefDO.punkty[0].Y = (Int32)temp;
+
+                            tmpLinia = new LiniaPoz(strzalkaLeftRight.right);
+
+                            tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                            tmpLinia.Left = p.RefOD.Left + p.RefOD.Width - 2;
+
+                            tmpLinia.Width = p.RefDO.Left - tmpLinia.Left;
+                            tmpLinia.Height = 3;
+
+                            tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                            tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                            p.RefLinia1 = tmpLinia;
+                            p.RefLinia2 = null;
+
+                            panel1.Controls.Add(tmpLinia);
+                            tmpLinia = null;
+                        }
+                    }
+                    else if (p.RefOD.Left > (p.RefDO.Left + p.RefDO.Width))
+                    {
+                        if (p.RefOD.Top <= p.RefDO.Top)
+                        {
+                            double temp;
+                            LiniaPoz tmpLinia;
+
+                            temp = ((p.RefOD.Top + p.RefDO.Top + p.RefDO.Height) / 2) - p.RefOD.Top;
+                            p.RefOD.punkty[1].X = 2;
+                            p.RefOD.punkty[1].Y = (Int32)temp;
+
+                            p.RefDO.punkty[0].X = p.RefDO.Left + p.RefDO.Width;
+                            p.RefDO.punkty[0].Y = p.RefDO.Height - (Int32)temp;
+
+                            tmpLinia = new LiniaPoz(strzalkaLeftRight.left);
+
+                            tmpLinia.Top = p.RefOD.Top + p.RefOD.punkty[1].Y;
+                            tmpLinia.Left = p.RefDO.Left + p.RefDO.Width - 2;
+
+                            tmpLinia.Width = p.RefOD.Left - tmpLinia.Left;
+                            tmpLinia.Height = 3;
+
+                            tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                            tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                            p.RefLinia1 = tmpLinia;
+                            p.RefLinia2 = null;
+
+                            panel1.Controls.Add(tmpLinia);
+                            tmpLinia = null;
+                        }
+                        
+                        if (p.RefOD.Top > p.RefDO.Top)
+                        {
+                            double temp;
+                            LiniaPoz tmpLinia;
+
+                            temp = ((p.RefDO.Top + p.RefOD.Top + p.RefOD.Height) / 2) - p.RefDO.Top;
+                            p.RefOD.punkty[1].X = 2;
+                            p.RefOD.punkty[1].Y = p.RefOD.Height - (Int32)temp;
+
+                            p.RefDO.punkty[0].X = p.RefDO.Left + p.RefDO.Width;
+                            p.RefDO.punkty[0].Y = (Int32)temp;
+
+                            tmpLinia = new LiniaPoz(strzalkaLeftRight.left);
+
+                            tmpLinia.Top = p.RefDO.Top + p.RefDO.punkty[0].Y;
+                            tmpLinia.Left = p.RefDO.Left + p.RefDO.Width - 2;
+
+                            tmpLinia.Width = p.RefOD.Left - tmpLinia.Left;
+                            tmpLinia.Height = 3;
+
+
+                            tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                            tmpLinia.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+
+                            p.RefLinia1 = tmpLinia;
+                            p.RefLinia2 = null;
+
+                            panel1.Controls.Add(tmpLinia);
+                            tmpLinia = null;
+                        }
+                    }
+                }
+                
+                if (((p.RefOD.Left + p.RefOD.Width) < p.RefDO.Left) && ((p.RefOD.Top + p.RefOD.Height) < p.RefDO.Top))
+                {
+                    LiniaPion tmpPion;
+                    LiniaPoz tmpPoz;
+
+                    tmpPion = new LiniaPion(strzalkaUpDown.none);
+                    tmpPion.Top = p.RefOD.Top + p.RefOD.Height;
+                    tmpPion.Left = p.RefOD.Left + p.RefOD.Width / 2;
+                    tmpPion.Width = 4;
+                    tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                    tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                    tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                    tmpPoz.Left = tmpPion.Left;
+                    tmpPoz.Height = 4;
+                    tmpPoz.Width = p.RefDO.Left - tmpPoz.Left;
+
+                    tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    p.RefLinia1 = tmpPion;
+                    p.RefLinia2 = tmpPoz;
+
+                    panel1.Controls.Add(tmpPion);
+                    panel1.Controls.Add(tmpPoz);
+                    tmpPion = null;
+                    tmpPoz = null;
+                }
+                
+                if ((p.RefOD.Left > (p.RefDO.Left + p.RefDO.Width)) && ((p.RefOD.Top + p.RefOD.Height) < p.RefDO.Top))
+                {
+                    LiniaPion tmpPion;
+                    LiniaPoz tmpPoz;
+
+                    tmpPion = new LiniaPion(strzalkaUpDown.none);
+                    tmpPion.Top = p.RefOD.Top + p.RefOD.Height;
+                    tmpPion.Left = p.RefOD.Left + p.RefOD.Width / 2;
+                    tmpPion.Width = 4;
+                    tmpPion.Height = (p.RefDO.Top + p.RefDO.Height / 2) - tmpPion.Top;
+
+                    tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                    tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
+                    tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                    tmpPoz.Height = 4;
+                    tmpPoz.Width = tmpPion.Left - tmpPoz.Left;
+
+                    tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    p.RefLinia1 = tmpPion;
+                    p.RefLinia2 = tmpPoz;
+
+                    panel1.Controls.Add(tmpPion);
+                    panel1.Controls.Add(tmpPoz);
+                    tmpPion = null;
+                    tmpPoz = null;
+                }
+                
+                if ((p.RefOD.Left > (p.RefDO.Left + p.RefDO.Width)) && (p.RefOD.Top > (p.RefDO.Top + p.RefDO.Height)))
+                {
+                    LiniaPion tmpPion;
+                    LiniaPoz tmpPoz;
+
+                    tmpPion = new LiniaPion(strzalkaUpDown.none);
+                    tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                    tmpPion.Left = p.RefOD.Left + p.RefOD.Width / 2;
+                    tmpPion.Width = 4;
+                    tmpPion.Height = p.RefOD.Top - tmpPion.Top + 4;
+
+                    tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
+                    tmpPoz.Top = tmpPion.Top;
+                    tmpPoz.Left = p.RefDO.Left + p.RefDO.Width;
+                    tmpPoz.Height = 4;
+                    tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
+
+                    tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    p.RefLinia1 = tmpPion;
+                    p.RefLinia2 = tmpPoz;
+
+                    panel1.Controls.Add(tmpPion);
+                    panel1.Controls.Add(tmpPoz);
+
+                    tmpPion = null;
+                    tmpPoz = null;
+                }
+                
+                if (((p.RefOD.Left + p.RefOD.Width) < p.RefDO.Left) && (p.RefOD.Top > (p.RefDO.Top + p.RefDO.Height)))
+                {
+                    LiniaPion tmpPion;
+                    LiniaPoz tmpPoz;
+
+                    tmpPion = new LiniaPion(strzalkaUpDown.none);
+                    tmpPion.Top = p.RefDO.Top + p.RefDO.Height / 2;
+                    tmpPion.Left = p.RefOD.Left + p.RefOD.Width / 2;
+                    tmpPion.Width = 4;
+                    tmpPion.Height = p.RefOD.Top - tmpPion.Top + 4;
+
+                    tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
+                    tmpPoz.Top = tmpPion.Top;
+                    tmpPoz.Left = tmpPion.Left;
+                    tmpPoz.Height = 4;
+                    tmpPoz.Width = p.RefDO.Left - tmpPoz.Left + 3;
+
+                    tmpPion.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunPolaczenie);
+                    tmpPion.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    tmpPoz.MouseDown += new MouseEventHandler(ZaznaczPolaczenie);
+                    p.RefLinia1 = tmpPion;
+                    p.RefLinia2 = tmpPoz;
+
+                    panel1.Controls.Add(tmpPion);
+                    panel1.Controls.Add(tmpPoz);
+                    tmpPion = null;
+                    tmpPoz = null;
+                }
+            }
+////////////////////////////////////
+        }
 
         public void PrzesunStart(object sender, MouseEventArgs e)
         {
@@ -253,51 +1472,66 @@ namespace Okienka
 
                 if (polacz == true)
                 {
-                    if ((polaczOD == null) && (zaznaczony.GetType() != typeof(BlokSTOP)))
+                    if ((zaznaczony.GetType() == typeof(BlokDecyzyjny)) && (polaczOD == null))
                     {
-                        polaczOD = zaznaczony;
-                        return;
-                    }
-                    if((polaczOD != null) && (polaczDO == null) && (zaznaczony.GetType() != typeof(BlokSTART)))
-                    {
-                        polaczDO = zaznaczony;
-                        //tmpZaznaczony = zaznaczony;
-                        if (polaczOD.nastepnyBlok != null)
+                        if ((polaczOD == null) && (zaznaczony.GetType() != typeof(BlokSTOP)))
                         {
-                            tmpPolDO = polaczDO;
-                            tmpPolOD = polaczOD;
+                            polaczOD = zaznaczony;
 
-                            polaczDO = polaczOD.nastepnyBlok;
-
-                            UsunLinie(polaczOD.nastepnaLinia);
-
-                            polaczDO = tmpPolDO;
-                            polaczOD = tmpPolOD;
-                        }
-
-                        if ((polaczDO.nastepnyBlok != null))
-                        {
-                            if (polaczDO.nastepnyBlok != polaczOD)
-                            {                                
-                                polaczDO.poprzedniBlok = polaczOD;
-                                polaczOD.nastepnyBlok = polaczDO;
-                                RysujPolaczenie();
+                            if (e.X < (zaznaczony.Width / 2))
+                            {
+                                blokDecTakNie = "NIE";
                             }
-                        }
-                        else
-                        {
-                            polaczDO.poprzedniBlok = polaczOD;
-                            polaczOD.nastepnyBlok = polaczDO;
-                            RysujPolaczenie();
+                            else
+                            {
+                                blokDecTakNie = "TAK";
+                            }
+                            return;
                         }
                     }
+                    else
+                    {
+                        if ((polaczOD == null) && (zaznaczony.GetType() != typeof(BlokSTOP)))
+                        {
+                            polaczOD = zaznaczony;
+                            return;
+                        }
+                        if ((polaczOD != null) && (polaczDO == null) && (zaznaczony.GetType() != typeof(BlokSTART)) && (polaczOD != polaczDO))
+                        {
+                            polaczDO = zaznaczony;
+
+                            if (polaczOD.GetType() == typeof(BlokDecyzyjny))
+                            {
+                                switch (blokDecTakNie)
+                                {
+                                    case "TAK":
+                                        {
+                                            Polaczenie tmpPol = new Polaczenie(polaczOD, 1, polaczDO, 0, null, null);
+                                            DodajPolaczenie(tmpPol);
+                                            break;
+                                        }
+                                    case "NIE":
+                                        {
+                                            Polaczenie tmpPol = new Polaczenie(polaczOD, 0, polaczDO, 0, null, null);
+                                            DodajPolaczenie(tmpPol);
+                                            break;
+                                        }
+                                }
+                                return;
+                            }
+                            else if ((polaczDO.nastepnyBlok[0] != polaczOD) || (polaczDO.GetType()==typeof(BlokDecyzyjny)))
+                                {
+                                    Polaczenie tmpPol = new Polaczenie(polaczOD, 0, polaczDO, 0, null, null);
+                                    DodajPolaczenie(tmpPol);                                    
+                                }
+                        }
+                    }
+                    
                     polaczOD = null;
                     polaczDO = null;
                     polacz = false;
                     return;
                 }
-
-
 
                 if (przesun == false)
                 {
@@ -350,15 +1584,12 @@ namespace Okienka
                 }
             }
             else
+            {
                 polacz = false;
 
-            if (polaczDO != null && polaczOD != null)
-            {
-                RysujPolaczenie();
                 polaczOD = null;
                 polaczDO = null;
-                WyczyscZaznaczenie();
-                
+                WyczyscZaznaczenie();   
             }
         }
 
@@ -424,23 +1655,41 @@ namespace Okienka
                     zaznaczony.Left = pozK[0].Left;
                     zaznaczony.Top = pozK[0].Top;
                 }
-
-                if (zaznaczony.poprzedniBlok != null)
+                List<Polaczenie> temp;
+                Polaczenie p = new Polaczenie(null,0,zaznaczony,0,null,null);
+                
+                temp = ZnajdzPolaczenia(p);
+                if (temp.Count > 0)
                 {
-                    polaczOD = zaznaczony.poprzedniBlok;
-                    polaczDO = zaznaczony;
-                    RysujPolaczenie();
-                    polaczOD = null;
-                    polaczDO = null;
+                    RysujPolaczenia(p);
                 }
-                if (zaznaczony.nastepnyBlok != null)
-                {
-                    polaczOD = zaznaczony;
-                    polaczDO = zaznaczony.nastepnyBlok;
-                    RysujPolaczenie();
-                    polaczOD = null;
-                    polaczDO = null;
+                
+                p.RefDO = null;
+                p.RefOD = zaznaczony;
 
+                temp = ZnajdzPolaczenia(p);
+                if (temp.Count > 0)
+                {
+                    RysujPolaczenia(p);
+                }
+
+                p.RefDO = zaznaczony;
+                p.RefOD = null;
+                p.IndeksOD = 1;
+
+                temp = ZnajdzPolaczenia(p);
+                if (temp.Count > 0)
+                {
+                    RysujPolaczenia(p);
+                }
+                p.RefDO = null;
+                p.RefOD = zaznaczony;
+                p.IndeksOD = 1;
+
+                temp = ZnajdzPolaczenia(p);
+                if (temp.Count > 0)
+                {
+                    RysujPolaczenia(p);
                 }
 
                 zaznaczony.BringToFront();
@@ -503,694 +1752,19 @@ namespace Okienka
             polaczDO = null;
             polaczOD = null;
         }
-        private void HandlerUsunLinie(object sender, KeyEventArgs e)
+        private void HandlerUsunPolaczenie(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
-                UsunLinie(sender);
-            }
-        }
-
-        private void UsunLinie(object sender)
-        {
-            Bloki temp;
-            temp = (Bloki)sender;
-
-            while (temp.poprzedniaLinia != null)
-            {
-                temp = temp.poprzedniaLinia;
-            }
-            temp = temp.poprzedniBlok;
-            polaczOD = temp;
-            polaczDO = polaczOD.nastepnyBlok;
-            WymazLinie();
-            polaczOD.nastepnyBlok = null;
-            polaczOD.nastepnaLinia = null;
-            polaczDO.poprzedniBlok = null;
-            polaczDO.poprzedniaLinia = null;
-            polaczDO = null;
-            polaczOD = null;
-            zaznaczony = null;
-        }
-
-        private void ZaznaczLinie(object sender, MouseEventArgs e)
-        {
-            WyczyscZaznaczenie();
-            Bloki temp;
-            zaznaczony = (Bloki)sender;
-            zaznaczony.tryb = tryby.zaznaczony;
-            zaznaczony.Refresh();
-
-            temp = zaznaczony;
-
-            while (temp.poprzedniaLinia != null)
-            {
-                temp = temp.poprzedniaLinia;
-                temp.tryb = tryby.zaznaczony;
-                temp.Refresh();
-            }
-            temp = zaznaczony;
-            while (temp.nastepnaLinia != null)
-            {
-                temp = temp.nastepnaLinia;
-                temp.tryb = tryby.zaznaczony;
-                temp.Refresh();
-            }
-        }
-
-        private void WymazLinie() //
-        {
-            if (polaczOD != null && polaczOD.nastepnaLinia != null)
-            {
-                Bloki temp,temp2;
-                temp = polaczOD.nastepnaLinia;
-                if (temp.nastepnyBlok != null)
+                Polaczenie tmpPol = new Polaczenie(null, 0, null, 0, (Bloki)sender, null);
+                List<Polaczenie> tmpList;
+                tmpList = ZnajdzPolaczenia(tmpPol);
+                
+                if (tmpList.Count > 0)
                 {
-                    temp.nastepnyBlok.poprzedniaLinia = null;
-                    panel1.Controls.Remove(temp);
-                    temp.Dispose();
-                    polaczOD.nastepnaLinia = null;
-                }
-                else
-                {
-                    while (temp.nastepnyBlok == null)
-                    {
-                        temp = temp.nastepnaLinia;
-                    } 
-                    temp2 = temp;
-                    while (temp.poprzedniBlok == null)
-                    {
-                        temp = temp2.poprzedniaLinia;
-                        panel1.Controls.Remove(temp2);
-                        temp2.Dispose();
-                        temp2 = temp;
-                    }
-                    temp.poprzedniBlok.nastepnaLinia = null;
-                    temp.Dispose();
+                    UsunPolaczenie(tmpList.First());
                 }
             }
-            if (polaczDO != null && polaczDO.poprzedniaLinia != null)
-            {
-                Bloki temp, temp2;
-                temp = polaczDO.poprzedniaLinia; ;
-                if (temp.poprzedniBlok != null)
-                {
-                    temp.poprzedniBlok.nastepnaLinia = null;
-                    panel1.Controls.Remove(temp);
-                    temp.Dispose();
-                    polaczDO.poprzedniaLinia = null;
-                }
-                else
-                {
-                    while (temp.poprzedniBlok == null)
-                    {
-                        temp = temp.poprzedniaLinia;
-                    }
-                    temp2 = temp;
-                    while (temp.nastepnyBlok == null)
-                    {
-                        temp = temp2.nastepnaLinia;
-                        panel1.Controls.Remove(temp2);
-                        temp2.Dispose();
-                        temp2 = temp;
-                    }
-                    temp.nastepnyBlok.poprzedniaLinia = null;
-                    panel1.Controls.Remove(temp);
-                    temp.Dispose();
-                }
-            }
-        }
-
-        private void RysujPolaczenie()//
-        {
-            WymazLinie();
-            
-            if ((polaczOD.Top + polaczOD.Height) < polaczDO.Top)
-            {
-                if ((polaczOD.Left <= (polaczDO.Left + polaczDO.Width)) && (polaczOD.Left >= (polaczDO.Left + ((polaczDO.Width) / 2))))
-                {
-                    double temp;
-                    LiniaPion tmpLinia;
-
-                    temp = ((polaczOD.Left + polaczDO.Left + polaczDO.Width) / 2) - polaczOD.Left;
-                    polaczOD.punkty[1].X = (Int32)temp;
-                    polaczOD.punkty[1].Y = polaczOD.Height - 2;
-
-                    polaczDO.punkty[0].X = polaczDO.Width - (Int32)temp;
-                    polaczDO.punkty[0].Y = 2;
-
-                    tmpLinia = new LiniaPion(strzalkaUpDown.down);
-
-                    tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
-                    tmpLinia.Left = polaczOD.Left + polaczOD.punkty[1].X;
-
-                    tmpLinia.Width = 3;
-                    tmpLinia.Height = polaczDO.Top - tmpLinia.Top;
-                    
-                    //^^^^^^^^^^^^^^^
-                    tmpLinia.poprzedniBlok = polaczOD;
-                    tmpLinia.nastepnyBlok = polaczDO;
-                    polaczOD.nastepnaLinia = tmpLinia;
-                    polaczDO.poprzedniaLinia = tmpLinia;
-                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                    //^^^^^^^^^^^^^^^
-                    
-                    
-                    panel1.Controls.Add(tmpLinia);
-                    tmpLinia = null;
-                    return;
-                }
-                if ((polaczDO.Left <= (polaczOD.Left + polaczOD.Width)) && (polaczDO.Left >= (polaczOD.Left + ((polaczOD.Width) / 2))))
-                {
-                    double temp;
-                    LiniaPion tmpLinia;
-
-                    temp = ((polaczDO.Left + polaczOD.Left + polaczOD.Width) / 2) - polaczDO.Left;
-                    polaczOD.punkty[1].X = polaczDO.Width - (Int32)temp;
-                    polaczOD.punkty[1].Y = polaczOD.Height - 2;
-
-                    polaczDO.punkty[0].X = (Int32)temp;
-                    polaczDO.punkty[0].Y = 2;
-
-                    tmpLinia = new LiniaPion(strzalkaUpDown.down);
-
-                    tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
-                    tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
-
-                    tmpLinia.Width = 3;
-                    tmpLinia.Height = polaczDO.Top - tmpLinia.Top;
-                    
-
-                    //^^^^^^^^^^^^^^^
-                    tmpLinia.poprzedniBlok = polaczOD;
-                    tmpLinia.nastepnyBlok = polaczDO;
-                    polaczOD.nastepnaLinia = tmpLinia;
-                    polaczDO.poprzedniaLinia = tmpLinia;
-                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                    //^^^^^^^^^^^^^^^
-                    panel1.Controls.Add(tmpLinia);
-                    tmpLinia = null;
-                    return;
-                }
-                if ((polaczDO.Left <= (polaczOD.Left + (polaczOD.Width) / 2)) && (polaczDO.Left >= polaczOD.Left))
-                {
-                    double temp;
-                    LiniaPion tmpLinia;
-
-                    temp = ((polaczDO.Left + polaczOD.Left + polaczOD.Width) / 2) - polaczDO.Left;
-                    polaczOD.punkty[1].X = polaczDO.Width - (Int32)temp;
-                    polaczOD.punkty[1].Y = polaczOD.Height - 2;
-
-                    polaczDO.punkty[0].X = (Int32)temp;
-                    polaczDO.punkty[0].Y = 2;
-
-                    tmpLinia = new LiniaPion(strzalkaUpDown.down);
-
-                    tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
-                    tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
-
-                    tmpLinia.Width = 3;
-                    tmpLinia.Height = polaczDO.Top - tmpLinia.Top;
-                    
-
-                    //^^^^^^^^^^^^^^^
-                    tmpLinia.poprzedniBlok = polaczOD;
-                    tmpLinia.nastepnyBlok = polaczDO;
-                    polaczOD.nastepnaLinia = tmpLinia;
-                    polaczDO.poprzedniaLinia = tmpLinia;
-                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                    //^^^^^^^^^^^^^^^
-                    panel1.Controls.Add(tmpLinia);
-                    tmpLinia = null;
-                    return;
-                }
-                if ((polaczOD.Left <= (polaczDO.Left + (polaczDO.Width) / 2)) && (polaczOD.Left >= polaczDO.Left))
-                {
-                    double temp;
-                    LiniaPion tmpLinia;
-
-                    temp = ((polaczOD.Left + polaczDO.Left + polaczDO.Width) / 2) - polaczOD.Left;
-                    polaczOD.punkty[1].X = (Int32)temp;
-                    polaczOD.punkty[1].Y = polaczOD.Height - 2;
-
-                    polaczDO.punkty[0].X = polaczDO.Width - (Int32)temp;
-                    polaczDO.punkty[0].Y = 2;
-
-                    tmpLinia = new LiniaPion(strzalkaUpDown.down);
-
-                    tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
-                    tmpLinia.Left = polaczOD.Left + polaczOD.punkty[1].X;
-
-                    tmpLinia.Width = 3;
-                    tmpLinia.Height = polaczDO.Top - tmpLinia.Top;
-                    
-
-                    //^^^^^^^^^^^^^^^
-                    tmpLinia.poprzedniBlok = polaczOD;
-                    tmpLinia.nastepnyBlok = polaczDO;
-                    polaczOD.nastepnaLinia = tmpLinia;
-                    polaczDO.poprzedniaLinia = tmpLinia;
-                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                    //^^^^^^^^^^^^^^^
-                    panel1.Controls.Add(tmpLinia);
-                    tmpLinia = null;
-                    return;
-                }
-            }
-            else if (polaczOD.Top > (polaczDO.Top + polaczDO.Height))
-            {
-                if ((polaczOD.Left <= (polaczDO.Left + polaczDO.Width)) && (polaczOD.Left >= (polaczDO.Left + ((polaczDO.Width) / 2))))
-                {
-                    double temp;
-                    LiniaPion tmpLinia;
-
-                    temp = ((polaczOD.Left + polaczDO.Left + polaczDO.Width) / 2) - polaczOD.Left;
-                    polaczOD.punkty[1].X = (Int32)temp;
-                    polaczOD.punkty[1].Y = 2;
-
-                    polaczDO.punkty[0].X = polaczDO.Width - (Int32)temp;
-                    polaczDO.punkty[0].Y = polaczDO.Height - 2;
-
-                    tmpLinia = new LiniaPion(strzalkaUpDown.up);
-
-                    tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
-                    tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
-
-                    tmpLinia.Width = 3;
-                    tmpLinia.Height = polaczOD.Top - tmpLinia.Top;
-                    
-
-                    //^^^^^^^^^^^^^^^
-                    tmpLinia.poprzedniBlok = polaczOD;
-                    tmpLinia.nastepnyBlok = polaczDO;
-                    polaczOD.nastepnaLinia = tmpLinia;
-                    polaczDO.poprzedniaLinia = tmpLinia;
-                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                    //^^^^^^^^^^^^^^^
-                    panel1.Controls.Add(tmpLinia);
-                    tmpLinia = null;
-                    return;
-                }
-                if ((polaczDO.Left <= (polaczOD.Left + polaczOD.Width)) && (polaczDO.Left >= (polaczOD.Left + ((polaczOD.Width) / 2))))
-                {
-                    double temp;
-                    LiniaPion tmpLinia;
-
-                    temp = ((polaczDO.Left + polaczOD.Left + polaczOD.Width) / 2) - polaczDO.Left;
-                    polaczOD.punkty[1].X = polaczDO.Width - (Int32)temp;
-                    polaczOD.punkty[1].Y = 2;
-
-                    polaczDO.punkty[0].X = (Int32)temp;
-                    polaczDO.punkty[0].Y = polaczOD.Height - 2;
-
-                    tmpLinia = new LiniaPion(strzalkaUpDown.up);
-
-                    tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
-                    tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
-
-                    tmpLinia.Width = 3;
-                    tmpLinia.Height = polaczOD.Top - tmpLinia.Top;
-                    
-
-                    //^^^^^^^^^^^^^^^
-                    tmpLinia.poprzedniBlok = polaczOD;
-                    tmpLinia.nastepnyBlok = polaczDO;
-                    polaczOD.nastepnaLinia = tmpLinia;
-                    polaczDO.poprzedniaLinia = tmpLinia;
-                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                    //^^^^^^^^^^^^^^^
-                    panel1.Controls.Add(tmpLinia);
-                    tmpLinia = null;
-                    return;
-                }
-                if ((polaczDO.Left <= (polaczOD.Left + (polaczOD.Width) / 2)) && (polaczDO.Left >= polaczOD.Left))
-                {
-                    double temp;
-                    LiniaPion tmpLinia;
-
-                    temp = ((polaczDO.Left + polaczOD.Left + polaczOD.Width) / 2) - polaczDO.Left;
-                    polaczOD.punkty[1].X = polaczDO.Width - (Int32)temp;
-                    polaczOD.punkty[1].Y = 2;
-
-                    polaczDO.punkty[0].X = (Int32)temp;
-                    polaczDO.punkty[0].Y = polaczOD.Height - 2;
-
-                    tmpLinia = new LiniaPion(strzalkaUpDown.up);
-
-                    tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
-                    tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
-
-                    tmpLinia.Width = 3;
-                    tmpLinia.Height = polaczOD.Top - tmpLinia.Top;
-                    
-
-                    //^^^^^^^^^^^^^^^
-                    tmpLinia.poprzedniBlok = polaczOD;
-                    tmpLinia.nastepnyBlok = polaczDO;
-                    polaczOD.nastepnaLinia = tmpLinia;
-                    polaczDO.poprzedniaLinia = tmpLinia;
-                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                    //^^^^^^^^^^^^^^^
-                    panel1.Controls.Add(tmpLinia);
-                    tmpLinia = null;
-                    return;
-                }
-                if ((polaczOD.Left <= (polaczDO.Left + (polaczDO.Width) / 2)) && (polaczOD.Left >= polaczDO.Left))
-                {
-                    double temp;
-                    LiniaPion tmpLinia;
-
-                    temp = ((polaczOD.Left + polaczDO.Left + polaczDO.Width) / 2) - polaczOD.Left;
-                    polaczOD.punkty[1].X = (Int32)temp;
-                    polaczOD.punkty[1].Y = 2;
-
-                    polaczDO.punkty[0].X = polaczDO.Width - (Int32)temp;
-                    polaczDO.punkty[0].Y = polaczOD.Height - 2;
-
-                    tmpLinia = new LiniaPion(strzalkaUpDown.up);
-
-                    tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
-                    tmpLinia.Left = polaczDO.Left + polaczDO.punkty[0].X;
-
-                    tmpLinia.Width = 3;
-                    tmpLinia.Height = polaczOD.Top - tmpLinia.Top;
-                    
-
-                    //^^^^^^^^^^^^^^^
-                    tmpLinia.poprzedniBlok = polaczOD;
-                    tmpLinia.nastepnyBlok = polaczDO;
-                    polaczOD.nastepnaLinia = tmpLinia;
-                    polaczDO.poprzedniaLinia = tmpLinia;
-                    tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                    tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                    //^^^^^^^^^^^^^^^
-                    panel1.Controls.Add(tmpLinia);
-                    tmpLinia = null;
-                    return;
-                }
-            }
-            else if (((polaczOD.Top + polaczOD.Height) >= polaczDO.Top) && (polaczOD.Top <= (polaczDO.Top + polaczDO.Height)))
-            {
-                if ((polaczOD.Left + polaczOD.Width) < polaczDO.Left)
-                {
-                    if (polaczOD.Top <= polaczDO.Top)
-                    {
-                        double temp;
-                        LiniaPoz tmpLinia;
-
-                        temp = ((polaczOD.Top + polaczDO.Top + polaczDO.Height) / 2) - polaczOD.Top;
-                        polaczOD.punkty[1].X = polaczOD.Left + polaczOD.Width;
-                        polaczOD.punkty[1].Y = (Int32)temp;
-
-                        polaczDO.punkty[0].X = 2;
-                        polaczDO.punkty[0].Y = polaczDO.Height - (Int32)temp;
-
-                        tmpLinia = new LiniaPoz(strzalkaLeftRight.right);
-
-                        tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
-                        tmpLinia.Left = polaczOD.Left + polaczOD.Width-2;
-
-                        tmpLinia.Width = polaczDO.Left - tmpLinia.Left;
-                        tmpLinia.Height = 3;
-                        
-
-                        //^^^^^^^^^^^^^^^
-                        tmpLinia.poprzedniBlok = polaczOD;
-                        tmpLinia.nastepnyBlok = polaczDO;
-                        polaczOD.nastepnaLinia = tmpLinia;
-                        polaczDO.poprzedniaLinia = tmpLinia;
-                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                        //^^^^^^^^^^^^^^^
-                        panel1.Controls.Add(tmpLinia);
-                        tmpLinia = null;
-                        return;
-                    }
-                    if (polaczOD.Top > polaczDO.Top)
-                    {
-                        double temp;
-                        LiniaPoz tmpLinia;
-
-                        temp = ((polaczDO.Top + polaczOD.Top + polaczOD.Height) / 2) - polaczDO.Top;
-                        polaczOD.punkty[1].X = polaczOD.Left + polaczOD.Width;
-                        polaczOD.punkty[1].Y = polaczOD.Height - (Int32)temp;
-
-                        polaczDO.punkty[0].X = 2;
-                        polaczDO.punkty[0].Y = (Int32)temp;
-
-                        tmpLinia = new LiniaPoz(strzalkaLeftRight.right);
-
-                        tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
-                        tmpLinia.Left = polaczOD.Left + polaczOD.Width - 2;
-
-                        tmpLinia.Width = polaczDO.Left - tmpLinia.Left;
-                        tmpLinia.Height = 3;
-                        
-
-                        //^^^^^^^^^^^^^^^
-                        tmpLinia.poprzedniBlok = polaczOD;
-                        tmpLinia.nastepnyBlok = polaczDO;
-                        polaczOD.nastepnaLinia = tmpLinia;
-                        polaczDO.poprzedniaLinia = tmpLinia;
-                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                        //^^^^^^^^^^^^^^^
-                        panel1.Controls.Add(tmpLinia);
-                        tmpLinia = null;
-                        return;
-                    }
-                }
-                else if(polaczOD.Left > (polaczDO.Left + polaczDO.Width))
-                {
-                    if (polaczOD.Top <= polaczDO.Top)
-                    {
-                        double temp;
-                        LiniaPoz tmpLinia;
-
-                        temp = ((polaczOD.Top + polaczDO.Top + polaczDO.Height) / 2) - polaczOD.Top;
-                        polaczOD.punkty[1].X = 2;
-                        polaczOD.punkty[1].Y = (Int32)temp;
-
-                        polaczDO.punkty[0].X = polaczDO.Left + polaczDO.Width;
-                        polaczDO.punkty[0].Y = polaczDO.Height - (Int32)temp;
-
-                        tmpLinia = new LiniaPoz(strzalkaLeftRight.left);
-
-                        tmpLinia.Top = polaczOD.Top + polaczOD.punkty[1].Y;
-                        tmpLinia.Left = polaczDO.Left + polaczDO.Width-2;
-
-                        tmpLinia.Width = polaczOD.Left - tmpLinia.Left;
-                        tmpLinia.Height = 3;
-                        
-
-                        //^^^^^^^^^^^^^^^
-                        tmpLinia.poprzedniBlok = polaczOD;
-                        tmpLinia.nastepnyBlok = polaczDO;
-                        polaczOD.nastepnaLinia = tmpLinia;
-                        polaczDO.poprzedniaLinia = tmpLinia;
-                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                        //^^^^^^^^^^^^^^^
-                        panel1.Controls.Add(tmpLinia);
-                        tmpLinia = null;
-                        return;
-                    }
-                    if (polaczOD.Top > polaczDO.Top)
-                    {
-                        double temp;
-                        LiniaPoz tmpLinia;
-
-                        temp = ((polaczDO.Top + polaczOD.Top + polaczOD.Height) / 2) - polaczDO.Top;
-                        polaczOD.punkty[1].X = 2;
-                        polaczOD.punkty[1].Y = polaczOD.Height - (Int32)temp;
-
-                        polaczDO.punkty[0].X = polaczDO.Left + polaczDO.Width;
-                        polaczDO.punkty[0].Y = (Int32)temp;
-
-                        tmpLinia = new LiniaPoz(strzalkaLeftRight.left);
-
-                        tmpLinia.Top = polaczDO.Top + polaczDO.punkty[0].Y;
-                        tmpLinia.Left = polaczDO.Left + polaczDO.Width - 2;
-
-                        tmpLinia.Width = polaczOD.Left - tmpLinia.Left;
-                        tmpLinia.Height = 3;
-                        
-
-                        //^^^^^^^^^^^^^^^
-                        tmpLinia.poprzedniBlok = polaczOD;
-                        tmpLinia.nastepnyBlok = polaczDO;
-                        polaczOD.nastepnaLinia = tmpLinia;
-                        polaczDO.poprzedniaLinia = tmpLinia;
-                        tmpLinia.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                        tmpLinia.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                        //^^^^^^^^^^^^^^^
-                        panel1.Controls.Add(tmpLinia);
-                        tmpLinia = null;
-                        return;
-                    }
-                }
-            }
-            if (((polaczOD.Left + polaczOD.Width) < polaczDO.Left) && ((polaczOD.Top + polaczOD.Height) < polaczDO.Top))
-            {
-                LiniaPion tmpPion;
-                LiniaPoz tmpPoz;
-
-                tmpPion = new LiniaPion(strzalkaUpDown.none);
-                tmpPion.Top = polaczOD.Top + polaczOD.Height;
-                tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
-                tmpPion.Width = 4;
-                tmpPion.Height = (polaczDO.Top + polaczDO.Height / 2) - tmpPion.Top;
-                tmpPion.poprzedniBlok = polaczOD;
-                tmpPion.nastepnyBlok = null;
-                //tmpPion.BringToFront();
-
-                tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
-                tmpPoz.Top = tmpPion.Top + tmpPion.Height-2;
-                tmpPoz.Left = tmpPion.Left;
-                tmpPoz.Height = 4;
-                tmpPoz.Width = polaczDO.Left - tmpPoz.Left;
-                tmpPoz.nastepnyBlok = polaczDO;
-                tmpPoz.poprzedniaLinia = tmpPion;
-
-                tmpPion.nastepnaLinia = tmpPoz;
-
-                polaczOD.nastepnaLinia = tmpPion;
-                polaczDO.poprzedniaLinia = tmpPoz;
-
-                tmpPion.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                tmpPion.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                tmpPoz.MouseDown += new MouseEventHandler(ZaznaczLinie);
-
-                panel1.Controls.Add(tmpPion);
-                panel1.Controls.Add(tmpPoz);
-                tmpPion = null;
-                tmpPoz = null;
-                return;
-            }
-            if ((polaczOD.Left > (polaczDO.Left + polaczDO.Width)) && ((polaczOD.Top + polaczOD.Height) < polaczDO.Top))
-            {
-                LiniaPion tmpPion;
-                LiniaPoz tmpPoz;
-
-                tmpPion = new LiniaPion(strzalkaUpDown.none);
-                tmpPion.Top = polaczOD.Top + polaczOD.Height;
-                tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
-                tmpPion.Width = 4;
-                tmpPion.Height = (polaczDO.Top + polaczDO.Height / 2) - tmpPion.Top;
-                tmpPion.poprzedniBlok = polaczOD;
-                tmpPion.nastepnyBlok = null;
-                //tmpPion.BringToFront();
-
-                tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
-                tmpPoz.Top = tmpPion.Top + tmpPion.Height - 2;
-                tmpPoz.Left = polaczDO.Left + polaczDO.Width;
-                tmpPoz.Height = 4;
-                tmpPoz.Width = tmpPion.Left - tmpPoz.Left; 
-                tmpPoz.nastepnyBlok = polaczDO;
-                tmpPoz.poprzedniaLinia = tmpPion;
-
-                tmpPion.nastepnaLinia = tmpPoz;
-
-                polaczOD.nastepnaLinia = tmpPion;
-                polaczDO.poprzedniaLinia = tmpPoz;
-
-                tmpPion.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                tmpPion.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                tmpPoz.MouseDown += new MouseEventHandler(ZaznaczLinie);
-
-                panel1.Controls.Add(tmpPion);
-                panel1.Controls.Add(tmpPoz);
-                tmpPion = null;
-                tmpPoz = null;
-                return;
-            }
-            if ((polaczOD.Left > (polaczDO.Left + polaczDO.Width)) && (polaczOD.Top > (polaczDO.Top + polaczDO.Height)))
-            {
-                LiniaPion tmpPion;
-                LiniaPoz tmpPoz;
-
-                tmpPion = new LiniaPion(strzalkaUpDown.none);
-                tmpPion.Top = polaczDO.Top + polaczDO.Height / 2;
-                tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
-                tmpPion.Width = 4;
-                tmpPion.Height =polaczOD.Top - tmpPion.Top +4;
-                tmpPion.poprzedniBlok = polaczOD;
-                tmpPion.nastepnyBlok = null;
-                //tmpPion.BringToFront();
-
-                tmpPoz = new LiniaPoz(strzalkaLeftRight.left);
-                tmpPoz.Top = tmpPion.Top;
-                tmpPoz.Left = polaczDO.Left + polaczDO.Width;
-                tmpPoz.Height = 4;
-                tmpPoz.Width = tmpPion.Left - tmpPoz.Left + 3;
-                tmpPoz.nastepnyBlok = polaczDO;
-                tmpPoz.poprzedniaLinia = tmpPion;
-
-                tmpPion.nastepnaLinia = tmpPoz;
-
-                polaczOD.nastepnaLinia = tmpPion;
-                polaczDO.poprzedniaLinia = tmpPoz;
-
-                tmpPion.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                tmpPion.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                tmpPoz.MouseDown += new MouseEventHandler(ZaznaczLinie);
-
-                panel1.Controls.Add(tmpPion);
-                panel1.Controls.Add(tmpPoz);
-
-                tmpPion = null;
-                tmpPoz = null;
-                return;
-            }
-            if (((polaczOD.Left + polaczOD.Width) < polaczDO.Left) && (polaczOD.Top > (polaczDO.Top + polaczDO.Height)))
-            {
-                LiniaPion tmpPion;
-                LiniaPoz tmpPoz;
-
-                tmpPion = new LiniaPion(strzalkaUpDown.none);
-                tmpPion.Top = polaczDO.Top + polaczDO.Height / 2;
-                tmpPion.Left = polaczOD.Left + polaczOD.Width / 2;
-                tmpPion.Width = 4;
-                tmpPion.Height = polaczOD.Top - tmpPion.Top +4;
-                tmpPion.poprzedniBlok = polaczOD;
-                tmpPion.nastepnyBlok = null;
-                //tmpPion.BringToFront();
-
-                tmpPoz = new LiniaPoz(strzalkaLeftRight.right);
-                tmpPoz.Top = tmpPion.Top;
-                tmpPoz.Left = tmpPion.Left;
-                tmpPoz.Height = 4;
-                tmpPoz.Width = polaczDO.Left - tmpPoz.Left+3;
-                tmpPoz.nastepnyBlok = polaczDO;
-                tmpPoz.poprzedniaLinia = tmpPion;
-
-                tmpPion.nastepnaLinia = tmpPoz;
-
-                polaczOD.nastepnaLinia = tmpPion;
-                polaczDO.poprzedniaLinia = tmpPoz;
-
-                tmpPion.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                tmpPoz.KeyDown += new KeyEventHandler(HandlerUsunLinie);
-                tmpPion.MouseDown += new MouseEventHandler(ZaznaczLinie);
-                tmpPoz.MouseDown += new MouseEventHandler(ZaznaczLinie);
-
-                panel1.Controls.Add(tmpPion);
-                panel1.Controls.Add(tmpPoz);
-                tmpPion = null;
-                tmpPoz = null;
-                return;
-            }
-
         }
 
         private void Symulacja(object sender, DoWorkEventArgs e)
@@ -1208,13 +1782,13 @@ namespace Okienka
 
                 aktualnyBlok.Wykonaj();
 
-                if (aktualnyBlok.nastepnyBlok == null)
+                if (aktualnyBlok.nastepnyBlok[0] == null)   //Dodac wybor nastepnego bloku dla Decyzyjnego
                 {
                     e.Cancel = true;
                     return;
                 }
                 aktualnyBlok.tryb = tryby.normal;
-                aktualnyBlok = aktualnyBlok.nastepnyBlok;
+                aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
                 aktualnyBlok.tryb = tryby.aktualny;
             }
 
@@ -1287,30 +1861,44 @@ namespace Okienka
 
         private void poprzedni_Click(object sender, EventArgs e)
         {
-            if (symuluj == true)
-            {
-                if (aktualnyBlok.poprzedniBlok != null)
-                {
-                    aktualnyBlok.tryb = tryby.normal;
+      //      if (symuluj == true)
+      //      {
+      //          if (aktualnyBlok.poprzedniBlok != null)
+      //          {
+      //              aktualnyBlok.tryb = tryby.normal;
 
-                    aktualnyBlok = aktualnyBlok.poprzedniBlok;
-                    aktualnyBlok.tryb = tryby.aktualny;
-                    aktualnyBlok.Wykonaj();
-                }
-            }
+      //              aktualnyBlok = aktualnyBlok.poprzedniBlok;
+      //              aktualnyBlok.tryb = tryby.aktualny;
+      //              aktualnyBlok.Wykonaj();
+      //         }
+      //      }
         }
 
         private void nastepny_Click(object sender, EventArgs e)
         {
             if (symuluj == true)
             {
-                if (aktualnyBlok.nastepnyBlok != null)
+                if(aktualnyBlok.GetType()==typeof(BlokDecyzyjny)) //BlokDecyzyjny nastepnyTAK, nastepnyNIE
                 {
-                    aktualnyBlok.tryb = tryby.normal;
+                    if (aktualnyBlok.nastepnyBlok[0] != null) 
+                    {
+                        aktualnyBlok.tryb = tryby.normal;
+                        
+                        aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+                        aktualnyBlok.tryb = tryby.aktualny;
+                        aktualnyBlok.Wykonaj();
+                    }
+                }
+                 else
+                {
+                    if (aktualnyBlok.nastepnyBlok[0] != null)
+                    {
+                        aktualnyBlok.tryb = tryby.normal;
 
-                    aktualnyBlok = aktualnyBlok.nastepnyBlok;
-                    aktualnyBlok.tryb = tryby.aktualny;
-                    aktualnyBlok.Wykonaj();
+                        aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+                        aktualnyBlok.tryb = tryby.aktualny;
+                        aktualnyBlok.Wykonaj();
+                    }
                 }
             }
         }
