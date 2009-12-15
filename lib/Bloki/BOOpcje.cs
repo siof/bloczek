@@ -49,10 +49,9 @@ namespace libbloki
                 {
                     temp = bObl.listaZmiennych[i].nazwa.ToString();
                     listBoxZmienne.Items.Add(temp);
-
                 }
             }
-            
+            comboBox2.SelectedIndex = 0;
         }
 
         private void btnAnuluj_Click(object sender, EventArgs e)
@@ -94,6 +93,7 @@ namespace libbloki
 
             if (bObl.SprawdzCzyIstniejeZmienna(txtL.Text) == false)
             {
+                noweDzialanie.lewa = noweDzialanie.lewa.Replace(bObl.znacznikZmiennej, "");
                 noweDzialanie.nowaZmienna = true;
                 if (comboBox2.SelectedItem != null)
                     noweDzialanie.dodatkowe = comboBox2.SelectedItem.ToString();

@@ -140,7 +140,6 @@ namespace libbloki
                     this.txtHint.Active = true;
                     txtHint.SetToolTip(txt, tempString);
                     txtHint.SetToolTip(this, tempString);
-
                 }
             }
         }
@@ -148,6 +147,7 @@ namespace libbloki
         public void Wykonaj()
         {
             int temp = -1;
+            
             for (int i = 0; i < dzialania.Count; i++)
             {
                 if (dzialania[i].srodekZmienna == true)
@@ -155,17 +155,22 @@ namespace libbloki
 
                 if (dzialania[i].dzialanie1 == "Wypisz")
                 {
-                    if (dzialania[i].srodekZmienna == true)
+                    String tmpString;
+                    if (dzialania[i].srodek != null)
                     {
-                        frmConsole.richTextBox1.Text += listaZmiennych[temp].wartosc + '\n';
-                    }
-                    else
-                    {
-                        frmConsole.richTextBox1.Text += dzialania[i].srodek + '\n';
+                        tmpString = dzialania[i].srodek.ToString();
+                        foreach (Zmienna zm in this.listaZmiennych)
+                        {
+                            if (dzialania[i].srodekZmienna == true)
+                                tmpString = tmpString.Replace(zm.nazwa, zm.wartosc.ToString());
+                        }
+                        frmConsole.richTextBox1.Text += tmpString + '\n';
                     }
                 }
                 else
                 {
+                    if (dzialania[i].srodekZmienna == true)
+                        temp = ZnajdzZmienna(dzialania[i].srodek);
                     String tmpString = "";
                     Czytaj tmpOkno = new Czytaj(tmpString);
                     tmpOkno.label1.Text = "Podaj " + dzialania[i].srodek + ":";

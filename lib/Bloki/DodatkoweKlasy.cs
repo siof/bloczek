@@ -69,7 +69,7 @@ namespace libbloki
             set 
             {
                 if (value.Contains(znacznikZmiennej) == true)
-                    value.Replace(znacznikZmiennej, "");
+                    value = value.Replace(znacznikZmiennej, "");
 
                 _lewa = value; 
             }
@@ -95,7 +95,7 @@ namespace libbloki
                 if (value.Contains(znacznikZmiennej) == true)
                 {
                     srodekZmienna = true;
-                    value.Replace(znacznikZmiennej, "");
+                    value = value.Replace(znacznikZmiennej, "");
                 }
 
                 _srodek = value; 
@@ -122,7 +122,7 @@ namespace libbloki
                 if (value.Contains(znacznikZmiennej) == true)
                 {
                     prawaZmienna = true;
-                    value.Replace(znacznikZmiennej, "");
+                    value = value.Replace(znacznikZmiennej, "");
                 }
 
                 _prawa = value; 

@@ -139,81 +139,114 @@ namespace libbloki
 
                 if (temp.typ == typeof(int))
                 {
-                    int tmpL = Convert.ToInt32(dzialania[i].srodek);
+                    int tmpL;
+                    if (dzialania[i].srodekZmienna == true)
+                        tmpL = Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].srodek)].wartosc);
+                    else
+                        tmpL = Convert.ToInt32(dzialania[i].srodek);
 
-                    if (dzialania[i].dzialanie2 == null)
-                        return;
-
-                    switch (dzialania[i].dzialanie2)
+                    if (dzialania[i].dzialanie2 != null)
                     {
-                        case "+":
-                            tmpL += Convert.ToInt32(dzialania[i].prawa);
-                            break;
-                        case "-":
-                            tmpL -= Convert.ToInt32(dzialania[i].prawa);
-                            break;
-                        case "*":
-                            tmpL *= Convert.ToInt32(dzialania[i].prawa);
-                            break;
-                        case "/":
-                            tmpL /= Convert.ToInt32(dzialania[i].prawa);
-                            break;
+                        switch (dzialania[i].dzialanie2)
+                        {
+                            case "+":
+                                if (dzialania[i].prawaZmienna == true)
+                                    tmpL += Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                else
+                                    tmpL += Convert.ToInt32(dzialania[i].prawa);
+                                break;
+                            case "-":
+                                if (dzialania[i].prawaZmienna == true)
+                                    tmpL -= Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                else
+                                    tmpL -= Convert.ToInt32(dzialania[i].prawa);
+                                break;
+                            case "*":
+                                if (dzialania[i].prawaZmienna == true)
+                                    tmpL *= Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                else
+                                    tmpL *= Convert.ToInt32(dzialania[i].prawa);
+                                break;
+                            case "/":
+                                if (dzialania[i].prawaZmienna == true)
+                                    tmpL /= Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                else
+                                    tmpL /= Convert.ToInt32(dzialania[i].prawa);
+                                break;
+                        }
                     }
 
                     temp.wartosc = tmpL.ToString();
-                    return;
+                    continue;
                 }
 
                 if (temp.typ == typeof(double))
                 {
-                    double tmpL = Convert.ToDouble(dzialania[i].srodek);
+                    double tmpL;
 
-                    if (dzialania[i].dzialanie2 == null)
-                        return;
+                    if (dzialania[i].srodekZmienna == true)
+                        tmpL = Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].srodek)].wartosc);
+                    else
+                        tmpL = Convert.ToDouble(dzialania[i].srodek);
 
-                    switch (dzialania[i].dzialanie2)
+                    if (dzialania[i].dzialanie2 != null)
                     {
-                        case "+":
-                            tmpL += Convert.ToDouble(dzialania[i].prawa);
-                            break;
-                        case "-":
-                            tmpL -= Convert.ToDouble(dzialania[i].prawa);
-                            break;
-                        case "*":
-                            tmpL *= Convert.ToDouble(dzialania[i].prawa);
-                            break;
-                        case "/":
-                            tmpL /= Convert.ToDouble(dzialania[i].prawa);
-                            break;
+                        switch (dzialania[i].dzialanie2)
+                        {
+                            case "+":
+                                if (dzialania[i].prawaZmienna == true)
+                                    tmpL += Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                else
+                                    tmpL += Convert.ToDouble(dzialania[i].prawa);
+                                break;
+                            case "-":
+                                if (dzialania[i].prawaZmienna == true)
+                                    tmpL -= Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                else
+                                    tmpL -= Convert.ToDouble(dzialania[i].prawa);
+                                break;
+                            case "*":
+                                if (dzialania[i].prawaZmienna == true)
+                                    tmpL *= Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                else
+                                    tmpL *= Convert.ToDouble(dzialania[i].prawa);
+                                break;
+                            case "/":
+                                if (dzialania[i].prawaZmienna == true)
+                                    tmpL /= Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                else
+                                    tmpL /= Convert.ToDouble(dzialania[i].prawa);
+                                break;
+                        }
                     }
 
                     temp.wartosc = tmpL.ToString();
-                    return;
+                    continue;
                 }
 
                 if (temp.typ == typeof(String))
                 {
                     String tmpL = dzialania[i].srodek.ToString();
 
-                    if (dzialania[i].dzialanie2 == null)
-                        return;
-
-                    switch (dzialania[i].dzialanie2)
+                    if (dzialania[i].dzialanie2 != null)
                     {
-                        case "+":
-                            tmpL += dzialania[i].prawa;
-                            break;
-                        case "-":
-                            tmpL.Replace(dzialania[i].prawa, "");
-                            break;
-                        case "*":
-                            break;
-                        case "/":
-                            break;
+                        switch (dzialania[i].dzialanie2)
+                        {
+                            case "+":
+                                tmpL += dzialania[i].prawa;
+                                break;
+                            case "-":
+                                tmpL = tmpL.Replace(dzialania[i].prawa, "");
+                                break;
+                            case "*":
+                                break;
+                            case "/":
+                                break;
+                        }
                     }
 
                     temp.wartosc = tmpL.ToString();
-                    return;
+                    continue;
                 }
             }
         }
