@@ -91,6 +91,15 @@ namespace libbloki
             temp = txtL.Text + " := " + txtS.Text;
             noweDzialanie.lewa = txtL.Text;
 
+            if (bObl.SprawdzCzyIstniejeZmienna(txtL.Text) == false)
+            {
+                noweDzialanie.nowaZmienna = true;
+                if (comboBox2.SelectedItem != null)
+                    noweDzialanie.dodatkowe = comboBox2.SelectedItem.ToString();
+                else
+                    noweDzialanie.dodatkowe = "String";
+            }
+
             noweDzialanie.dzialanie1 = ":=";
             noweDzialanie.srodek = txtS.Text;
 

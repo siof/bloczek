@@ -144,7 +144,7 @@ namespace libbloki
 
         public bool SprawdzCzyIstniejeZmienna(String zmienna)
         {
-            if (zmienna == null)
+            if (zmienna == null || listaZmiennych == null)
                 return false;
 
             String temp = zmienna.ToString();
@@ -189,7 +189,32 @@ namespace libbloki
                     Zmienna temp = new Zmienna();
                     temp.nazwa = dzialania[i].lewa;
 
-                    listaZmiennych.Add(temp);
+                    if (dzialania[i].dodatkowe != null)
+                    {
+                        switch (dzialania[i].dodatkowe)
+                        {
+                            case "int":
+                                temp.typ = typeof(int);
+                                temp.wartosc = "0";
+                                break;
+
+                            case "double":
+                                temp.typ = typeof(double);
+                                temp.wartosc = "0.0";
+                                break;
+
+                            case "String":
+                                temp.typ = typeof(String);
+                                temp.wartosc = "";
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
+
+                    if (listaZmiennych != null)
+                        listaZmiennych.Add(temp);
                 }
             }
         }

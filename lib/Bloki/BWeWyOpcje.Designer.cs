@@ -35,6 +35,7 @@
             this.btnZapisz = new System.Windows.Forms.Button();
             this.listBox = new System.Windows.Forms.ListBox();
             this.btnDodaj = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -43,16 +44,16 @@
             this.comboBox1.Items.AddRange(new object[] {
             "Czytaj",
             "Wypisz"});
-            this.comboBox1.Location = new System.Drawing.Point(12, 12);
+            this.comboBox1.Location = new System.Drawing.Point(71, 12);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(81, 21);
             this.comboBox1.TabIndex = 0;
             // 
             // txtBox
             // 
-            this.txtBox.Location = new System.Drawing.Point(113, 12);
+            this.txtBox.Location = new System.Drawing.Point(158, 12);
             this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(235, 20);
+            this.txtBox.Size = new System.Drawing.Size(190, 20);
             this.txtBox.TabIndex = 2;
             // 
             // listBoxZmienne
@@ -104,11 +105,24 @@
             this.btnDodaj.UseVisualStyleBackColor = true;
             this.btnDodaj.Click += new System.EventHandler(this.Dodaj_Click);
             // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "int",
+            "double",
+            "String"});
+            this.comboBox2.Location = new System.Drawing.Point(12, 12);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(53, 21);
+            this.comboBox2.TabIndex = 24;
+            // 
             // BWeWyOpcje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(422, 276);
+            this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.btnDodaj);
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.btnAnuluj);
@@ -132,5 +146,6 @@
         private System.Windows.Forms.Button btnZapisz;
         private System.Windows.Forms.ListBox listBox;
         private System.Windows.Forms.Button btnDodaj;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }
