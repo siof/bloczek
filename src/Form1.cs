@@ -174,8 +174,7 @@ namespace Okienka
             if (klik == true)
             {
                 Bloki temp2 = new Bloki();          //potrzebne do dodania do listy
-                numer++;
-                temp2.listaZmiennych = zmienne;
+                numer++;  
                 
                 if (typ == typeof(BlokSTART))
                 {
@@ -183,9 +182,9 @@ namespace Okienka
                         return;
 
                     BlokSTART temp = new BlokSTART();
-
-                    temp2.typBloku = typeof(BlokSTART);
+                    
                     temp2 = (Bloki)temp;
+                    temp2.typBloku = typeof(BlokSTART);
                     temp2.Name = "START";
                 }
 
@@ -193,35 +192,38 @@ namespace Okienka
                 {
                     BlokSTOP temp = new BlokSTOP();
 
-                    temp2.typBloku = typeof(BlokSTOP);
                     temp2 = (Bloki)temp;
+                    temp2.typBloku = typeof(BlokSTOP);
                     temp2.Name = "STOP";
                 }
 
                 if (typ == typeof(BlokObliczeniowy))
                 {
                     BlokObliczeniowy temp = new BlokObliczeniowy();
-
-                    temp2.typBloku = typeof(BlokObliczeniowy);
+                    
                     temp2 = (Bloki)temp;
+                    temp2.typBloku = typeof(BlokObliczeniowy);
+                    temp2.listaZmiennych = zmienne;
                     temp2.MouseDoubleClick += new MouseEventHandler(WywolajBOOpcje);
                 }
 
                 if (typ == typeof(BlokDecyzyjny))
                 {
                     BlokDecyzyjny temp = new BlokDecyzyjny();
-
-                    temp2.typBloku = typeof(BlokDecyzyjny);
+                    
                     temp2 = (Bloki)temp;
+                    temp2.typBloku = typeof(BlokDecyzyjny);
+                    temp2.listaZmiennych = zmienne;
                     temp2.MouseDoubleClick += new MouseEventHandler(WywolajBDOpcje);
                 }
 
                 if (typ == typeof(BlokWeWy))
                 {
                     BlokWeWy temp = new BlokWeWy();//
-
-                    temp2.typBloku = typeof(BlokWeWy);
+                    
                     temp2 = (Bloki)temp;
+                    temp2.typBloku = typeof(BlokWeWy);
+                    temp2.listaZmiennych = zmienne;
                     temp2.MouseDoubleClick += new MouseEventHandler(WywolajBWeWyOpcje);
                 }
 

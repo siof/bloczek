@@ -74,6 +74,15 @@ namespace libbloki
 
             temp = comboBox1.SelectedItem.ToString() + " : " + txtBox.Text;
 
+            if (comboBox1.SelectedItem.ToString() == "Czytaj" && BWeWy.SprawdzCzyIstniejeZmienna(txtBox.Text) == false)
+            {
+                noweDzialanie.nowaZmienna = true;
+                if (comboBox2.SelectedItem != null)
+                    noweDzialanie.dodatkowe = comboBox2.SelectedItem.ToString();
+                else
+                    noweDzialanie.dodatkowe = "String";
+            }
+
             noweDzialanie.dzialanie1 = comboBox1.SelectedItem.ToString();
             noweDzialanie.srodek = txtBox.Text;
 

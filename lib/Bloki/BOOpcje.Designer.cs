@@ -38,6 +38,7 @@
             this.txtP = new System.Windows.Forms.TextBox();
             this.cbDzialanie = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnZapisz
@@ -91,23 +92,23 @@
             // 
             // txtL
             // 
-            this.txtL.Location = new System.Drawing.Point(12, 12);
+            this.txtL.Location = new System.Drawing.Point(71, 12);
             this.txtL.Name = "txtL";
-            this.txtL.Size = new System.Drawing.Size(81, 20);
+            this.txtL.Size = new System.Drawing.Size(59, 20);
             this.txtL.TabIndex = 29;
             // 
             // txtS
             // 
-            this.txtS.Location = new System.Drawing.Point(113, 12);
+            this.txtS.Location = new System.Drawing.Point(158, 12);
             this.txtS.Name = "txtS";
-            this.txtS.Size = new System.Drawing.Size(92, 20);
+            this.txtS.Size = new System.Drawing.Size(72, 20);
             this.txtS.TabIndex = 30;
             // 
             // txtP
             // 
-            this.txtP.Location = new System.Drawing.Point(257, 12);
+            this.txtP.Location = new System.Drawing.Point(282, 12);
             this.txtP.Name = "txtP";
-            this.txtP.Size = new System.Drawing.Size(91, 20);
+            this.txtP.Size = new System.Drawing.Size(66, 20);
             this.txtP.TabIndex = 31;
             // 
             // cbDzialanie
@@ -119,7 +120,7 @@
             "-",
             "*",
             "/"});
-            this.cbDzialanie.Location = new System.Drawing.Point(211, 12);
+            this.cbDzialanie.Location = new System.Drawing.Point(236, 12);
             this.cbDzialanie.Name = "cbDzialanie";
             this.cbDzialanie.Size = new System.Drawing.Size(40, 21);
             this.cbDzialanie.TabIndex = 32;
@@ -127,11 +128,23 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(95, 15);
+            this.label1.Location = new System.Drawing.Point(136, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(16, 13);
             this.label1.TabIndex = 33;
             this.label1.Text = ":=";
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "int",
+            "double",
+            "String"});
+            this.comboBox2.Location = new System.Drawing.Point(12, 12);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(53, 21);
+            this.comboBox2.TabIndex = 34;
             // 
             // BOOpcje
             // 
@@ -140,6 +153,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnAnuluj;
             this.ClientSize = new System.Drawing.Size(422, 276);
+            this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbDzialanie);
             this.Controls.Add(this.txtP);
@@ -169,5 +183,6 @@
         private System.Windows.Forms.TextBox txtP;
         private System.Windows.Forms.ComboBox cbDzialanie;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBox2;
     }
 }
