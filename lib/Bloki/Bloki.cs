@@ -150,11 +150,11 @@ namespace libbloki
             String temp = zmienna.ToString();
 
             if (temp.Contains(znacznikZmiennej) == true)
-                temp.Replace(znacznikZmiennej, "");
+                temp = temp.Replace(znacznikZmiennej, "");
 
-            for (int i = 0; i < listaZmiennych.Count; i++)
+            for (int i = 0; i < listaZmiennych.Count(); i++)
             {
-                if (listaZmiennych[i].nazwa.Equals(temp) == true)
+                if (listaZmiennych[i].nazwa == temp.ToString())
                     return true;
             }
 
@@ -169,7 +169,7 @@ namespace libbloki
             String temp = zmienna.ToString();
 
             if (temp.Contains(znacznikZmiennej) == true)
-                temp.Replace(znacznikZmiennej, "");
+                temp = temp.Replace(znacznikZmiennej, "");
 
             for (int i = 0; i < listaZmiennych.Count; i++)
             {
@@ -187,7 +187,9 @@ namespace libbloki
                 if (this.dzialania[i].nowaZmienna == true)
                 {
                     Zmienna temp = new Zmienna();
-                    temp.nazwa = this.dzialania[i].lewa;
+                    this.dzialania[i].lewa = this.dzialania[i].lewa.Replace(znacznikZmiennej, "");
+                    temp.nazwa = dzialania[i].lewa.ToString();
+                    dzialania[i].nowaZmienna = false;
 
                     if (dzialania[i].dodatkowe != null)
                     {

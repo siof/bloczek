@@ -77,6 +77,7 @@ namespace libbloki
             if (comboBox1.SelectedItem.ToString() == "Czytaj" && BWeWy.SprawdzCzyIstniejeZmienna(txtBox.Text) == false)
             {
                 noweDzialanie.nowaZmienna = true;
+                noweDzialanie.lewa = txtBox.Text;
                 if (comboBox2.SelectedItem != null)
                     noweDzialanie.dodatkowe = comboBox2.SelectedItem.ToString();
                 else

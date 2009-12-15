@@ -47,6 +47,9 @@ namespace libbloki
                     comboBox1.Items.Add(temp);
                 }
             }
+
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
         }
 
         public BDOpcje()
@@ -81,7 +84,7 @@ namespace libbloki
 
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (listBox.SelectedItem != null)
+            if (((ListBox)sender).SelectedItem != null)
                 txtBox.Text = bDec.znacznikZmiennej + listBoxZmienne.SelectedItem.ToString() + bDec.znacznikZmiennej;
         }
 
@@ -120,6 +123,9 @@ namespace libbloki
                 bDec.dzialania.Add(noweDzialanie);
                 dodaneDzialania.Add(noweDzialanie);
             }
+
+
+            
         }
 
         private void listBox_KeyDown(object sender, KeyEventArgs e)
