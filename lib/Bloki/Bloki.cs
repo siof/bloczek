@@ -182,12 +182,12 @@ namespace libbloki
 
         public void DodajNoweZmienne()
         {
-            for (int i = 0; i < dzialania.Count; i++)
+            for (int i = 0; i < this.dzialania.Count; i++)
             {
-                if (dzialania[i].nowaZmienna == true)
+                if (this.dzialania[i].nowaZmienna == true)
                 {
                     Zmienna temp = new Zmienna();
-                    temp.nazwa = dzialania[i].lewa;
+                    temp.nazwa = this.dzialania[i].lewa;
 
                     if (dzialania[i].dodatkowe != null)
                     {

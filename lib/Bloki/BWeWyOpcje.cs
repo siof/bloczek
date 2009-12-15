@@ -51,7 +51,7 @@ namespace libbloki
 
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (listBox.SelectedItem == null)
+            if (((ListBox)sender).SelectedItem == null)
                 return;
 
             if (comboBox1.SelectedText == "Czytaj")

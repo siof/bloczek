@@ -49,6 +49,7 @@ namespace libbloki
                 {
                     temp = bObl.listaZmiennych[i].nazwa.ToString();
                     listBoxZmienne.Items.Add(temp);
+
                 }
             }
             
@@ -117,7 +118,7 @@ namespace libbloki
 
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (listBox.SelectedItem == null)
+            if (((ListBox)sender).SelectedItem == null)
                 return;
 
             if (txtL.Text == "" || txtL.Text == " ")
