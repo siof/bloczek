@@ -162,7 +162,7 @@ namespace libbloki
                         foreach (Zmienna zm in this.listaZmiennych)
                         {
                             if (dzialania[i].srodekZmienna == true)
-                                tmpString = tmpString.Replace(zm.nazwa, zm.wartosc.ToString());
+                                tmpString = tmpString.Replace(znacznikZmiennej + zm.nazwa + znacznikZmiennej, zm.wartosc.ToString());
                         }
                         frmConsole.richTextBox1.Text += tmpString + '\n';
                     }
@@ -170,9 +170,9 @@ namespace libbloki
                 else
                 {
                     if (dzialania[i].srodekZmienna == true)
-                        temp = ZnajdzZmienna(dzialania[i].srodek);
-                    String tmpString = "";
-                    Czytaj tmpOkno = new Czytaj(tmpString);
+                        temp = ZnajdzZmienna(dzialania[i].srodek.ToString());
+
+                    Czytaj tmpOkno = new Czytaj(listaZmiennych, temp);
                     tmpOkno.label1.Text = "Podaj " + dzialania[i].srodek + ":";
 
                     if (listaZmiennych[temp].typ == typeof(int))
@@ -187,7 +187,7 @@ namespace libbloki
 
                     tmpOkno.ShowDialog();
 
-                    listaZmiennych[i].wartosc = tmpString;
+                    //listaZmiennych[i].wartosc = tmpString.ToString();
                 }
             }
         }

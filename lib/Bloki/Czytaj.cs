@@ -11,22 +11,24 @@ namespace libbloki
 {
     public partial class Czytaj : Form
     {
-        String bWeWy;
+        IList<Zmienna> listaZmiennych;
+        int index;
 
         public Czytaj()
         {
             InitializeComponent();
         }
 
-        public Czytaj(String usr)
+        public Czytaj(IList<Zmienna> usr, int ind)
         {
             InitializeComponent();
-            bWeWy = usr;
+            listaZmiennych = usr;
+            this.index = ind;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            bWeWy = maskedTextBox1.Text.ToString();
+            listaZmiennych[index].wartosc = maskedTextBox1.Text.ToString();
             Close();
         }
     }

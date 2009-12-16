@@ -173,7 +173,7 @@ namespace libbloki
 
             for (int i = 0; i < listaZmiennych.Count; i++)
             {
-                if (listaZmiennych[i].nazwa.Equals(zmienna) == true)
+                if (listaZmiennych[i].nazwa.Equals(temp) == true)
                     return i;
             }
 

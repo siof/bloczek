@@ -41,8 +41,8 @@
             this.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.Name = "BlokSTART";
             this.Size = new System.Drawing.Size(153, 77);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokSTART_MouseMove);
-            this.MouseHover += new System.EventHandler(this.BlokSTART_MouseHover);
+            //this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BlokSTART_MouseMove);
+            //this.MouseHover += new System.EventHandler(this.BlokSTART_MouseHover);
             this.ResumeLayout(false);
 
         }
