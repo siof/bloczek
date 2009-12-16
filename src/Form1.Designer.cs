@@ -91,7 +91,7 @@
             this.toolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow;
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(24, 323);
+            this.toolStrip1.Size = new System.Drawing.Size(24, 520);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -162,7 +162,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(24, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(662, 323);
+            this.panel1.Size = new System.Drawing.Size(768, 520);
             this.panel1.TabIndex = 0;
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.panel1.Click += new System.EventHandler(this.panel1_Click);
@@ -180,7 +180,7 @@
             this.symulacjaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(718, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(792, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -418,9 +418,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 347);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 544);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(718, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(792, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -449,7 +449,7 @@
             this.nastepny.Image = ((System.Drawing.Image)(resources.GetObject("nastepny.Image")));
             this.nastepny.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.nastepny.Name = "nastepny";
-            this.nastepny.Size = new System.Drawing.Size(29, 20);
+            this.nastepny.Size = new System.Drawing.Size(21, 20);
             this.nastepny.Text = "Nastepny";
             this.nastepny.Click += new System.EventHandler(this.nastepny_Click);
             // 
@@ -457,7 +457,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(718, 369);
+            this.ClientSize = new System.Drawing.Size(792, 566);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tsPracaKrokowa);
             this.Controls.Add(this.toolStrip1);

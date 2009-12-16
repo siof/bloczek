@@ -87,16 +87,16 @@ namespace libbloki
              this.OnPaint(pe);
         }
 
-        private void BlokSTART_MouseHover(object sender, EventArgs e)
-        {
+        //private void BlokSTART_MouseHover(object sender, EventArgs e)
+        //{
             
-        }
+        //}
 
-        private void BlokSTART_MouseMove(object sender, MouseEventArgs e)
-        {
-            Rectangle rect = new Rectangle(1, 1, 150, 75);
-            PaintEventArgs pe = new PaintEventArgs(graph, rect);
-            this.OnPaint(pe);
-        }
+        //private void BlokSTART_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    Rectangle rect = new Rectangle(1, 1, 150, 75);
+        //    PaintEventArgs pe = new PaintEventArgs(graph, rect);
+        //    this.OnPaint(pe);
+        //}
     }
 }

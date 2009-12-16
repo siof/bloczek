@@ -30,9 +30,9 @@ namespace libbloki
             {
                 temp = BWeWy.dzialania[i].dzialanie1 + " : ";
 
-                if (BWeWy.dzialania[i].srodekZmienna == true)
+                /*if (BWeWy.dzialania[i].srodekZmienna == true)
                     temp += BWeWy.znacznikZmiennej + BWeWy.dzialania[i].srodek + BWeWy.znacznikZmiennej;
-                else
+                else*/
                     temp += BWeWy.dzialania[i].srodek;
 
                 listBox.Items.Add(temp);
@@ -47,6 +47,7 @@ namespace libbloki
                     listBoxZmienne.Items.Add(temp);
                 }
             }
+            comboBox2.SelectedIndex = 0;
         }
 
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -74,18 +75,21 @@ namespace libbloki
 
             temp = comboBox1.SelectedItem.ToString() + " : " + txtBox.Text;
 
+            noweDzialanie.dzialanie1 = comboBox1.SelectedItem.ToString();
+            noweDzialanie.srodek = txtBox.Text;
+
             if (comboBox1.SelectedItem.ToString() == "Czytaj" && BWeWy.SprawdzCzyIstniejeZmienna(txtBox.Text) == false)
             {
                 noweDzialanie.nowaZmienna = true;
+                noweDzialanie.srodekZmienna = true;
                 noweDzialanie.lewa = txtBox.Text;
+                noweDzialanie.srodek = BWeWy.znacznikZmiennej + txtBox.Text + BWeWy.znacznikZmiennej;
+                listBoxZmienne.Items.Add(txtBox.Text.ToString());
                 if (comboBox2.SelectedItem != null)
                     noweDzialanie.dodatkowe = comboBox2.SelectedItem.ToString();
                 else
                     noweDzialanie.dodatkowe = "String";
             }
-
-            noweDzialanie.dzialanie1 = comboBox1.SelectedItem.ToString();
-            noweDzialanie.srodek = txtBox.Text;
 
             listBox.Items.Add(temp);
             BWeWy.dzialania.Add(noweDzialanie);
@@ -124,6 +128,20 @@ namespace libbloki
             {
                 if (e.KeyCode == Keys.Delete)
                 {
+                    if (BWeWy.dzialania[listBox.SelectedIndex].nowaZmienna == true)
+                    {
+                        String temp = BWeWy.dzialania[listBox.SelectedIndex].lewa.ToString();
+                        for (int i = 0; i < listBoxZmienne.Items.Count; i++)
+                        {
+                            if (listBoxZmienne.Items[i].ToString() == temp)
+                            {
+                                listBoxZmienne.Items.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+
+                    dodaneDzialania.Remove(BWeWy.dzialania[listBox.SelectedIndex]);
                     BWeWy.dzialania.RemoveAt(listBox.SelectedIndex);
                     listBox.Items.Remove(listBox.SelectedItem);
                 }

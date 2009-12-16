@@ -23,20 +23,20 @@ namespace libbloki
 
             for (int i = 0; i < bObl.dzialania.Count; i++)
             {
-                temp = bObl.dzialania[i].lewa + " := ";
+                temp = bObl.znacznikZmiennej + bObl.dzialania[i].lewa + bObl.znacznikZmiennej + " := ";
 
-                if (bObl.dzialania[i].srodekZmienna == true)
+                /*if (bObl.dzialania[i].srodekZmienna == true)
                     temp += bObl.znacznikZmiennej + bObl.dzialania[i].srodek + bObl.znacznikZmiennej;
-                else
+                else*/
                     temp += bObl.dzialania[i].srodek;
 
                 if (bObl.dzialania[i].dzialanie2 != null)
                 {
                     temp += " " + bObl.dzialania[i].dzialanie2 + " ";
 
-                    if (bObl.dzialania[i].prawaZmienna == true)
+                    /*if (bObl.dzialania[i].prawaZmienna == true)
                         temp += bObl.dzialania[i].znacznikZmiennej + bObl.dzialania[i].prawa + bObl.znacznikZmiennej;
-                    else
+                    else*/
                         temp += bObl.dzialania[i].prawa;
                 }
 
