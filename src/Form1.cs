@@ -9,6 +9,9 @@ using System.Text;
 using System.Windows.Forms;
 using libbloki;
 using System.Threading;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Okienka
 {
@@ -2106,6 +2109,7 @@ namespace Okienka
 
                 if (aktualnyBlok.typBloku == typeof(BlokWeWy))
                 {
+
                     ((BlokWeWy)aktualnyBlok).Wykonaj();
 
                     if (aktualnyBlok.nastepnyBlok[0] == null)
@@ -2170,6 +2174,94 @@ namespace Okienka
         {
             if (symuluj == false)
             {
+                symuluj=true;
+            console.Show();
+            console.richTextBox1.Clear();
+
+                if (tabBloki.Count == 0)
+                return;
+
+            aktualnyBlok = tabBloki[ZnajdzBlok("START")];
+            aktualnyBlok.tryb = tryby.aktualny;
+            bool dec = false;   //jesli false to wyszlo "NIE", jesli true to "TAK"
+            
+            while (aktualnyBlok.Name != "STOP" && symuluj == true)
+            {
+                if (symuluj == false)
+                {
+                    // e.Cancel = true;
+                }
+
+                if (aktualnyBlok.typBloku == typeof(BlokObliczeniowy))
+                {
+                    ((BlokObliczeniowy)aktualnyBlok).Wykonaj();
+
+                    if (aktualnyBlok.nastepnyBlok[0] == null)       //zatrzymaj jesli niema sciezki po ktorej masz isc
+                    {
+                       // e.Cancel = true;
+                        return;
+                    }
+                }
+
+                if (aktualnyBlok.typBloku == typeof(BlokWeWy))
+                {
+
+                    ((BlokWeWy)aktualnyBlok).Wykonaj();
+
+                    if (aktualnyBlok.nastepnyBlok[0] == null)
+                    {
+                       // e.Cancel = true;
+                        return;
+                    }
+                }
+
+                if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
+                {
+                    dec = ((BlokDecyzyjny)aktualnyBlok).Wykonaj();
+
+                    if (dec == true)
+                    {
+                        if (aktualnyBlok.nastepnyBlok[1] == null)
+                        {
+                            //e.Cancel = true;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (aktualnyBlok.nastepnyBlok[0] == null)
+                        {
+                           // e.Cancel = true;
+                            return;
+                        }
+                    }
+                }
+
+                aktualnyBlok.tryb = tryby.normal;
+
+                                                            //wybór następnego bloku
+                if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
+                {
+                    if (dec == true)
+                        aktualnyBlok = aktualnyBlok.nastepnyBlok[1];
+                    else
+                        aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+                }
+                else
+                    aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+
+                aktualnyBlok.tryb = tryby.aktualny;
+            }
+
+            if (aktualnyBlok.Name == "STOP")
+                symuluj = false;
+
+            for (int i = 0; i < tabBloki.Count; i++)
+                tabBloki[i].tryb = tryby.normal;
+
+            aktualnyBlok = null;
+            zaznaczony = null;
+                /*
                 symuluj = true;
                 console.Show();
                 console.richTextBox1.Clear();
@@ -2181,14 +2273,16 @@ namespace Okienka
                 bw.DoWork += new DoWorkEventHandler(Symulacja);
                 bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(PoSymulacji);
 
+                
                 bw.RunWorkerAsync();
+                 */
             }
             else
             {
                 symuluj = false;
 
-                if (bw.IsBusy == true)
-                    bw.CancelAsync();
+               // if (bw.IsBusy == true)
+                   // bw.CancelAsync();
             }
         }
 
@@ -2290,6 +2384,11 @@ namespace Okienka
 
                 aktualnyBlok.tryb = tryby.aktualny;
             }
+        }
+
+        private void zapiszToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
