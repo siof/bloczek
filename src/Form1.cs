@@ -25,7 +25,9 @@ namespace Okienka
         private bool ctrl = false;
         private bool przesun = false;
         private bool symuluj = false;
+        private bool _zmodyfikowany = false;
         private String blokDecTakNie = "";
+        private String nazwaPliku = "";
 
         private Bloki polaczOD = null, polaczDO = null;
         private int ile = 0;
@@ -55,7 +57,13 @@ namespace Okienka
         public Bloki aktualnyBlok;
 
         private BackgroundWorker bw = new BackgroundWorker();
-        
+
+        public bool zmodyfikowany
+        {
+            get { return _zmodyfikowany; }
+            set { _zmodyfikowany = value; }
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -73,6 +81,7 @@ namespace Okienka
             bOOpcje = new BOOpcje((BlokObliczeniowy)sender);
             bOOpcje.ShowDialog();
             bOOpcje.Dispose();
+            zmodyfikowany = true;
         }
 
         private void WywolajBDOpcje(object sender, MouseEventArgs e)
@@ -85,6 +94,7 @@ namespace Okienka
             bDOpcje = new BDOpcje((BlokDecyzyjny)sender);
             bDOpcje.ShowDialog();
             bDOpcje.Dispose();
+            zmodyfikowany = true;
         }
 
         private void WywolajBWeWyOpcje(object sender, MouseEventArgs e)
@@ -97,6 +107,7 @@ namespace Okienka
             bWeWyOpcje = new BWeWyOpcje((BlokWeWy)sender);
             bWeWyOpcje.ShowDialog();
             bWeWyOpcje.Dispose();
+            zmodyfikowany = true;
         }
 
         private void WyczyscZaznaczenie()
@@ -154,6 +165,7 @@ namespace Okienka
                 ((Bloki)sender).Dispose();
                 ile--;
             }
+            zmodyfikowany = true;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -182,7 +194,7 @@ namespace Okienka
                 
                 if (typ == typeof(BlokSTART))
                 {
-                    if (JestBlokONazwie("START"))
+                    if (JestBlokONazwie("START")==true)
                         return;
 
                     BlokSTART temp = new BlokSTART();
@@ -257,11 +269,13 @@ namespace Okienka
                 ile++;
                 if (ctrl != true)
                     klik = false;
+                zmodyfikowany = true;
             }
             else
             {
                 WyczyscZaznaczenie();
             }
+
         }
 
         private void panel1_Scroll(object sender, ScrollEventArgs e)
@@ -291,6 +305,7 @@ namespace Okienka
             p.IndeksDO = p.RefDO.poprzedniBlok.IndexOf(p.RefOD);            
             Polaczenia.Add(p);
             RysujPolaczenia(p);
+            zmodyfikowany = true;
         }
 
         private void UsunPolaczenia(Polaczenie p)
@@ -304,6 +319,7 @@ namespace Okienka
                     UsunPolaczenie(pol);
                 }
             }
+            zmodyfikowany = true;
         }
 
         private void UsunPolaczenie(Polaczenie p)
@@ -327,6 +343,7 @@ namespace Okienka
                 Polaczenia[i].RefDO.poprzedniBlok.Remove(Polaczenia[i].RefOD);
                 Polaczenia.RemoveAt(i);
             }
+            zmodyfikowany = true;
         }
 
         private List<Polaczenie> ZnajdzPolaczenia(Polaczenie p)
@@ -474,6 +491,7 @@ namespace Okienka
                     }
                 }
             }
+            zmodyfikowany = true;
         }
 
         private void RysujPolaczenie(Polaczenie p)
@@ -1776,6 +1794,7 @@ namespace Okienka
                 }
             }
 ////////////////////////////////////
+            zmodyfikowany = true;
         }
 
         public void PrzesunStart(object sender, MouseEventArgs e)
@@ -1905,6 +1924,7 @@ namespace Okienka
                         panel1.Controls.Add(pozK[i]);
                     }
                 }
+                zmodyfikowany = true;
             }
             else
             {
@@ -2030,6 +2050,7 @@ namespace Okienka
                 }
                 
                 panel1.Refresh();
+                zmodyfikowany = true;
             }
         }
 
@@ -2089,6 +2110,7 @@ namespace Okienka
                     UsunPolaczenie(tmpList.First());
                 }
             }
+            zmodyfikowany = true;
         }
 
         private void Symulacja(object sender, DoWorkEventArgs e)
@@ -2595,6 +2617,328 @@ namespace Okienka
             {
                 plik.Close();
             }
+        }
+
+        private void OtworzSchematPlik(String plik)
+        {
+            if (zmodyfikowany == true)
+            {
+                MessageBoxButtons msgb = MessageBoxButtons.YesNoCancel;
+                DialogResult dr = MessageBox.Show("Czy zapisać zmiany?", "Czy zapisać zmiany?", msgb);
+                
+                if (dr == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                if (dr == DialogResult.Yes)
+                {
+                    if (nazwaPliku != "")
+                    {
+                        ZapiszSchematPlik(nazwaPliku);
+                    }
+                    else
+                    {
+                        saveAsToolStripMenuItem_Click(null, null);
+                    }
+                }
+            }
+
+            this.tabBloki.Clear();
+            this.zmienne.Clear();
+            this.Polaczenia.Clear();
+            panel1.Controls.Clear();
+            panel1.Refresh();
+            Bloki temp = new Bloki();
+            int ilosc = 0, iloscDzialan = 0;
+
+            ile = 0;
+            FileStream fs = new FileStream(plik, FileMode.Open);
+
+            BinaryFormatter bf = new BinaryFormatter();
+            try
+            {
+
+                ilosc = (Int32)bf.Deserialize(fs);//ile blokow
+                ParametryBloku tempPB;
+                for (int i = 0; i < ilosc; i++)  //wczytanie/dodanie blokow
+                {
+                    tempPB = (ParametryBloku)bf.Deserialize(fs);
+
+                    if (tempPB.typ == typeof(BlokSTART))
+                    {
+                        if (JestBlokONazwie("START"))
+                            return;
+
+                        temp = new BlokSTART();
+                        temp.typBloku = typeof(BlokSTART);
+                        temp.Name = "START";
+                        temp.nazwaBloku = "START";
+                    }
+
+                    if (tempPB.typ == typeof(BlokSTOP))
+                    {
+                        temp = new BlokSTOP();
+                        temp.typBloku = typeof(BlokSTOP);
+                        temp.Name = tempPB.Nazwa.ToString();
+                        temp.nazwaBloku = tempPB.Nazwa.ToString();
+                    }
+
+                    if (tempPB.typ == typeof(BlokObliczeniowy))
+                    {
+                        temp = new BlokObliczeniowy();
+                        temp.typBloku = typeof(BlokObliczeniowy);
+                        temp.listaZmiennych = zmienne;
+                        temp.Name = tempPB.Nazwa.ToString();
+                        temp.nazwaBloku = tempPB.Nazwa.ToString();
+                        temp.MouseDoubleClick += new MouseEventHandler(WywolajBOOpcje);
+                    }
+
+                    if (tempPB.typ == typeof(BlokDecyzyjny))
+                    {
+                        temp = new BlokDecyzyjny();
+                        temp.typBloku = typeof(BlokDecyzyjny);
+                        temp.listaZmiennych = zmienne;
+                        temp.Name = tempPB.Nazwa.ToString();
+                        temp.nazwaBloku = tempPB.Nazwa.ToString();
+                        temp.MouseDoubleClick += new MouseEventHandler(WywolajBDOpcje);
+                    }
+
+                    if (tempPB.typ == typeof(BlokWeWy))
+                    {
+                        temp = new BlokWeWy(console);//
+                        temp.typBloku = typeof(BlokWeWy);
+                        temp.listaZmiennych = zmienne;
+                        temp.Name = tempPB.Nazwa.ToString();
+                        temp.nazwaBloku = tempPB.Nazwa.ToString(); ;
+                        temp.MouseDoubleClick += new MouseEventHandler(WywolajBWeWyOpcje);
+                    }
+
+                    //globalne dla wszystkich bloków
+
+                    temp.Left = temp.Left = tempPB.x;
+                    temp.Top = tempPB.y;
+                    temp.KeyDown += new KeyEventHandler(UsunBlok);
+                    temp.MouseDown += new MouseEventHandler(PrzesunStart);
+                    temp.MouseMove += new MouseEventHandler(panel1_MouseMove);
+                    temp.MouseUp += new MouseEventHandler(panel1_MouseUp);
+
+                    iloscDzialan = (Int32)bf.Deserialize(fs);
+                    for (int j = 0; j < iloscDzialan; j++)
+                    {
+                        temp.dzialania.Add((Dzialanie)bf.Deserialize(fs));
+                    }
+
+                    tabBloki.Add(temp);
+                    panel1.Controls.Add(tabBloki.Last());
+                    tempPB = null;
+                    temp = null;
+                    ile++;
+                }
+
+                ilosc = (Int32)bf.Deserialize(fs);//ile zmiennych
+                for (int i = 0; i < ilosc; i++)//wczytanie zmiennych
+                {
+                    zmienne.Add((Zmienna)bf.Deserialize(fs));
+                }
+
+                ilosc = (Int32)bf.Deserialize(fs);//ile polaczen
+                if (ilosc > 0)
+                {
+                    IList<Polaczenie> tmpPolaczenia = new List<Polaczenie>();
+                    for (int i = 0; i < ilosc; i++)//wczytanie polaczen
+                    {
+                        tmpPolaczenia.Add((Polaczenie)bf.Deserialize(fs));
+                    }
+
+                    //wypelnienie referencji w polaczeniach  refOD i refDO
+
+                    foreach (Polaczenie tmpPolaczenie in tmpPolaczenia)
+                    {
+                        if((JestBlokONazwie(tmpPolaczenie.nazwaOD)==true) &&(JestBlokONazwie(tmpPolaczenie.nazwaDO)==true)) 
+                        {
+                            tmpPolaczenie.RefOD = tabBloki[ZnajdzBlok(tmpPolaczenie.nazwaOD)];
+                            tmpPolaczenie.RefDO = tabBloki[ZnajdzBlok(tmpPolaczenie.nazwaDO)];
+                            DodajPolaczenie(tmpPolaczenie);
+                        }
+                        
+                    }
+
+                    foreach (Polaczenie tmpPolaczenie in Polaczenia)
+                    {
+                        RysujPolaczenie(tmpPolaczenie);
+                    }
+                }
+                zmodyfikowany = false;
+            }
+            catch (SerializationException exc)
+            {
+                MessageBox.Show("Nieudana deserializacja: " + exc.Message);
+                throw;
+            }
+            finally
+            {
+                fs.Close();
+            }
+        }
+
+        private void ZapiszSchematPlik(String plik)
+        {
+            if (tabBloki.Count > 0)
+            {
+                ParametryBloku pb;
+                foreach (Bloki tmpBlok in tabBloki)
+                {
+                    pb = new ParametryBloku();
+                    pb.x = tmpBlok.Left;
+                    pb.y = tmpBlok.Top;
+                    pb.typ = tmpBlok.GetType();
+                    pb.Nazwa = tmpBlok.nazwaBloku;
+
+                    foreach (Dzialanie tmpDzial in tmpBlok.dzialania)
+                    {
+                        pb.dzialania.Add(tmpDzial);
+                    }
+
+                    ParamBlokow.Add(pb);
+                    pb = null;
+                }
+
+                FileStream fs = new FileStream(plik, FileMode.Create);
+
+                BinaryFormatter bf = new BinaryFormatter();
+                try
+                {
+                    bf.Serialize(fs, ParamBlokow.Count());//liczba blokow
+                    foreach (ParametryBloku tmpParam in ParamBlokow)//bloki
+                    {
+                        bf.Serialize(fs, tmpParam);
+
+                        bf.Serialize(fs, tmpParam.dzialania.Count());
+                        foreach (Dzialanie tmpDzial in tmpParam.dzialania)//dzialnia danego bloku
+                        {
+                            bf.Serialize(fs, tmpDzial);
+                        }
+                    }
+
+                    bf.Serialize(fs, zmienne.Count());//liczba zmiennych
+                    foreach (Zmienna tmpZmienna in zmienne)//zmienne
+                    {
+                        bf.Serialize(fs, tmpZmienna);
+                    }
+
+
+                    bf.Serialize(fs, Polaczenia.Count());//liczba polaczen
+                    foreach (Polaczenie tmpPolaczenie in Polaczenia)
+                    {
+                        bf.Serialize(fs, tmpPolaczenie);
+                    }
+
+                    zmodyfikowany = false;
+                }
+                catch (SerializationException exc)
+                {
+                    MessageBox.Show("Nieudana serializacja: " + exc.Message);
+                    throw;
+                }
+                finally
+                {
+                    ParamBlokow.Clear();
+                    fs.Close();
+                }
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.FileName = "";
+            openFileDialog1.ShowDialog();
+            if (openFileDialog1.FileName != "")
+            {
+                OtworzSchematPlik(openFileDialog1.FileName);
+                nazwaPliku = openFileDialog1.FileName.ToString();
+                saveToolStripMenuItem.Enabled = true;
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (nazwaPliku != "")
+            {
+                ZapiszSchematPlik(nazwaPliku);
+            }
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (zmodyfikowany == true)
+            {
+                MessageBoxButtons msgb = MessageBoxButtons.YesNoCancel;
+                DialogResult dr = MessageBox.Show("Czy zapisać zmiany?", "Czy zapisać zmiany?", msgb);
+
+                if (dr == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                if (dr == DialogResult.Yes)
+                {
+                    if (nazwaPliku != "")
+                    {
+                        ZapiszSchematPlik(nazwaPliku);
+                    }
+                    else
+                    {
+                        saveAsToolStripMenuItem_Click(null, null);
+                    }
+                }
+            }
+            nazwaPliku = "";
+            saveToolStripMenuItem.Enabled = false;
+            tabBloki.Clear();
+            Polaczenia.Clear();
+            zmienne.Clear();
+            panel1.Controls.Clear();
+            panel1.Refresh();
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.FileName = "";
+            saveFileDialog1.ShowDialog();
+            if (saveFileDialog1.FileName != "")
+            {
+                nazwaPliku = saveFileDialog1.FileName.ToString();
+                ZapiszSchematPlik(saveFileDialog1.FileName);
+                saveToolStripMenuItem.Enabled = true;
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (zmodyfikowany == true)
+            {
+                MessageBoxButtons msgb = MessageBoxButtons.YesNoCancel;
+                DialogResult dr = MessageBox.Show("Czy zapisać zmiany?", "Czy zapisać zmiany?", msgb);
+
+                if (dr == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+
+                if (dr == DialogResult.Yes)
+                {
+                    if (nazwaPliku != "")
+                    {
+                        ZapiszSchematPlik(nazwaPliku);
+                    }
+                    else
+                    {
+                        saveAsToolStripMenuItem_Click(null, null);
+                    }
+                }
+            }
+            //Application.Exit();
         }
     }
 }
