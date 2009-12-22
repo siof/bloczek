@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aplikacja", "src\Aplikacja.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjektBloki", "lib\Bloki\ProjektBloki.csproj", "{CCCF8DF6-8476-4981-8CC3-80EED69C5201}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjektGenerowanieKodu", "ProjektGenerowanieKodu\ProjektGenerowanieKodu.csproj", "{D8B57098-7332-4909-B5E5-0207BDA72F11}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjektGenerowanieKodu", "lib\GenerowanieKodu\ProjektGenerowanieKodu.csproj", "{D8B57098-7332-4909-B5E5-0207BDA72F11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
