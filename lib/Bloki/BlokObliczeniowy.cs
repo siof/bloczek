@@ -15,13 +15,13 @@ namespace libbloki
     {
         //private BOOpcje frmOpcje;
 
-        public void DodajDzialanie(Działanie dzialanie)
+        public void DodajDzialanie(Dzialanie dzialanie)
         {
             if (dzialanie != null)
                 dzialania.Add(dzialanie);
         }
 
-        public void UsunDzialanie(Działanie dzialanie)
+        public void UsunDzialanie(Dzialanie dzialanie)
         {
             if (dzialanie != null)
                 dzialania.Remove(dzialanie);
@@ -52,7 +52,7 @@ namespace libbloki
                 this.txt.Text = "";
                 int i=0;
                 String tempString="";
-                foreach (Działanie d in this.dzialania)
+                foreach (Dzialanie d in this.dzialania)
                 {
                     tempString += znacznikZmiennej + d.lewa.ToString() + znacznikZmiennej + " "
                                     + d.dzialanie1 + d.srodek.ToString() +
@@ -70,7 +70,7 @@ namespace libbloki
                 {
                     tempString = "";
                     this.txt.Text += "...";
-                    foreach (Działanie d in this.dzialania)
+                    foreach (Dzialanie d in this.dzialania)
                     {
                         tempString += znacznikZmiennej + d.lewa.ToString() + znacznikZmiennej + " "
                                     + d.dzialanie1 + d.srodek.ToString() +

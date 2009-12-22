@@ -5,6 +5,7 @@ using System.Linq;
 namespace libbloki
 {
     //niestety jeśli będziemy zmieniać znacznik zmiennej będziemy musieli robić to w dwóch miejscach (chyba że uda sie zrobić aby klasa Bloki dziedziczyła od 2 klas)
+    [Serializable]
     public class DodatkoweStale
     {
         protected String _znacznikZmiennej = "~~";
@@ -15,6 +16,7 @@ namespace libbloki
         }
     }
 
+    [Serializable]
     public class Zmienna
     {
         private String _nazwa;
@@ -40,7 +42,8 @@ namespace libbloki
         }
     }
 
-    public class Działanie : DodatkoweStale
+    [Serializable]
+    public class Dzialanie : DodatkoweStale
     {
         private String _dodatkowe;
 
@@ -135,5 +138,43 @@ namespace libbloki
             set { _dodatkowe = value; }
         }
 
+    }
+
+    [Serializable]
+    public class ParametryBloku
+    {
+        private int _x, _y;
+        private String nazwa;
+        private Type _typ;
+        private IList<Dzialanie> _dzialania = new List<Dzialanie>();
+
+        public IList<Dzialanie> dzialania
+        {
+            get { return _dzialania; }
+            set { _dzialania = value; }
+        }
+
+        public String Nazwa
+        {
+            get { return nazwa; }
+            set { nazwa = value; }
+        }
+        public int y
+        {
+            get { return _y; }
+            set { _y = value; }
+        }
+
+        public int x
+        {
+            get { return _x; }
+            set { _x = value; }
+        }
+
+        public Type typ
+        {
+            get { return _typ; }
+            set { _typ = value; }
+        }
     }
 }

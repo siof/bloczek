@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BOOpcje : Form
     {
         BlokObliczeniowy bObl;
-        IList<Działanie> dodaneDzialania = new List<Działanie>();
+        IList<Dzialanie> dodaneDzialania = new List<Dzialanie>();
 
         public BOOpcje(BlokObliczeniowy usr)
         {
@@ -86,7 +86,7 @@ namespace libbloki
                 return;
 
             String temp;
-            Działanie noweDzialanie = new Działanie();
+            Dzialanie noweDzialanie = new Dzialanie();
 
             temp = txtL.Text + " := " + txtS.Text;
             noweDzialanie.lewa = txtL.Text;

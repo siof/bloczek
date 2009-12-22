@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace Okienka
 {
+    
     static class Program
     {
         /// <summary>

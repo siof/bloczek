@@ -469,6 +469,7 @@
             this.odczytajToolStripMenuItem.Name = "odczytajToolStripMenuItem";
             this.odczytajToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.odczytajToolStripMenuItem.Text = "Otworz";
+            this.odczytajToolStripMenuItem.Click += new System.EventHandler(this.odczytajToolStripMenuItem_Click);
             // 
             // Form1
             // 

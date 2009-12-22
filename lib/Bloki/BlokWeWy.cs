@@ -117,7 +117,7 @@ namespace libbloki
                 this.txt.Text = "";
                 int i = 0;
                 String tempString = "";
-                foreach (Działanie d in this.dzialania)
+                foreach (Dzialanie d in this.dzialania)
                 {
                     tempString += d.dzialanie1 + ": \"" + d.srodek.ToString() + "\"\n";
                     i++;
@@ -133,7 +133,7 @@ namespace libbloki
                 {
                     tempString = "";
                     this.txt.Text += "...";
-                    foreach (Działanie d in this.dzialania)
+                    foreach (Dzialanie d in this.dzialania)
                     {
                         tempString += d.dzialanie1 + ": \"" + d.srodek.ToString() + "\"\n";
                     }
@@ -186,7 +186,7 @@ namespace libbloki
                     }
 
                     tmpOkno.ShowDialog();
-
+                    
                     //listaZmiennych[i].wartosc = tmpString.ToString();
                 }
             }

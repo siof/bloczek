@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BWeWyOpcje : Form
     {
         BlokWeWy BWeWy;
-        IList<Działanie> dodaneDzialania = new List<Działanie>();
+        IList<Dzialanie> dodaneDzialania = new List<Dzialanie>();
 
         public BWeWyOpcje()
         {
@@ -71,7 +71,7 @@ namespace libbloki
                 return;
 
             String temp;
-            Działanie noweDzialanie = new Działanie();
+            Dzialanie noweDzialanie = new Dzialanie();
 
             temp = comboBox1.SelectedItem.ToString() + " : " + txtBox.Text;
 
