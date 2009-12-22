@@ -2100,7 +2100,7 @@ namespace Okienka
             aktualnyBlok.tryb = tryby.aktualny;
             bool dec = false;   //jesli false to wyszlo "NIE", jesli true to "TAK"
             
-            while (aktualnyBlok.Name != "STOP" && symuluj == true)
+            while (aktualnyBlok.typBloku == typeof(BlokSTOP) && symuluj == true)
             {
                 if (symuluj == false)
                     e.Cancel = true;
@@ -2166,7 +2166,7 @@ namespace Okienka
                 aktualnyBlok.tryb = tryby.aktualny;
             }
 
-            if (aktualnyBlok.Name == "STOP")
+            if (aktualnyBlok.typBloku == typeof(BlokSTOP))
                 symuluj = false;
         }
 
@@ -2194,7 +2194,7 @@ namespace Okienka
             aktualnyBlok.tryb = tryby.aktualny;
             bool dec = false;   //jesli false to wyszlo "NIE", jesli true to "TAK"
             
-            while (aktualnyBlok.Name != "STOP" && symuluj == true)
+            while (aktualnyBlok.typBloku != typeof(BlokSTOP) && symuluj == true)
             {
                 if (symuluj == false)
                 {
@@ -2262,7 +2262,7 @@ namespace Okienka
                 aktualnyBlok.tryb = tryby.aktualny;
             }
 
-            if (aktualnyBlok.Name == "STOP")
+            if (aktualnyBlok.typBloku == typeof(BlokSTOP))
                 symuluj = false;
 
             for (int i = 0; i < tabBloki.Count; i++)
