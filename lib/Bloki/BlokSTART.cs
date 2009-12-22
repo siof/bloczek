@@ -9,8 +9,6 @@ using System.Windows.Forms;
 
 namespace libbloki
 {
-    
-    
     public partial class BlokSTART : Bloki
     {
         

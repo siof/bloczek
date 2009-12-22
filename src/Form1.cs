@@ -15,6 +15,7 @@ using System.IO;
 
 namespace Okienka
 {
+    [Serializable]
     public partial class Form1 : Form
     {
         private static int numer = 0;
@@ -35,9 +36,9 @@ namespace Okienka
         private BOOpcje bOOpcje;
         private BWeWyOpcje bWeWyOpcje;
         private Czytaj czytaj;
-        private libbloki.Console console = new libbloki.Console(); 
+        private libbloki.Console console = new libbloki.Console();
 
-       
+        private IList<ParametryBloku> ParamBlokow = new List<ParametryBloku>();
         private IList<Bloki> tabBloki = new List<Bloki>();
         public IList<Zmienna> zmienne = new List<Zmienna>();
         protected IList<Polaczenie> Polaczenia = new List<Polaczenie>();
@@ -105,7 +106,7 @@ namespace Okienka
                 if (zaznaczony.GetType() == typeof(LiniaPion) ||
                     zaznaczony.GetType() == typeof(LiniaPoz))
                 {
-                    Polaczenie tmpPol = new Polaczenie(null, 0, null, 0, zaznaczony, null);
+                    Polaczenie tmpPol = new Polaczenie(null, 0,"", null, 0,"", zaznaczony, null);
                     OdznaczPolaczenie(tmpPol);
                     
                     zaznaczony = null;
@@ -140,7 +141,7 @@ namespace Okienka
         {
             if ((e.KeyCode == Keys.Delete) &&(zaznaczony != null))
             {
-                Polaczenie tmpPol = new Polaczenie((Bloki)sender, 0, null, 0, null, null);
+                Polaczenie tmpPol = new Polaczenie((Bloki)sender, 0,"", null, 0,"", null, null);
                 UsunPolaczenia(tmpPol);
                 tmpPol.RefOD = null;
                 tmpPol.RefDO = (Bloki)sender;
@@ -189,6 +190,7 @@ namespace Okienka
                     temp2 = (Bloki)temp;
                     temp2.typBloku = typeof(BlokSTART);
                     temp2.Name = "START";
+                    temp2.nazwaBloku = "START";
                 }
 
                 if (typ == typeof(BlokSTOP))
@@ -197,7 +199,8 @@ namespace Okienka
 
                     temp2 = (Bloki)temp;
                     temp2.typBloku = typeof(BlokSTOP);
-                    temp2.Name = "STOP";
+                    temp2.Name = "STOP" + numer.ToString();
+                    temp2.nazwaBloku = "STOP" + numer.ToString();
                 }
 
                 if (typ == typeof(BlokObliczeniowy))
@@ -208,6 +211,8 @@ namespace Okienka
                     temp2.typBloku = typeof(BlokObliczeniowy);
                     temp2.listaZmiennych = zmienne;
                     temp2.MouseDoubleClick += new MouseEventHandler(WywolajBOOpcje);
+                    temp2.Name = "BO" + numer.ToString();
+                    temp2.nazwaBloku = "BO" + numer.ToString();
                 }
 
                 if (typ == typeof(BlokDecyzyjny))
@@ -218,6 +223,8 @@ namespace Okienka
                     temp2.typBloku = typeof(BlokDecyzyjny);
                     temp2.listaZmiennych = zmienne;
                     temp2.MouseDoubleClick += new MouseEventHandler(WywolajBDOpcje);
+                    temp2.Name = "BD" + numer.ToString();
+                    temp2.nazwaBloku = "BD" + numer.ToString();
                 }
 
                 if (typ == typeof(BlokWeWy))
@@ -228,12 +235,14 @@ namespace Okienka
                     temp2.typBloku = typeof(BlokWeWy);
                     temp2.listaZmiennych = zmienne;
                     temp2.MouseDoubleClick += new MouseEventHandler(WywolajBWeWyOpcje);
+                    temp2.Name = "BW" + numer.ToString();
+                    temp2.nazwaBloku = "BW" + numer.ToString();
                 }
 
                 //globalne dla wszystkich bloków
 
-                if (temp2.Name == "")               //START i STOP mają własne nazwy - tylko raz mogą wystąpić w algorytmie
-                    temp2.Name = numer.ToString();      
+                //if (temp2.Name == "")               //START i STOP mają własne nazwy - tylko raz mogą wystąpić w algorytmie
+                //    temp2.Name = numer.ToString();      
 
                 temp2.Left = ((MouseEventArgs)e).X;
                 temp2.Top = ((MouseEventArgs)e).Y;
@@ -270,7 +279,7 @@ namespace Okienka
             if (p.RefOD == null || p.RefDO == null)
                 return;
 
-                Polaczenie tmpPol = new Polaczenie(p.RefOD,p.IndeksOD,null,0,null,null);
+                Polaczenie tmpPol = new Polaczenie(p.RefOD,p.IndeksOD,p.nazwaOD,null,0,"",null,null);
                 List<Polaczenie> tmpList = ZnajdzPolaczenia(tmpPol);
                 if(tmpList.Count > 0 )
                 {
@@ -377,7 +386,7 @@ namespace Okienka
         private void ZaznaczPolaczenie(object sender, MouseEventArgs e)
         {
             zaznaczony = (Bloki)sender;
-            Polaczenie tmpPol = new Polaczenie(null,0,null,0,(Bloki)sender,null);
+            Polaczenie tmpPol = new Polaczenie(null,0,"",null,0,"",(Bloki)sender,null);
             List<Polaczenie> tmpList;
             tmpList = ZnajdzPolaczenia(tmpPol);
             if (tmpList.Count > 0)
@@ -1820,13 +1829,13 @@ namespace Okienka
                                 {
                                     case "TAK":
                                         {
-                                            Polaczenie tmpPol = new Polaczenie(polaczOD, 1, polaczDO, 0, null, null);
+                                            Polaczenie tmpPol = new Polaczenie(polaczOD, 1,polaczOD.nazwaBloku, polaczDO, 0,polaczDO.nazwaBloku, null, null);
                                             DodajPolaczenie(tmpPol);
                                             break;
                                         }
                                     case "NIE":
                                         {
-                                            Polaczenie tmpPol = new Polaczenie(polaczOD, 0, polaczDO, 0, null, null);
+                                            Polaczenie tmpPol = new Polaczenie(polaczOD, 0,polaczOD.nazwaBloku, polaczDO, 0,polaczDO.nazwaBloku, null, null);
                                             DodajPolaczenie(tmpPol);
                                             break;
                                         }
@@ -1835,7 +1844,7 @@ namespace Okienka
                             }
                             else if ((polaczDO.nastepnyBlok[0] != polaczOD) || (polaczDO.GetType()==typeof(BlokDecyzyjny)))
                                 {
-                                    Polaczenie tmpPol = new Polaczenie(polaczOD, 0, polaczDO, 0, null, null);
+                                    Polaczenie tmpPol = new Polaczenie(polaczOD, 0,polaczOD.nazwaBloku, polaczDO, 0,polaczDO.nazwaBloku, null, null);
                                     DodajPolaczenie(tmpPol);                                    
                                 }
                         }
@@ -1970,7 +1979,7 @@ namespace Okienka
                     zaznaczony.Top = pozK[0].Top;
                 }
                 List<Polaczenie> temp;
-                Polaczenie p = new Polaczenie(null,0,zaznaczony,0,null,null);
+                Polaczenie p = new Polaczenie(null,0,"",zaznaczony,0,"",null,null);
                 
                 temp = ZnajdzPolaczenia(p);
                 if (temp.Count > 0)
@@ -2071,7 +2080,7 @@ namespace Okienka
         {
             if (e.KeyCode == Keys.Delete)
             {
-                Polaczenie tmpPol = new Polaczenie(null, 0, null, 0, (Bloki)sender, null);
+                Polaczenie tmpPol = new Polaczenie(null, 0,"", null, 0,"", (Bloki)sender, null);
                 List<Polaczenie> tmpList;
                 tmpList = ZnajdzPolaczenia(tmpPol);
                 
@@ -2388,7 +2397,204 @@ namespace Okienka
 
         private void zapiszToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (tabBloki.Count > 0)
+            {
+                ParametryBloku pb;
+                foreach (Bloki tmpBlok in tabBloki)
+                {
+                    pb = new ParametryBloku();
+                    pb.x = tmpBlok.Left;
+                    pb.y = tmpBlok.Top;
+                    pb.typ = tmpBlok.GetType();
+                    pb.Nazwa = tmpBlok.nazwaBloku;
 
+                    foreach (Dzialanie tmpDzial in tmpBlok.dzialania)
+                    {
+                        pb.dzialania.Add(tmpDzial);
+                    }
+
+                    ParamBlokow.Add(pb);
+                    pb = null;
+                }
+            
+                FileStream plik = new FileStream("plik.xxx", FileMode.Create);
+
+                BinaryFormatter bf = new BinaryFormatter();
+                try
+                {
+                    bf.Serialize(plik, ParamBlokow.Count());//liczba blokow
+                    foreach (ParametryBloku tmpParam in ParamBlokow)//bloki
+                    {
+                        bf.Serialize(plik, tmpParam);
+
+                        bf.Serialize(plik, tmpParam.dzialania.Count());
+                        foreach (Dzialanie tmpDzial in tmpParam.dzialania)//dzialnia danego bloku
+                        {
+                            bf.Serialize(plik, tmpDzial);
+                        }
+                    }
+                    
+                    bf.Serialize(plik, zmienne.Count());//liczba zmiennych
+                    foreach (Zmienna tmpZmienna in zmienne)//zmienne
+                    {
+                        bf.Serialize(plik, tmpZmienna);
+                    }
+
+
+                    bf.Serialize(plik, Polaczenia.Count());//liczba polaczen
+                    foreach (Polaczenie tmpPolaczenie in Polaczenia)
+                    {
+                        bf.Serialize(plik, tmpPolaczenie);
+                    }
+
+                }
+                catch (SerializationException exc)
+                {
+                    MessageBox.Show("Nieudana serializacja: " + exc.Message);
+                    throw;
+                }
+                finally
+                {
+                    ParamBlokow.Clear();
+                    plik.Close();
+                }
+            }
+
+
+        }
+
+        private void odczytajToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.tabBloki.Clear();
+            this.zmienne.Clear();
+            this.Polaczenia.Clear();
+            panel1.Controls.Clear();
+            panel1.Refresh();
+            Bloki temp = new Bloki();
+            int ilosc=0,iloscDzialan=0;
+
+            ile = 0;
+            FileStream plik = new FileStream("plik.xxx", FileMode.Open);
+
+            BinaryFormatter bf = new BinaryFormatter();
+            try
+            {
+
+                ilosc = (Int32) bf.Deserialize(plik);//ile blokow
+                ParametryBloku tempPB;
+                for (int i = 0; i < ilosc; i++)  //wczytanie/dodanie blokow
+                {
+                    tempPB = (ParametryBloku)bf.Deserialize(plik);
+
+                    if (tempPB.typ == typeof(BlokSTART))
+                    {
+                        if (JestBlokONazwie("START"))
+                            return;
+
+                        temp = new BlokSTART();
+                        temp.typBloku = typeof(BlokSTART);
+                        temp.Name = "START";
+                    }
+
+                    if (tempPB.typ == typeof(BlokSTOP))
+                    {
+                        temp = new BlokSTOP();
+                        temp.typBloku = typeof(BlokSTOP);
+                        temp.Name = tempPB.Nazwa.ToString();
+                        temp.nazwaBloku = tempPB.Nazwa.ToString();
+                    }
+
+                    if (tempPB.typ == typeof(BlokObliczeniowy))
+                    {
+                        temp = new BlokObliczeniowy();
+                        temp.typBloku = typeof(BlokObliczeniowy);
+                        temp.listaZmiennych = zmienne;
+                        temp.Name = tempPB.Nazwa.ToString();
+                        temp.nazwaBloku = tempPB.Nazwa.ToString();
+                        temp.MouseDoubleClick += new MouseEventHandler(WywolajBOOpcje);
+                    }
+
+                    if (tempPB.typ == typeof(BlokDecyzyjny))
+                    {
+                        temp = new BlokDecyzyjny();
+                        temp.typBloku = typeof(BlokDecyzyjny);
+                        temp.listaZmiennych = zmienne;
+                        temp.Name = tempPB.Nazwa.ToString();
+                        temp.nazwaBloku = tempPB.Nazwa.ToString();
+                        temp.MouseDoubleClick += new MouseEventHandler(WywolajBDOpcje);
+                    }
+
+                    if (tempPB.typ == typeof(BlokWeWy))
+                    {
+                        temp = new BlokWeWy(console);//
+                        temp.typBloku = typeof(BlokWeWy);
+                        temp.listaZmiennych = zmienne;
+                        temp.Name = tempPB.Nazwa.ToString();
+                        temp.nazwaBloku = tempPB.Nazwa.ToString(); ;
+                        temp.MouseDoubleClick += new MouseEventHandler(WywolajBWeWyOpcje);
+                    }
+
+                    //globalne dla wszystkich bloków
+
+                    temp.Left = temp.Left = tempPB.x;
+                    temp.Top = tempPB.y;
+                    temp.KeyDown += new KeyEventHandler(UsunBlok);
+                    temp.MouseDown += new MouseEventHandler(PrzesunStart);
+                    temp.MouseMove += new MouseEventHandler(panel1_MouseMove);
+                    temp.MouseUp += new MouseEventHandler(panel1_MouseUp);
+
+                    iloscDzialan = (Int32)bf.Deserialize(plik);
+                    for (int j = 0; j < iloscDzialan; j++)
+                    {
+                        temp.dzialania.Add((Dzialanie)bf.Deserialize(plik));
+                    }
+
+                    tabBloki.Add(temp);
+                    panel1.Controls.Add(tabBloki.Last());
+                    tempPB = null;
+                    temp = null;
+                    ile++;
+                }
+
+                ilosc = (Int32) bf.Deserialize(plik);//ile zmiennych
+                for (int i = 0; i < ilosc; i++)//wczytanie zmiennych
+                {
+                    zmienne.Add((Zmienna)bf.Deserialize(plik));
+                }
+
+                ilosc = (Int32)bf.Deserialize(plik);//ile polaczen
+                if (ilosc > 0)
+                {
+                    IList<Polaczenie> tmpPolaczenia = new List<Polaczenie>();
+                    for (int i = 0; i < ilosc; i++)//wczytanie polaczen
+                    {
+                        tmpPolaczenia.Add((Polaczenie)bf.Deserialize(plik));
+                    }
+
+                    //wypelnienie referencji w polaczeniach  refOD i refDO
+
+                    foreach (Polaczenie tmpPolaczenie in tmpPolaczenia)
+                    {
+                        tmpPolaczenie.RefOD=tabBloki[ZnajdzBlok(tmpPolaczenie.nazwaOD)];
+                        tmpPolaczenie.RefDO = tabBloki[ZnajdzBlok(tmpPolaczenie.nazwaDO)];
+                        DodajPolaczenie(tmpPolaczenie);
+                    }
+
+                    foreach (Polaczenie tmpPolaczenie in Polaczenia)
+                    {
+                        RysujPolaczenie(tmpPolaczenie);
+                    }
+                }
+            }
+            catch (SerializationException exc)
+            {
+                MessageBox.Show("Nieudana deserializacja: " + exc.Message);
+                throw;
+            }
+            finally
+            {
+                plik.Close();
+            }
         }
     }
 }

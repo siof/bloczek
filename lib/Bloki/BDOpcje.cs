@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BDOpcje : Form
     {
         BlokDecyzyjny bDec;
-        IList<Działanie> dodaneDzialania = new List<Działanie>();
+        IList<Dzialanie> dodaneDzialania = new List<Dzialanie>();
 
         public BDOpcje(BlokDecyzyjny usr)
         {
@@ -100,7 +100,7 @@ namespace libbloki
             if (comboBox1.SelectedItem.ToString() != "" && comboBox2.SelectedItem.ToString() != "" && txtBox.Text != "")
             {
                 temp = "";
-                Działanie noweDzialanie = new Działanie();
+                Dzialanie noweDzialanie = new Dzialanie();
 
                 if (comboBox3.Visible == true)
                 {

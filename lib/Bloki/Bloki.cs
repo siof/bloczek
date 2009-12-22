@@ -6,16 +6,32 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Drawing;
 
+
 namespace libbloki
 {
     public enum tryby { normal, zaznaczony, aktualny };
     public enum strzalkaUpDown { up, down, none };
     public enum strzalkaLeftRight { left, right, none };
+    
+    [Serializable]
     public class Polaczenie
     {
-        private Bloki _refOD, _refDO, _refLinia1, _refLinia2;
+        private String _nazwaOD, _nazwaDO;
         private int _indeksOD, _indeksDO;
+        [field: NonSerialized]
+        private Bloki _refOD, _refDO, _refLinia1, _refLinia2;
 
+        public String nazwaOD
+        {
+            get { return _nazwaOD; }
+            set { _nazwaOD = value; }
+        }
+
+        public String nazwaDO
+        {
+            get { return _nazwaDO; }
+            set { _nazwaDO = value; }
+        }
         public int IndeksDO
         {
             get { return _indeksDO; }
@@ -53,7 +69,7 @@ namespace libbloki
             set { _refOD = value; }
         }
 
-        public Polaczenie(Bloki RefOD, int IndeksOD, Bloki RefDO, int IndeksDO, Bloki RefLinia1, Bloki RefLinia2)
+        public Polaczenie(Bloki RefOD, int IndeksOD,String nazwaOD, Bloki RefDO, int IndeksDO,String nazwaDO, Bloki RefLinia1, Bloki RefLinia2)
         {
             this.RefOD = RefOD;
             this.IndeksOD = IndeksOD;
@@ -61,12 +77,15 @@ namespace libbloki
             this.IndeksDO = IndeksDO;
             this.RefLinia1 = RefLinia1;
             this.RefLinia2 = RefLinia2;
+            this.nazwaOD = nazwaOD;
+            this.nazwaDO = nazwaDO;
         }
     }
 	
+    [Serializable]
     public class Bloki : UserControl
     {
-        protected Type typ;
+        private Type _typBloku;
 
         protected Bloki[] nastepny = new Bloki[2];
         protected Bloki[] _nastepnaLinia = new Bloki[2];
@@ -79,11 +98,17 @@ namespace libbloki
         protected Graphics graph;
 
         public IList<Zmienna> listaZmiennych;
-        public IList<Działanie> dzialania = new List<Działanie>();
+        public IList<Dzialanie> dzialania = new List<Dzialanie>();
 
         protected Point[] _punkty = new Point[2]; //polaczenia
 
         public String znacznikZmiennej = "~~";
+
+        //public Type typ
+        //{
+        //    get { return _typ; }
+        //    set { _typ = value; }
+        //}
 
         public Point[] punkty
         
@@ -108,8 +133,8 @@ namespace libbloki
 
         public Type typBloku
         {
-            get { return typ; }
-            set { typ = value; }
+            get { return _typBloku; }
+            set { _typBloku = value; }
         }
 
         public String nazwaBloku

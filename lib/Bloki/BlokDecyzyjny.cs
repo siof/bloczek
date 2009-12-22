@@ -109,7 +109,7 @@ namespace libbloki
                 {
                     j = 2;
                 }
-                foreach (Działanie d in this.dzialania)
+                foreach (Dzialanie d in this.dzialania)
                 {
                     tempString += d.dodatkowe + " " + znacznikZmiennej + d.lewa.ToString() + znacznikZmiennej + " " + d.dzialanie1 + " " + d.srodek.ToString() + "\n";
                     i++;
@@ -125,7 +125,7 @@ namespace libbloki
                 {
                     tempString = "";
                     this.txt.Text += "...";
-                    foreach (Działanie d in this.dzialania)
+                    foreach (Dzialanie d in this.dzialania)
                     {
                         tempString += d.dodatkowe + " " + znacznikZmiennej + d.lewa.ToString() + znacznikZmiennej + " " + d.dzialanie1 + " " + d.srodek.ToString() + "\n";
                     }
