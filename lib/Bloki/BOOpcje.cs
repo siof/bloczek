@@ -34,9 +34,9 @@ namespace libbloki
                 {
                     temp += " " + bObl.dzialania[i].dzialanie2 + " ";
 
-                    /*if (bObl.dzialania[i].prawaZmienna == true)
+                    if (bObl.dzialania[i].prawaZmienna == true)
                         temp += bObl.dzialania[i].znacznikZmiennej + bObl.dzialania[i].prawa + bObl.znacznikZmiennej;
-                    else*/
+                    else
                         temp += bObl.dzialania[i].prawa;
                 }
 
@@ -80,6 +80,40 @@ namespace libbloki
             this.Close();
         }
 
+        private void WyczyscPola()
+        {
+            txtL.Text = "";
+            txtP.Text = "";
+            txtS.Text = "";
+        }
+
+        private bool CzyZmiennaJestWLB(String zmienna)
+        {
+            if (zmienna == null || listBoxZmienne.Items.Count == 0)
+                return false;
+
+            String temp = zmienna.ToString();
+
+            if (temp.Contains(bObl.znacznikZmiennej) == true)
+                temp = temp.Replace(bObl.znacznikZmiennej, "");
+
+            if (temp.Contains('[') == true && temp.Contains(']') == true)
+            {
+                int tmpInd1 = temp.IndexOf('[') + 1;
+                int tmpInd2 = temp.IndexOf(']');
+
+                temp = temp.Remove(tmpInd1, tmpInd2 - tmpInd1);
+            }
+
+            for (int i = 0; i < listBoxZmienne.Items.Count; i++)
+            {
+                if (listBoxZmienne.Items[i].ToString() == temp.ToString())
+                    return true;
+            }
+
+            return false;
+        }
+
         private void btnDodaj_Click(object sender, EventArgs e)
         {
             if ((txtL.Text == "" || txtL.Text == " ") && (txtS.Text != "" || txtS.Text != " "))
@@ -99,6 +133,19 @@ namespace libbloki
                     noweDzialanie.dodatkowe = comboBox2.SelectedItem.ToString();
                 else
                     noweDzialanie.dodatkowe = "String";
+
+                if (CzyZmiennaJestWLB(txtL.Text) == false)
+                {
+                    String tmpString = noweDzialanie.lewa.ToString();
+                    if (tmpString.Contains('[') == true && tmpString.Contains(']') == true)
+                    {
+                        int tmpInd1 = tmpString.IndexOf('[') + 1;
+                        int tmpInd2 = tmpString.IndexOf(']');
+
+                        tmpString = tmpString.Remove(tmpInd1, tmpInd2 - tmpInd1);
+                    }
+                    listBoxZmienne.Items.Add(tmpString);
+                }
             }
 
             noweDzialanie.dzialanie1 = ":=";
@@ -114,6 +161,7 @@ namespace libbloki
             listBox.Items.Add(temp);
             bObl.dzialania.Add(noweDzialanie);
             dodaneDzialania.Add(noweDzialanie);
+            WyczyscPola();
         }
 
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)

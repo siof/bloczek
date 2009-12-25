@@ -120,10 +120,7 @@ namespace libbloki
                 comboBox3.Visible = true;
                 bDec.dzialania.Add(noweDzialanie);
                 dodaneDzialania.Add(noweDzialanie);
-            }
-
-
-            
+            }            
         }
 
         private void listBox_KeyDown(object sender, KeyEventArgs e)

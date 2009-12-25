@@ -177,6 +177,14 @@ namespace libbloki
             if (temp.Contains(znacznikZmiennej) == true)
                 temp = temp.Replace(znacznikZmiennej, "");
 
+            if (temp.Contains('[') == true && temp.Contains(']') == true)
+            {
+                int tmpInd1 = temp.IndexOf('[') + 1;
+                int tmpInd2 = temp.IndexOf(']');
+
+                temp = temp.Remove(tmpInd1, tmpInd2 - tmpInd1);
+            }
+
             for (int i = 0; i < listaZmiennych.Count(); i++)
             {
                 if (listaZmiennych[i].nazwa == temp.ToString())
@@ -209,30 +217,66 @@ namespace libbloki
         {
             for (int i = 0; i < this.dzialania.Count; i++)
             {
-                if (this.dzialania[i].nowaZmienna == true)
+                if (this.dzialania[i].nowaZmienna == true && SprawdzCzyIstniejeZmienna(this.dzialania[i].lewa) == false)
                 {
                     Zmienna temp = new Zmienna();
                     this.dzialania[i].lewa = this.dzialania[i].lewa.Replace(znacznikZmiennej, "");
                     temp.nazwa = dzialania[i].lewa.ToString();
                     dzialania[i].nowaZmienna = false;
 
+                    if (this.dzialania[i].lewa.Contains('[') == true && this.dzialania[i].lewa.Contains(']') == true)
+                        temp.tablica = true;
+
                     if (dzialania[i].dodatkowe != null)
                     {
+                        int tmpInd1, tmpInd2;
+                        String tmpIlEl = "";
+                        int tmpIlElementow = 0;
+
+                        if (temp.tablica == true)
+                        {
+                            tmpInd1 = temp.nazwa.IndexOf('[') + 1;
+                            tmpInd2 = temp.nazwa.IndexOf(']');
+                            tmpIlEl = temp.nazwa.Substring(tmpInd1, tmpInd2 - tmpInd1);
+                            tmpIlElementow = Convert.ToInt32(tmpIlEl);
+                            temp.nazwa = temp.nazwa.Replace(tmpIlEl, "");
+
+                            temp.iloscElTablicy = tmpIlElementow;
+                        }
+
                         switch (dzialania[i].dodatkowe)
                         {
                             case "int":
                                 temp.typ = typeof(int);
-                                temp.wartosc = "0";
+                                if (temp.tablica == true)
+                                {
+                                    for (int j = 0; j < tmpIlElementow; j++)
+                                        temp.wartosci.Add("0");
+                                }
+                                else
+                                    temp.wartosc = "0";
                                 break;
 
                             case "double":
                                 temp.typ = typeof(double);
-                                temp.wartosc = "0.0";
+                                if (temp.tablica == true)
+                                {
+                                    for (int j = 0; j < tmpIlElementow; j++)
+                                        temp.wartosci.Add("0.0");
+                                }
+                                else
+                                    temp.wartosc = "0.0";
                                 break;
 
                             case "String":
                                 temp.typ = typeof(String);
-                                temp.wartosc = "";
+                                if (temp.tablica == true)
+                                {
+                                    for (int j = 0; j < tmpIlElementow; j++)
+                                        temp.wartosci.Add("");
+                                }
+                                else
+                                    temp.wartosc = "";
                                 break;
 
                             default:
