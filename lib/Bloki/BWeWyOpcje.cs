@@ -30,9 +30,9 @@ namespace libbloki
             {
                 temp = BWeWy.dzialania[i].dzialanie1 + " : ";
 
-                /*if (BWeWy.dzialania[i].srodekZmienna == true)
+                if (BWeWy.dzialania[i].srodekZmienna == true)
                     temp += BWeWy.znacznikZmiennej + BWeWy.dzialania[i].srodek + BWeWy.znacznikZmiennej;
-                else*/
+                else
                     temp += BWeWy.dzialania[i].srodek;
 
                 listBox.Items.Add(temp);
@@ -115,7 +115,6 @@ namespace libbloki
             //poza wyświetleniem działań na bloku
 
             BWeWy.DodajNoweZmienne();
-            BWeWy.ReDrawText();
 
             dodaneDzialania.Clear(); //na wszelki wypadek
 

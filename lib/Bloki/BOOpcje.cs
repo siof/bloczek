@@ -25,9 +25,9 @@ namespace libbloki
             {
                 temp = bObl.znacznikZmiennej + bObl.dzialania[i].lewa + bObl.znacznikZmiennej + " := ";
 
-                /*if (bObl.dzialania[i].srodekZmienna == true)
+                if (bObl.dzialania[i].srodekZmienna == true)
                     temp += bObl.znacznikZmiennej + bObl.dzialania[i].srodek + bObl.znacznikZmiennej;
-                else*/
+                else
                     temp += bObl.dzialania[i].srodek;
 
                 if (bObl.dzialania[i].dzialanie2 != null)

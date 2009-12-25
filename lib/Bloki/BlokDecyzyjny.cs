@@ -111,7 +111,7 @@ namespace libbloki
                 }
                 foreach (Dzialanie d in this.dzialania)
                 {
-                    tempString += d.dodatkowe + " " + znacznikZmiennej + d.lewa.ToString() + znacznikZmiennej + " " + d.dzialanie1 + " " + d.srodek.ToString() + "\n";
+                    tempString += d.dodatkowe + " " + d.lewa.ToString() + " " + d.dzialanie1 + " " + d.srodek.ToString() + "\n";
                     i++;
                     if (i >=j)
                     {
@@ -127,7 +127,7 @@ namespace libbloki
                     this.txt.Text += "...";
                     foreach (Dzialanie d in this.dzialania)
                     {
-                        tempString += d.dodatkowe + " " + znacznikZmiennej + d.lewa.ToString() + znacznikZmiennej + " " + d.dzialanie1 + " " + d.srodek.ToString() + "\n";
+                        tempString += d.dodatkowe + " " + d.lewa.ToString() + " " + d.dzialanie1 + " " + d.srodek.ToString() + "\n";
                     }
                     this.txtHint.Active = true;
                     txtHint.SetToolTip(txt, tempString);
