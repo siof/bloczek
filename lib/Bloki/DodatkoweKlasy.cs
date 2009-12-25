@@ -22,6 +22,9 @@ namespace libbloki
         private String _nazwa;
         private String _wartosc;
         private Type _typ;
+        private bool _tablica = false;
+        private int _iloscElTab;
+        public IList<String> wartosci = new List<String>();
 
         public String nazwa
         {
@@ -39,6 +42,18 @@ namespace libbloki
         {
             get { return _typ; }
             set { _typ = value; }
+        }
+                
+        public bool tablica
+        {
+            get { return _tablica; }
+            set { _tablica = value; }
+        }
+
+        public int iloscElTablicy
+        {
+            get { return _iloscElTab; }
+            set { _iloscElTab = value; }
         }
     }
 
@@ -137,7 +152,6 @@ namespace libbloki
             get { return _dodatkowe; }
             set { _dodatkowe = value; }
         }
-
     }
 
     [Serializable]
