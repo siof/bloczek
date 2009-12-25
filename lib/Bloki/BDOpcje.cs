@@ -29,9 +29,9 @@ namespace libbloki
                 temp += bDec.znacznikZmiennej.ToString() + bDec.dzialania[i].lewa.ToString() + bDec.znacznikZmiennej.ToString();
                 temp += " " + bDec.dzialania[i].dzialanie1.ToString() + " ";
 
-                /*if (bDec.dzialania[i].srodekZmienna == true)
+                if (bDec.dzialania[i].srodekZmienna == true)
                     temp += bDec.znacznikZmiennej.ToString() + bDec.dzialania[i].srodek.ToString() + bDec.znacznikZmiennej.ToString();
-                else*/
+                else
                     temp += bDec.dzialania[i].srodek.ToString();
 
                 listBox.Items.Add(temp);

@@ -79,11 +79,6 @@ namespace libbloki
         //    frmOpcje.ShowDialog(this);
         //}
 
-        public void ReDrawText()
-        {
-            
-        }
-
         private void txt_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             sender = this;
@@ -119,7 +114,7 @@ namespace libbloki
                 String tempString = "";
                 foreach (Dzialanie d in this.dzialania)
                 {
-                    tempString += d.dzialanie1 + ": \"" + d.srodek.ToString() + "\"\n";
+                    tempString += d.dzialanie1 + ": " + d.srodek.ToString() + "\n";
                     i++;
                     if (i >= 3)
                     {
@@ -135,7 +130,7 @@ namespace libbloki
                     this.txt.Text += "...";
                     foreach (Dzialanie d in this.dzialania)
                     {
-                        tempString += d.dzialanie1 + ": \"" + d.srodek.ToString() + "\"\n";
+                        tempString += d.dzialanie1 + ": " + d.srodek.ToString() + "\n";
                     }
                     this.txtHint.Active = true;
                     txtHint.SetToolTip(txt, tempString);
@@ -144,8 +139,9 @@ namespace libbloki
             }
         }
 
-        public void Wykonaj()
+        public void Wykonaj(Console usr)
         {
+            frmConsole = usr;
             int temp = -1;
             
             for (int i = 0; i < dzialania.Count; i++)

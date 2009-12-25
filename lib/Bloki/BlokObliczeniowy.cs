@@ -54,8 +54,7 @@ namespace libbloki
                 String tempString="";
                 foreach (Dzialanie d in this.dzialania)
                 {
-                    tempString += znacznikZmiennej + d.lewa.ToString() + znacznikZmiennej + " "
-                                    + d.dzialanie1 + d.srodek.ToString() +
+                    tempString +=  d.lewa.ToString() + " " + d.dzialanie1 + " " + d.srodek.ToString() +
                                     " " + d.dzialanie2 + " " + d.prawa +"\n";
                     i++;
                     if(i>=3)
@@ -72,8 +71,7 @@ namespace libbloki
                     this.txt.Text += "...";
                     foreach (Dzialanie d in this.dzialania)
                     {
-                        tempString += znacznikZmiennej + d.lewa.ToString() + znacznikZmiennej + " "
-                                    + d.dzialanie1 + d.srodek.ToString() +
+                        tempString += d.lewa.ToString() + " " + d.dzialanie1 + " " + d.srodek.ToString() +
                                       " " + d.dzialanie2 + " " + d.prawa +"\n";
                     }
                     this.txtHint.Active = true;

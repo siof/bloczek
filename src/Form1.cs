@@ -2141,7 +2141,7 @@ namespace Okienka
                 if (aktualnyBlok.typBloku == typeof(BlokWeWy))
                 {
 
-                    ((BlokWeWy)aktualnyBlok).Wykonaj();
+                    ((BlokWeWy)aktualnyBlok).Wykonaj(console);
 
                     if (aktualnyBlok.nastepnyBlok[0] == null)
                     {
@@ -2206,92 +2206,96 @@ namespace Okienka
             if (symuluj == false)
             {
                 symuluj=true;
-            console.Show();
-            console.richTextBox1.Clear();
+
+                if (console.IsDisposed == true)
+                    console = new libbloki.Console();
+
+                console.Show();
+                console.richTextBox1.Clear();
 
                 if (tabBloki.Count == 0)
                 return;
 
-            aktualnyBlok = tabBloki[ZnajdzBlok("START")];
-            aktualnyBlok.tryb = tryby.aktualny;
-            bool dec = false;   //jesli false to wyszlo "NIE", jesli true to "TAK"
-            
-            while (aktualnyBlok.typBloku != typeof(BlokSTOP) && symuluj == true)
-            {
-                if (symuluj == false)
+                aktualnyBlok = tabBloki[ZnajdzBlok("START")];
+                aktualnyBlok.tryb = tryby.aktualny;
+                bool dec = false;   //jesli false to wyszlo "NIE", jesli true to "TAK"
+                
+                while (aktualnyBlok.typBloku != typeof(BlokSTOP) && symuluj == true)
                 {
-                    // e.Cancel = true;
-                }
-
-                if (aktualnyBlok.typBloku == typeof(BlokObliczeniowy))
-                {
-                    ((BlokObliczeniowy)aktualnyBlok).Wykonaj();
-
-                    if (aktualnyBlok.nastepnyBlok[0] == null)       //zatrzymaj jesli niema sciezki po ktorej masz isc
+                    if (symuluj == false)
                     {
-                       // e.Cancel = true;
-                        return;
+                        // e.Cancel = true;
                     }
-                }
 
-                if (aktualnyBlok.typBloku == typeof(BlokWeWy))
-                {
-
-                    ((BlokWeWy)aktualnyBlok).Wykonaj();
-
-                    if (aktualnyBlok.nastepnyBlok[0] == null)
+                    if (aktualnyBlok.typBloku == typeof(BlokObliczeniowy))
                     {
-                       // e.Cancel = true;
-                        return;
-                    }
-                }
+                        ((BlokObliczeniowy)aktualnyBlok).Wykonaj();
 
-                if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
-                {
-                    dec = ((BlokDecyzyjny)aktualnyBlok).Wykonaj();
-
-                    if (dec == true)
-                    {
-                        if (aktualnyBlok.nastepnyBlok[1] == null)
+                        if (aktualnyBlok.nastepnyBlok[0] == null)       //zatrzymaj jesli niema sciezki po ktorej masz isc
                         {
-                            //e.Cancel = true;
+                           // e.Cancel = true;
                             return;
                         }
                     }
-                    else
+
+                    if (aktualnyBlok.typBloku == typeof(BlokWeWy))
                     {
+
+                        ((BlokWeWy)aktualnyBlok).Wykonaj(console);
+
                         if (aktualnyBlok.nastepnyBlok[0] == null)
                         {
                            // e.Cancel = true;
                             return;
                         }
                     }
-                }
 
-                aktualnyBlok.tryb = tryby.normal;
+                    if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
+                    {
+                        dec = ((BlokDecyzyjny)aktualnyBlok).Wykonaj();
 
-                                                            //wybór następnego bloku
-                if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
-                {
-                    if (dec == true)
-                        aktualnyBlok = aktualnyBlok.nastepnyBlok[1];
+                        if (dec == true)
+                        {
+                            if (aktualnyBlok.nastepnyBlok[1] == null)
+                            {
+                                //e.Cancel = true;
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            if (aktualnyBlok.nastepnyBlok[0] == null)
+                            {
+                               // e.Cancel = true;
+                                return;
+                            }
+                        }
+                    }
+
+                    aktualnyBlok.tryb = tryby.normal;
+
+                                                                //wybór następnego bloku
+                    if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
+                    {
+                        if (dec == true)
+                            aktualnyBlok = aktualnyBlok.nastepnyBlok[1];
+                        else
+                            aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+                    }
                     else
                         aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+
+                    aktualnyBlok.tryb = tryby.aktualny;
                 }
-                else
-                    aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
 
-                aktualnyBlok.tryb = tryby.aktualny;
-            }
+                if (aktualnyBlok.typBloku == typeof(BlokSTOP))
+                    symuluj = false;
 
-            if (aktualnyBlok.typBloku == typeof(BlokSTOP))
-                symuluj = false;
+                for (int i = 0; i < tabBloki.Count; i++)
+                    tabBloki[i].tryb = tryby.normal;
 
-            for (int i = 0; i < tabBloki.Count; i++)
-                tabBloki[i].tryb = tryby.normal;
-
-            aktualnyBlok = null;
-            zaznaczony = null;
+                aktualnyBlok = null;
+                zaznaczony = null;
                 /*
                 symuluj = true;
                 console.Show();
@@ -2325,6 +2329,9 @@ namespace Okienka
             if (symuluj == false)
             {
                 symuluj = true;
+
+                if (console.IsDisposed == true)
+                    console = new libbloki.Console();
                
                 console.Show();
                 console.richTextBox1.Clear();
@@ -2356,6 +2363,12 @@ namespace Okienka
             {
                 bool dec = false;
 
+                if (console.IsDisposed == true)
+                {
+                    console = new libbloki.Console();
+                    console.Show();
+                }
+
                 if (aktualnyBlok.typBloku == typeof(BlokSTOP))
                 {
                     symuluj = false;
@@ -2378,7 +2391,7 @@ namespace Okienka
 
                 if (aktualnyBlok.typBloku == typeof(BlokWeWy))
                 {
-                    ((BlokWeWy)aktualnyBlok).Wykonaj();
+                    ((BlokWeWy)aktualnyBlok).Wykonaj(console);
 
                     if (aktualnyBlok.nastepnyBlok[0] == null)
                         return;

@@ -71,8 +71,8 @@ namespace libbloki
             get { return _lewa; }
             set 
             {
-                //if (value.Contains(znacznikZmiennej) == true)
-                //    value = value.Replace(znacznikZmiennej, "");
+                if (value.Contains(znacznikZmiennej) == true)
+                    value = value.Replace(znacznikZmiennej, "");
 
                 _lewa = value; 
             }
@@ -98,7 +98,7 @@ namespace libbloki
                 if (value.Contains(znacznikZmiennej) == true)
                 {
                     srodekZmienna = true;
-                    //value = value.Replace(znacznikZmiennej, "");
+                    value = value.Replace(znacznikZmiennej, "");
                 }
 
                 _srodek = value; 
@@ -125,7 +125,7 @@ namespace libbloki
                 if (value.Contains(znacznikZmiennej) == true)
                 {
                     prawaZmienna = true;
-                    //value = value.Replace(znacznikZmiennej, "");
+                    value = value.Replace(znacznikZmiennej, "");
                 }
 
                 _prawa = value; 
