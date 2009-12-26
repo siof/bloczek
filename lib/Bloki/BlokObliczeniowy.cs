@@ -126,8 +126,11 @@ namespace libbloki
             // przezroczyste tlo
         }
 
+
+
         public void Wykonaj()
         {
+            int tmpNumerEl = 0;
             for (int i = 0; i < dzialania.Count; i++)
             {
                 int index = ZnajdzZmienna(dzialania[i].lewa);
@@ -136,12 +139,34 @@ namespace libbloki
                     return;
 
                 Zmienna temp = listaZmiennych[index];
+                Zmienna tempSrodek = null;
+                Zmienna tempPrawa = null;
+
+                if (dzialania[i].srodekZmienna == true)
+                    tempSrodek = listaZmiennych[ZnajdzZmienna(dzialania[i].srodek)];
+                else
+                    tempSrodek = null;
+
+                if (dzialania[i].prawaZmienna == true)
+                    tempPrawa = listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)];
+                else
+                    tempPrawa = null;
 
                 if (temp.typ == typeof(int))
                 {
-                    int tmpL;
+                    int tmpL = 0;
                     if (dzialania[i].srodekZmienna == true)
-                        tmpL = Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].srodek)].wartosc);
+                    {
+                        if (tempSrodek.tablica == true)
+                        {
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+
+                            if (tmpNumerEl <= tempSrodek.iloscElTablicy)
+                                tmpL = Convert.ToInt32(tempSrodek.wartosci[tmpNumerEl]);
+                        }
+                        else
+                            tmpL = Convert.ToInt32(tempSrodek.wartosc);
+                    }
                     else
                         tmpL = Convert.ToInt32(dzialania[i].srodek);
 
@@ -151,41 +176,91 @@ namespace libbloki
                         {
                             case "+":
                                 if (dzialania[i].prawaZmienna == true)
-                                    tmpL += Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL += Convert.ToInt32(tempPrawa.wartosci[tmpNumerEl]);
+                                    }
+                                    else
+                                        tmpL += Convert.ToInt32(tempPrawa.wartosc);
+                                }
                                 else
                                     tmpL += Convert.ToInt32(dzialania[i].prawa);
                                 break;
                             case "-":
                                 if (dzialania[i].prawaZmienna == true)
-                                    tmpL -= Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL -= Convert.ToInt32(tempPrawa.wartosci[tmpNumerEl]);
+                                    }
+                                    else
+                                        tmpL -= Convert.ToInt32(tempPrawa.wartosc);
+                                }
                                 else
                                     tmpL -= Convert.ToInt32(dzialania[i].prawa);
                                 break;
                             case "*":
                                 if (dzialania[i].prawaZmienna == true)
-                                    tmpL *= Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL *= Convert.ToInt32(tempPrawa.wartosci[tmpNumerEl]);
+                                    }
+                                    else
+                                        tmpL *= Convert.ToInt32(tempPrawa.wartosc);
+                                }
                                 else
                                     tmpL *= Convert.ToInt32(dzialania[i].prawa);
                                 break;
                             case "/":
                                 if (dzialania[i].prawaZmienna == true)
-                                    tmpL /= Convert.ToInt32(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL /= Convert.ToInt32(tempPrawa.wartosci[tmpNumerEl]);
+                                    }
+                                    else
+                                        tmpL /= Convert.ToInt32(tempPrawa.wartosc);
+                                }
                                 else
                                     tmpL /= Convert.ToInt32(dzialania[i].prawa);
                                 break;
                         }
                     }
 
-                    temp.wartosc = tmpL.ToString();
+                    if (temp.tablica == true)
+                    {
+                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+                        temp.wartosci[tmpNumerEl] = tmpL.ToString();
+                        tmpNumerEl = 0;
+                    }
+                    else
+                        temp.wartosc = tmpL.ToString();
+
                     continue;
                 }
 
                 if (temp.typ == typeof(double))
                 {
-                    double tmpL;
+                    double tmpL = 0.0;
 
                     if (dzialania[i].srodekZmienna == true)
-                        tmpL = Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].srodek)].wartosc);
+                    {
+                        if (tempSrodek.tablica == true)
+                        {
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+
+                            if (tmpNumerEl <= tempSrodek.iloscElTablicy)
+                                tmpL = Convert.ToDouble(tempSrodek.wartosci[tmpNumerEl]);
+                        }
+                        else
+                            tmpL = Convert.ToDouble(tempSrodek.wartosc);
+                    }
                     else
                         tmpL = Convert.ToDouble(dzialania[i].srodek);
 
@@ -195,48 +270,123 @@ namespace libbloki
                         {
                             case "+":
                                 if (dzialania[i].prawaZmienna == true)
-                                    tmpL += Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL += Convert.ToDouble(tempPrawa.wartosci[tmpNumerEl]);
+                                    }
+                                    else
+                                        tmpL += Convert.ToDouble(tempPrawa.wartosc);
+                                }
                                 else
                                     tmpL += Convert.ToDouble(dzialania[i].prawa);
                                 break;
                             case "-":
                                 if (dzialania[i].prawaZmienna == true)
-                                    tmpL -= Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL -= Convert.ToDouble(tempPrawa.wartosci[tmpNumerEl]);
+                                    }
+                                    else
+                                        tmpL -= Convert.ToDouble(tempPrawa.wartosc);
+                                }
                                 else
                                     tmpL -= Convert.ToDouble(dzialania[i].prawa);
                                 break;
                             case "*":
                                 if (dzialania[i].prawaZmienna == true)
-                                    tmpL *= Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL *= Convert.ToDouble(tempPrawa.wartosci[tmpNumerEl]);
+                                    }
+                                    else
+                                        tmpL *= Convert.ToDouble(tempPrawa.wartosc);
+                                }
                                 else
                                     tmpL *= Convert.ToDouble(dzialania[i].prawa);
                                 break;
                             case "/":
                                 if (dzialania[i].prawaZmienna == true)
-                                    tmpL /= Convert.ToDouble(listaZmiennych[ZnajdzZmienna(dzialania[i].prawa)].wartosc);
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL /= Convert.ToDouble(tempPrawa.wartosci[tmpNumerEl]);
+                                    }
+                                    else
+                                        tmpL /= Convert.ToDouble(tempPrawa.wartosc);
+                                }
                                 else
                                     tmpL /= Convert.ToDouble(dzialania[i].prawa);
                                 break;
                         }
                     }
 
-                    temp.wartosc = tmpL.ToString();
+                    if (temp.tablica == true)
+                    {
+                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+                        temp.wartosci[tmpNumerEl] = tmpL.ToString();
+                        tmpNumerEl = 0;
+                    }
+                    else
+                        temp.wartosc = tmpL.ToString();
+
                     continue;
                 }
 
                 if (temp.typ == typeof(String))
                 {
-                    String tmpL = dzialania[i].srodek.ToString();
+                    String tmpL = "";
+
+                    if (dzialania[i].srodekZmienna == true)
+                    {
+                        if (tempPrawa.tablica == true)
+                        {
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+                            tmpL = tempSrodek.wartosci[tmpNumerEl].ToString();
+                        }
+                        else
+                            tmpL = tempSrodek.wartosc.ToString();
+                    }
+                    else
+                        tmpL = dzialania[i].srodek.ToString();
 
                     if (dzialania[i].dzialanie2 != null)
                     {
                         switch (dzialania[i].dzialanie2)
                         {
                             case "+":
-                                tmpL += dzialania[i].prawa;
+                                if (dzialania[i].prawaZmienna == true)
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL += tempPrawa.wartosci[tmpNumerEl];
+                                    }
+                                    else
+                                        tmpL += tempPrawa.wartosc;
+                                }
+                                else
+                                    tmpL += dzialania[i].prawa;
                                 break;
                             case "-":
-                                tmpL = tmpL.Replace(dzialania[i].prawa, "");
+                                if (dzialania[i].prawaZmienna == true)
+                                {
+                                    if (tempPrawa.tablica == true)
+                                    {
+                                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].prawa);
+                                        tmpL = tmpL.Replace(tempPrawa.wartosc, "");
+                                    }
+                                    else
+                                        tmpL = tmpL.Replace(tempPrawa.wartosci[tmpNumerEl], "");
+                                }
+                                else
+                                    tmpL = tmpL.Replace(dzialania[i].prawa, "");
                                 break;
                             case "*":
                                 break;
@@ -245,7 +395,14 @@ namespace libbloki
                         }
                     }
 
-                    temp.wartosc = tmpL.ToString();
+                    if (temp.tablica == true)
+                    {
+                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+                        temp.wartosci[tmpNumerEl] = tmpL.ToString();
+                    }
+                    else
+                        temp.wartosc = tmpL.ToString();
+                    
                     continue;
                 }
             }

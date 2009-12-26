@@ -204,6 +204,9 @@ namespace libbloki
             if (temp.Contains(znacznikZmiennej) == true)
                 temp = temp.Replace(znacznikZmiennej, "");
 
+            if (temp.Contains('[') == true && temp.Contains(']') == true)
+                temp.Remove(temp.IndexOf('['));
+
             for (int i = 0; i < listaZmiennych.Count; i++)
             {
                 if (listaZmiennych[i].nazwa.Equals(temp) == true)
@@ -288,6 +291,28 @@ namespace libbloki
                         listaZmiennych.Add(temp);
                 }
             }
+        }
+
+        public int NumerElementuWTablicy(String tab)
+        {
+            String temp = tab.ToString();
+            String tmpNumerEl = "";
+            if (temp.Contains('[') && temp.Contains(']'))
+            {
+                int tmpInd1 = temp.IndexOf('[') + 1;
+                int tmpInd2 = temp.IndexOf(']');
+
+                if (tmpInd2 - tmpInd1 > 0)
+                {
+                    tmpNumerEl = temp.Substring(tmpInd1, tmpInd2 - tmpInd1);
+
+                    return Convert.ToInt32(tmpNumerEl);
+                }
+                else
+                    return -2;
+            }
+            else
+                return -1;
         }
     }
 }
