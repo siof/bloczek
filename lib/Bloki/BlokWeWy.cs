@@ -155,10 +155,42 @@ namespace libbloki
                     if (dzialania[i].srodek != null)
                     {
                         tmpString = dzialania[i].srodek.ToString();
+                        //najpierw podmien wszystkie zmienne
                         foreach (Zmienna zm in this.listaZmiennych)
                         {
-                            if (dzialania[i].srodekZmienna == true)
+                            if (dzialania[i].srodekZmienna == true && zm.tablica == false)
                                 tmpString = tmpString.Replace(znacznikZmiennej + zm.nazwa + znacznikZmiennej, zm.wartosc.ToString());
+                        }
+                        //nastepnie podmien wszystkie elementy tablic
+                        foreach (Zmienna zm in this.listaZmiennych)
+                        {
+                            if (dzialania[i].srodekZmienna == true && zm.tablica == true)
+                            {
+                                if (tmpString.Contains(zm.nazwa + '[') == true)
+                                {
+                                    //znajdz indexy do odczytania elementu tablicy
+                                    int tmpInd1 = tmpString.IndexOf(zm.nazwa + '[') + zm.nazwa.Length + 1;
+                                    int tmpInd2 = 0;
+                                    String tmpNumerElementu = "";
+                                    for (int j = tmpInd1; j < tmpString.Length; j++)
+                                    {
+                                        //if (tmpString[j] == '[')    
+                                        //    tmpInd1 = j;
+
+                                        if (tmpString[j] == ']')
+                                        {
+                                            tmpInd2 = j;
+                                            break;
+                                        }
+                                    }
+                                    //odczytaj ktory element tablicy wypisac
+                                    if (tmpInd2 - tmpInd1 > 0)
+                                        tmpNumerElementu = tmpString.Substring(tmpInd1, tmpInd2 - tmpInd1);
+                                    //
+                                    if (tmpNumerElementu != "")
+                                        tmpString = tmpString.Replace(zm.nazwa + '[' + tmpNumerElementu + ']', zm.wartosci[Convert.ToInt32(tmpNumerElementu)].ToString());
+                                }
+                            }
                         }
                         frmConsole.richTextBox1.Text += tmpString + '\n';
                     }

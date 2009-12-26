@@ -109,6 +109,7 @@ namespace libbloki
                 {
                     j = 2;
                 }
+
                 foreach (Dzialanie d in this.dzialania)
                 {
                     tempString += d.dodatkowe + " " + d.lewa.ToString() + " " + d.dzialanie1 + " " + d.srodek.ToString() + "\n";
@@ -118,8 +119,8 @@ namespace libbloki
                         break;
                     }
                 }
-                this.txt.Text = tempString.ToString();
 
+                this.txt.Text = tempString.ToString();
 
                 if (this.dzialania.Count > 2)
                 {
@@ -139,27 +140,43 @@ namespace libbloki
 
         public bool Wykonaj()
         {
-            int lZm, pZm;
+            int tmpNumerEl = 0;
             bool aktualnyStan = false;
+            Zmienna tempLewa = null;
+            Zmienna tempPrawa = null;
             
             for (int i = 0; i < dzialania.Count; i++)
             {
                 bool tymczasowyStan = false;
 
-                pZm = -1;
-                lZm = ZnajdzZmienna(dzialania[i].lewa);
-                
-                if (dzialania[i].srodekZmienna == true)
-                    pZm = ZnajdzZmienna(dzialania[i].srodek);
+                tempLewa = this.listaZmiennych[ZnajdzZmienna(dzialania[i].lewa)];
+                tempPrawa = null;
 
-                if (listaZmiennych[lZm].typ == typeof(int))
+                if (dzialania[i].srodekZmienna == true)
+                    tempPrawa = this.listaZmiennych[ZnajdzZmienna(dzialania[i].srodek)];
+
+                if (tempLewa.typ == typeof(int))
                 {
-                    int tmp = Convert.ToInt32(listaZmiennych[lZm].wartosc);
+                    int tmp = 0;
                     int tmp2 = 0;
 
-                    if (pZm != -1)
+                    if (tempLewa.tablica == true)
                     {
-                        tmp2 = Convert.ToInt32(listaZmiennych[pZm].wartosc);
+                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+                        tmp = Convert.ToInt32(tempLewa.wartosci[tmpNumerEl]);
+                    }
+                    else
+                        tmp = Convert.ToInt32(tempLewa.wartosc);
+
+                    if (tempPrawa != null)
+                    {
+                        if (tempPrawa.tablica == true)
+                        {
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+                            tmp2 = Convert.ToInt32(tempPrawa.wartosci[tmpNumerEl]);
+                        }
+                        else
+                            tmp2 = Convert.ToInt32(tempPrawa.wartosc);
                     }
                     else
                     {
@@ -212,14 +229,28 @@ namespace libbloki
                     }
                 }
 
-                if (listaZmiennych[lZm].typ == typeof(double))
+                if (tempLewa.typ == typeof(double))
                 {
-                    double tmp = Convert.ToDouble(listaZmiennych[lZm].wartosc);
+                    double tmp = 0;
                     double tmp2 = 0;
 
-                    if (pZm != -1)
+                    if (tempLewa.tablica == true)
                     {
-                        tmp2 = Convert.ToDouble(listaZmiennych[pZm].wartosc);
+                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+                        tmp = Convert.ToDouble(tempLewa.wartosci[tmpNumerEl]);
+                    }
+                    else
+                        tmp = Convert.ToDouble(tempLewa.wartosc);
+
+                    if (tempPrawa != null)
+                    {
+                        if (tempPrawa.tablica == true)
+                        {
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+                            tmp2 = Convert.ToDouble(tempPrawa.wartosci[tmpNumerEl]);
+                        }
+                        else
+                            tmp2 = Convert.ToDouble(tempPrawa.wartosc);
                     }
                     else
                     {
@@ -272,13 +303,29 @@ namespace libbloki
                     }
                 }
 
-                if (listaZmiennych[lZm].typ == typeof(String))
+                if (tempLewa.typ == typeof(String))
                 {
-                    String tmp = listaZmiennych[lZm].wartosc.ToString();
+                    String tmp = "";
                     String tmp2 = "";
 
-                    if (pZm != -1)
-                        tmp2 = listaZmiennych[pZm].wartosc.ToString();
+                    if (tempLewa.tablica == true)
+                    {
+                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+                        tmp = tempLewa.wartosci[tmpNumerEl].ToString();
+                    }
+                    else
+                        tmp = tempLewa.wartosc.ToString();
+
+                    if (tempPrawa != null)
+                    {
+                        if (tempPrawa.tablica == true)
+                        {
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+                            tmp2 = tempPrawa.wartosci[tmpNumerEl].ToString();
+                        }
+                        else
+                            tmp2 = tempPrawa.wartosc.ToString();
+                    }
                     else
                         tmp2 = dzialania[i].srodek.ToString();
 
