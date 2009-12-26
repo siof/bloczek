@@ -197,10 +197,21 @@ namespace libbloki
                 }
                 else
                 {
+                    int tmpNumerEl = 0;
+                    Zmienna tmpZmienna = null;
                     if (dzialania[i].srodekZmienna == true)
+                    {
                         temp = ZnajdzZmienna(dzialania[i].srodek.ToString());
+                        tmpZmienna = listaZmiennych[temp];
+                        
+                        if (tmpZmienna.tablica == true)
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
 
-                    Czytaj tmpOkno = new Czytaj(listaZmiennych, temp);
+                        tmpZmienna = null;
+                    }
+
+                    Czytaj tmpOkno = new Czytaj(listaZmiennych, temp, tmpNumerEl);
+                    
                     tmpOkno.label1.Text = "Podaj " + dzialania[i].srodek + ":";
 
                     if (listaZmiennych[temp].typ == typeof(int))
