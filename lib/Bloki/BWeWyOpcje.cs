@@ -43,7 +43,10 @@ namespace libbloki
                 //czytaj liste zmiennych i dodaj do combo/list boxow
                 for (int i = 0; i < BWeWy.listaZmiennych.Count; i++)
                 {
-                    temp = BWeWy.listaZmiennych[i].nazwa.ToString();
+                    if (BWeWy.listaZmiennych[i].tablica == true)
+                        temp = BWeWy.listaZmiennych[i].nazwa.ToString() + "[]";
+                    else
+                        temp = BWeWy.listaZmiennych[i].nazwa.ToString();
                     listBoxZmienne.Items.Add(temp);
                 }
             }

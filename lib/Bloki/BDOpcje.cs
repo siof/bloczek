@@ -42,9 +42,11 @@ namespace libbloki
                 //czytaj liste zmiennych i dodaj do combo/list boxow
                 for (int i = 0; i < bDec.listaZmiennych.Count; i++)
                 {
-                    temp = bDec.listaZmiennych[i].nazwa.ToString();
+                    if (bDec.listaZmiennych[i].tablica == true)
+                        temp = bDec.listaZmiennych[i].nazwa.ToString() + "[]";
+                    else
+                        temp = bDec.listaZmiennych[i].nazwa.ToString();
                     listBoxZmienne.Items.Add(temp);
-                    comboBox1.Items.Add(temp);
                 }
             }
 
@@ -83,21 +85,27 @@ namespace libbloki
         private void listBoxZmienne_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (((ListBox)sender).SelectedItem != null)
-                txtBox.Text = bDec.znacznikZmiennej + listBoxZmienne.SelectedItem.ToString() + bDec.znacznikZmiennej;
+            {
+                if (txtBoxL.Text != "")
+                    txtBoxP.Text = bDec.znacznikZmiennej + listBoxZmienne.SelectedItem.ToString() + bDec.znacznikZmiennej;
+                else
+                    txtBoxL.Text = bDec.znacznikZmiennej + listBoxZmienne.SelectedItem.ToString() + bDec.znacznikZmiennej;
+            }
         }
 
         private void WyczyscPola()
         {
-            txtBox.Text = "";
+            txtBoxP.Text = "";
+            txtBoxL.Text = "";
         }
 
         private void btnDodaj_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem == null && comboBox2.SelectedItem == null)
+            if (comboBox2.SelectedItem == null)
                 return;
 
             String temp;
-            if (comboBox1.SelectedItem.ToString() != "" && comboBox2.SelectedItem.ToString() != "" && txtBox.Text != "")
+            if (txtBoxL.Text != "" && comboBox2.SelectedItem.ToString() != "" && txtBoxP.Text != "")
             {
                 temp = "";
                 Dzialanie noweDzialanie = new Dzialanie();
@@ -111,15 +119,16 @@ namespace libbloki
                     noweDzialanie.dodatkowe = comboBox3.SelectedItem.ToString();
                 }
 
-                temp += bDec.znacznikZmiennej + comboBox1.SelectedItem.ToString() + bDec.znacznikZmiennej + " " + comboBox2.SelectedItem.ToString() + " " + txtBox.Text;
-                noweDzialanie.lewa = comboBox1.SelectedItem.ToString();
+                temp += bDec.znacznikZmiennej + txtBoxL.Text + bDec.znacznikZmiennej + " " + comboBox2.SelectedItem.ToString() + " " + txtBoxP.Text;
+                noweDzialanie.lewa = txtBoxL.Text;
                 noweDzialanie.dzialanie1 = comboBox2.SelectedItem.ToString();
-                noweDzialanie.srodek = txtBox.Text;
+                noweDzialanie.srodek = txtBoxP.Text;
 
                 listBox.Items.Add(temp);
                 comboBox3.Visible = true;
                 bDec.dzialania.Add(noweDzialanie);
                 dodaneDzialania.Add(noweDzialanie);
+                WyczyscPola();
             }            
         }
 
