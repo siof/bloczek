@@ -178,12 +178,7 @@ namespace libbloki
                 temp = temp.Replace(znacznikZmiennej, "");
 
             if (temp.Contains('[') == true && temp.Contains(']') == true)
-            {
-                int tmpInd1 = temp.IndexOf('[') + 1;
-                int tmpInd2 = temp.IndexOf(']');
-
-                temp = temp.Remove(tmpInd1, tmpInd2 - tmpInd1);
-            }
+                temp = temp.Remove(temp.IndexOf('['));
 
             for (int i = 0; i < listaZmiennych.Count(); i++)
             {
@@ -205,7 +200,7 @@ namespace libbloki
                 temp = temp.Replace(znacznikZmiennej, "");
 
             if (temp.Contains('[') == true && temp.Contains(']') == true)
-                temp.Remove(temp.IndexOf('['));
+                temp = temp.Remove(temp.IndexOf('['));
 
             for (int i = 0; i < listaZmiennych.Count; i++)
             {
@@ -242,7 +237,7 @@ namespace libbloki
                             tmpInd2 = temp.nazwa.IndexOf(']');
                             tmpIlEl = temp.nazwa.Substring(tmpInd1, tmpInd2 - tmpInd1);
                             tmpIlElementow = Convert.ToInt32(tmpIlEl);
-                            temp.nazwa = temp.nazwa.Replace(tmpIlEl, "");
+                            temp.nazwa = temp.nazwa.Remove(tmpInd1 - 1);
 
                             temp.iloscElTablicy = tmpIlElementow;
                         }
@@ -306,7 +301,7 @@ namespace libbloki
                 {
                     tmpNumerEl = temp.Substring(tmpInd1, tmpInd2 - tmpInd1);
 
-                    return Convert.ToInt32(tmpNumerEl);
+                    return Convert.ToInt32(tmpNumerEl) - 1;
                 }
                 else
                     return -2;

@@ -31,12 +31,12 @@
             this.btnDodaj = new System.Windows.Forms.Button();
             this.listBox = new System.Windows.Forms.ListBox();
             this.listBoxZmienne = new System.Windows.Forms.ListBox();
-            this.txtBox = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.txtBoxP = new System.Windows.Forms.TextBox();
             this.btnAnuluj = new System.Windows.Forms.Button();
             this.btnZapisz = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.txtBoxL = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnDodaj
@@ -67,21 +67,12 @@
             this.listBoxZmienne.TabIndex = 26;
             this.listBoxZmienne.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxZmienne_MouseDoubleClick);
             // 
-            // txtBox
+            // txtBoxP
             // 
-            this.txtBox.Location = new System.Drawing.Point(194, 12);
-            this.txtBox.Name = "txtBox";
-            this.txtBox.Size = new System.Drawing.Size(154, 20);
-            this.txtBox.TabIndex = 25;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(57, 12);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(81, 21);
-            this.comboBox1.TabIndex = 24;
-            this.comboBox1.Text = "Zmienna";
+            this.txtBoxP.Location = new System.Drawing.Point(194, 12);
+            this.txtBoxP.Name = "txtBoxP";
+            this.txtBoxP.Size = new System.Drawing.Size(154, 20);
+            this.txtBoxP.TabIndex = 25;
             // 
             // btnAnuluj
             // 
@@ -133,11 +124,19 @@
             this.comboBox3.TabIndex = 32;
             this.comboBox3.Visible = false;
             // 
+            // txtBoxL
+            // 
+            this.txtBoxL.Location = new System.Drawing.Point(57, 12);
+            this.txtBoxL.Name = "txtBoxL";
+            this.txtBoxL.Size = new System.Drawing.Size(81, 20);
+            this.txtBoxL.TabIndex = 33;
+            // 
             // BDOpcje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(422, 276);
+            this.Controls.Add(this.txtBoxL);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.btnAnuluj);
@@ -145,8 +144,7 @@
             this.Controls.Add(this.btnDodaj);
             this.Controls.Add(this.listBox);
             this.Controls.Add(this.listBoxZmienne);
-            this.Controls.Add(this.txtBox);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.txtBoxP);
             this.Name = "BDOpcje";
             this.Text = "BDOpcje";
             this.ResumeLayout(false);
@@ -159,12 +157,12 @@
         private System.Windows.Forms.Button btnDodaj;
         private System.Windows.Forms.ListBox listBox;
         private System.Windows.Forms.ListBox listBoxZmienne;
-        private System.Windows.Forms.TextBox txtBox;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox txtBoxP;
         private System.Windows.Forms.Button btnAnuluj;
         private System.Windows.Forms.Button btnZapisz;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.TextBox txtBoxL;
 
     }
 }
