@@ -50,6 +50,9 @@ namespace libbloki
                 }
             }
 
+            if (bDec.dzialania.Count > 0)
+                comboBox3.Visible = true;
+
             comboBox2.SelectedIndex = 0;
             comboBox3.SelectedIndex = 0;
         }
@@ -119,7 +122,7 @@ namespace libbloki
                     noweDzialanie.dodatkowe = comboBox3.SelectedItem.ToString();
                 }
 
-                temp += bDec.znacznikZmiennej + txtBoxL.Text + bDec.znacznikZmiennej + " " + comboBox2.SelectedItem.ToString() + " " + txtBoxP.Text;
+                temp += txtBoxL.Text + " " + comboBox2.SelectedItem.ToString() + " " + txtBoxP.Text;
                 noweDzialanie.lewa = txtBoxL.Text;
                 noweDzialanie.dzialanie1 = comboBox2.SelectedItem.ToString();
                 noweDzialanie.srodek = txtBoxP.Text;
