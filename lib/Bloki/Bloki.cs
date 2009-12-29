@@ -99,6 +99,7 @@ namespace libbloki
 
         public IList<Zmienna> listaZmiennych;
         public IList<Dzialanie> dzialania = new List<Dzialanie>();
+        public IList<Zmienna> dodaneZmienne = new List<Zmienna>();
 
         protected Point[] _punkty = new Point[2]; //polaczenia
 
@@ -180,9 +181,12 @@ namespace libbloki
             if (temp.Contains('[') == true && temp.Contains(']') == true)
                 temp = temp.Remove(temp.IndexOf('['));
 
+            if (temp.Contains(' ') == true)
+                temp = temp.Replace(" ", "");
+
             for (int i = 0; i < listaZmiennych.Count(); i++)
             {
-                if (listaZmiennych[i].nazwa == temp.ToString())
+                if (listaZmiennych[i].nazwa.Equals(temp) == true)
                     return true;
             }
 
@@ -202,6 +206,9 @@ namespace libbloki
             if (temp.Contains('[') == true && temp.Contains(']') == true)
                 temp = temp.Remove(temp.IndexOf('['));
 
+            if (temp.Contains(' ') == true)
+                temp = temp.Replace(" ", "");
+
             for (int i = 0; i < listaZmiennych.Count; i++)
             {
                 if (listaZmiennych[i].nazwa.Equals(temp) == true)
@@ -219,6 +226,10 @@ namespace libbloki
                 {
                     Zmienna temp = new Zmienna();
                     this.dzialania[i].lewa = this.dzialania[i].lewa.Replace(znacznikZmiennej, "");
+                    
+                    if (this.dzialania[i].lewa.Contains(' '))
+                        this.dzialania[i].lewa = this.dzialania[i].lewa.Replace(" ", "");
+                    
                     temp.nazwa = dzialania[i].lewa.ToString();
                     dzialania[i].nowaZmienna = false;
 
@@ -285,6 +296,85 @@ namespace libbloki
                     if (listaZmiennych != null)
                         listaZmiennych.Add(temp);
                 }
+            }
+        }
+
+        public void DodajNoweZmienne(Dzialanie dzial)
+        {
+            if (dzial.nowaZmienna == true && SprawdzCzyIstniejeZmienna(dzial.lewa) == false)
+            {
+                Zmienna temp = new Zmienna();
+                dzial.lewa = dzial.lewa.Replace(znacznikZmiennej, "");
+
+                if (dzial.lewa.Contains(' '))
+                    dzial.lewa = dzial.lewa.Replace(" ", "");
+
+                temp.nazwa = dzial.lewa.ToString();
+                dzial.nowaZmienna = false;
+
+                if (dzial.lewa.Contains('[') == true && dzial.lewa.Contains(']') == true)
+                    temp.tablica = true;
+
+                if (dzial.dodatkowe != null)
+                {
+                    int tmpInd1, tmpInd2;
+                    String tmpIlEl = "";
+                    int tmpIlElementow = 0;
+
+                    if (temp.tablica == true)
+                    {
+                        tmpInd1 = temp.nazwa.IndexOf('[') + 1;
+                        tmpInd2 = temp.nazwa.IndexOf(']');
+                        tmpIlEl = temp.nazwa.Substring(tmpInd1, tmpInd2 - tmpInd1);
+                        tmpIlElementow = Convert.ToInt32(tmpIlEl);
+                        temp.nazwa = temp.nazwa.Remove(tmpInd1 - 1);
+
+                        temp.iloscElTablicy = tmpIlElementow;
+                    }
+
+                    switch (dzial.dodatkowe)
+                    {
+                        case "int":
+                            temp.typ = typeof(int);
+                            if (temp.tablica == true)
+                            {
+                                for (int j = 0; j < tmpIlElementow; j++)
+                                    temp.wartosci.Add("0");
+                            }
+                            else
+                                temp.wartosc = "0";
+                            break;
+
+                        case "double":
+                            temp.typ = typeof(double);
+                            if (temp.tablica == true)
+                            {
+                                for (int j = 0; j < tmpIlElementow; j++)
+                                    temp.wartosci.Add("0.0");
+                            }
+                            else
+                                temp.wartosc = "0.0";
+                            break;
+
+                        case "String":
+                            temp.typ = typeof(String);
+                            if (temp.tablica == true)
+                            {
+                                for (int j = 0; j < tmpIlElementow; j++)
+                                    temp.wartosci.Add("");
+                            }
+                            else
+                                temp.wartosc = "";
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                if (listaZmiennych != null)
+                    listaZmiennych.Add(temp);
+                dodaneZmienne.Add(temp);
             }
         }
 

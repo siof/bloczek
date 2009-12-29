@@ -59,10 +59,15 @@ namespace libbloki
 
         private void btnAnuluj_Click(object sender, EventArgs e)
         {
-            //z racji że na bierząco aktualizuje działania to musze je usunąć z listy
+            //z racji że na bierząco aktualizuje działania to musze je usunąć z listy (to samo ze zmiennymi)
             for (int i = 0; i < dodaneDzialania.Count; i++)
             {
                 bObl.dzialania.Remove(dodaneDzialania[i]);
+            }
+
+            for (int i = 0; i < bObl.dodaneZmienne.Count; i++)
+            {
+                bObl.listaZmiennych.Remove(bObl.dodaneZmienne[i]);
             }
 
             dodaneDzialania.Clear(); //na wszelki wypadek
@@ -75,7 +80,7 @@ namespace libbloki
             //z racji że na bierząco aktualizuje dzialania to nie trzeba nic robić
             //poza wyświetleniem działań na bloku
 
-            bObl.DodajNoweZmienne();
+            //bObl.DodajNoweZmienne();
             bObl.AktualizujTXT();
 
             dodaneDzialania.Clear(); //na wszelki wypadek
@@ -148,6 +153,7 @@ namespace libbloki
                         tmpString = tmpString.Remove(tmpInd1, tmpInd2 - tmpInd1);
                     }
                     listBoxZmienne.Items.Add(tmpString);
+                    
                 }
             }
 
@@ -164,6 +170,7 @@ namespace libbloki
             listBox.Items.Add(temp);
             bObl.dzialania.Add(noweDzialanie);
             dodaneDzialania.Add(noweDzialanie);
+            bObl.DodajNoweZmienne(noweDzialanie);
             WyczyscPola();
         }
 

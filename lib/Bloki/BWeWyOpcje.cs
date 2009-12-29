@@ -29,11 +29,7 @@ namespace libbloki
             for (int i = 0; i < BWeWy.dzialania.Count; i++)
             {
                 temp = BWeWy.dzialania[i].dzialanie1 + " : ";
-
-                if (BWeWy.dzialania[i].srodekZmienna == true)
-                    temp += BWeWy.znacznikZmiennej + BWeWy.dzialania[i].srodek + BWeWy.znacznikZmiennej;
-                else
-                    temp += BWeWy.dzialania[i].srodek;
+                temp += BWeWy.dzialania[i].srodek;
 
                 listBox.Items.Add(temp);
             }
@@ -79,14 +75,14 @@ namespace libbloki
             temp = comboBox1.SelectedItem.ToString() + " : " + txtBox.Text;
 
             noweDzialanie.dzialanie1 = comboBox1.SelectedItem.ToString();
-            noweDzialanie.srodek = txtBox.Text;
+            noweDzialanie.srodekBWeWy = txtBox.Text;
 
             if (comboBox1.SelectedItem.ToString() == "Czytaj" && BWeWy.SprawdzCzyIstniejeZmienna(txtBox.Text) == false)
             {
                 noweDzialanie.nowaZmienna = true;
                 noweDzialanie.srodekZmienna = true;
                 noweDzialanie.lewa = txtBox.Text;
-                noweDzialanie.srodek = BWeWy.znacznikZmiennej + txtBox.Text + BWeWy.znacznikZmiennej;
+                noweDzialanie.srodekBWeWy = BWeWy.znacznikZmiennej + txtBox.Text + BWeWy.znacznikZmiennej;
                 listBoxZmienne.Items.Add(txtBox.Text.ToString());
                 if (comboBox2.SelectedItem != null)
                     noweDzialanie.dodatkowe = comboBox2.SelectedItem.ToString();
@@ -97,6 +93,7 @@ namespace libbloki
             listBox.Items.Add(temp);
             BWeWy.dzialania.Add(noweDzialanie);
             dodaneDzialania.Add(noweDzialanie);
+            BWeWy.DodajNoweZmienne(noweDzialanie);
         }
 
         private void btnAnuluj_Click(object sender, EventArgs e)
@@ -105,6 +102,11 @@ namespace libbloki
             for (int i = 0; i < dodaneDzialania.Count; i++)
             {
                 BWeWy.dzialania.Remove(dodaneDzialania[i]);
+            }
+
+            for (int i = 0; i < BWeWy.dodaneZmienne.Count; i++)
+            {
+                BWeWy.listaZmiennych.Remove(BWeWy.dodaneZmienne[i]);
             }
 
             dodaneDzialania.Clear(); //na wszelki wypadek
@@ -117,7 +119,7 @@ namespace libbloki
             //z racji że na bierząco aktualizuje dzialania to nie trzeba nic robić
             //poza wyświetleniem działań na bloku
 
-            BWeWy.DodajNoweZmienne();
+            //BWeWy.DodajNoweZmienne();
 
             dodaneDzialania.Clear(); //na wszelki wypadek
 

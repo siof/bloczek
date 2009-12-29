@@ -168,7 +168,12 @@ namespace libbloki
                             tmpL = Convert.ToInt32(tempSrodek.wartosc);
                     }
                     else
-                        tmpL = Convert.ToInt32(dzialania[i].srodek);
+                    {
+                        if (dzialania[i].srodek == "")
+                            tmpL = 0;
+                        else
+                            tmpL = Convert.ToInt32(dzialania[i].srodek);
+                    }
 
                     if (dzialania[i].dzialanie2 != null)
                     {

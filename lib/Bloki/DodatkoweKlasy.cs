@@ -120,6 +120,18 @@ namespace libbloki
             }
         }
 
+        public String srodekBWeWy
+        {
+            get { return _srodek; }
+            set 
+            { 
+                if (value.Contains(znacznikZmiennej) == true)
+                    srodekZmienna = true;
+
+                _srodek = value; 
+            }
+        }
+
         public String dzialanie2
         {
             get { return _dzialanie2; }
