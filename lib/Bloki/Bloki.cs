@@ -389,7 +389,18 @@ namespace libbloki
 
                 if (tmpInd2 - tmpInd1 > 0)
                 {
-                    tmpNumerEl = temp.Substring(tmpInd1, tmpInd2 - tmpInd1);
+                    tmpNumerEl = znacznikZmiennej + temp.Substring(tmpInd1, tmpInd2 - tmpInd1) + znacznikZmiennej;
+
+                    foreach (Zmienna zm in listaZmiennych)
+                    {
+                        if (zm.tablica == false)
+                        {
+                            temp = znacznikZmiennej + zm.nazwa + znacznikZmiennej;
+                            if (temp == tmpNumerEl)
+                                tmpNumerEl = tmpNumerEl.Replace(tmpNumerEl, zm.wartosc);
+                        }
+                    }
+                    tmpNumerEl = tmpNumerEl.Replace(znacznikZmiennej, "");
 
                     return Convert.ToInt32(tmpNumerEl) - 1;
                 }
