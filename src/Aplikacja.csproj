@@ -121,10 +121,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Img\tlo.png" />
-    <Content Include="Img\tlo1.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\lib\Bloki\ProjektBloki.csproj">
       <Project>{CCCF8DF6-8476-4981-8CC3-80EED69C5201}</Project>
       <Name>ProjektBloki</Name>
