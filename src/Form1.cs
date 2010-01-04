@@ -27,7 +27,17 @@ namespace Okienka
         private bool symuluj = false;
         private bool _zmodyfikowany = false;
         private String blokDecTakNie = "";
-        private String nazwaPliku = "";
+        private String _nazwaPliku = "";
+
+        public String nazwaPliku
+        {
+            get { return _nazwaPliku; }
+            set { _nazwaPliku = value;
+                 Form1.ActiveForm.Text = "Schematy blokowe";
+                 if (_nazwaPliku != "")
+                     Form1.ActiveForm.Text += " (" + _nazwaPliku + ")";
+            }
+        }
 
         private Bloki polaczOD = null, polaczDO = null;
         private int ile = 0;
@@ -62,7 +72,7 @@ namespace Okienka
         public bool zmodyfikowany
         {
             get { return _zmodyfikowany; }
-            set { _zmodyfikowany = value; }
+            set { _zmodyfikowany = value;}
         }
 
         public Form1()
@@ -2970,6 +2980,12 @@ namespace Okienka
                 podgladZmiennych = new Podglad_zmiennych(zmienne);
             podgladZmiennych.WczytajZmienne();
             podgladZmiennych.Show();
+        }
+
+        private void zatrzymajSymulacjęToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            symuluj = false;
+            
         }
     }
 }

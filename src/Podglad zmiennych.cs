@@ -154,29 +154,33 @@ namespace Okienka
 
         private void lbZmienne_DoubleClick(object sender, EventArgs e)
         {
-            Zmienna temp = new Zmienna();
-            String tempNazwa = lbZmienne.SelectedItem.ToString(); ;
-            Zmienna tempZm = zmienne[ZnajdzZmienna(tempNazwa)];
-
-            temp.iloscElTablicy = tempZm.iloscElTablicy;
-            temp.nazwa = tempZm.nazwa.ToString();
-            temp.tablica = tempZm.tablica;
-            temp.typ = tempZm.typ;
-
-            if (temp.tablica == true)
+            if (lbZmienne.Items.Count>0)
             {
-                foreach (String str in tempZm.wartosci)
+                Zmienna temp = new Zmienna();
+            
+                String tempNazwa = lbZmienne.SelectedItem.ToString(); ;
+                Zmienna tempZm = zmienne[ZnajdzZmienna(tempNazwa)];
+
+                temp.iloscElTablicy = tempZm.iloscElTablicy;
+                temp.nazwa = tempZm.nazwa.ToString();
+                temp.tablica = tempZm.tablica;
+                temp.typ = tempZm.typ;
+
+                if (temp.tablica == true)
                 {
-                    temp.wartosci.Add(str.ToString());
+                    foreach (String str in tempZm.wartosci)
+                    {
+                        temp.wartosci.Add(str.ToString());
+                    }
                 }
+                else
+                    temp.wartosc = tempZm.wartosc.ToString();
+
+                if (SprawdzCzyJestWObserwowanych(temp) == false)
+                    obserwowaneZmienne.Add(temp);
+
+                AktualizujListeObserwowanych();
             }
-            else
-                temp.wartosc = tempZm.wartosc.ToString();
-
-            if (SprawdzCzyJestWObserwowanych(temp) == false)
-                obserwowaneZmienne.Add(temp);
-
-            AktualizujListeObserwowanych();
         }
     }
 }
