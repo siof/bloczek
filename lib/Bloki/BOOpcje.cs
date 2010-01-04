@@ -157,19 +157,22 @@ namespace libbloki
                 }
             }
 
-            noweDzialanie.dzialanie1 = ":=";
-            noweDzialanie.srodek = txtS.Text;
-
-            if (cbDzialanie.SelectedItem != null && cbDzialanie.SelectedItem.ToString() != "" && (txtP.Text != "" || txtP.Text != " "))
+            if (txtS.Text != "" && txtS.Text != " ")
             {
-                temp += " " + cbDzialanie.SelectedItem.ToString() + " " + txtP.Text;
-                noweDzialanie.dzialanie2 = cbDzialanie.SelectedItem.ToString();
-                noweDzialanie.prawa = txtP.Text;
-            }
+                noweDzialanie.dzialanie1 = ":=";
+                noweDzialanie.srodek = txtS.Text;
 
-            listBox.Items.Add(temp);
-            bObl.dzialania.Add(noweDzialanie);
-            dodaneDzialania.Add(noweDzialanie);
+                if (cbDzialanie.SelectedItem != null && cbDzialanie.SelectedItem.ToString() != "" && (txtP.Text != "" || txtP.Text != " "))
+                {
+                    temp += " " + cbDzialanie.SelectedItem.ToString() + " " + txtP.Text;
+                    noweDzialanie.dzialanie2 = cbDzialanie.SelectedItem.ToString();
+                    noweDzialanie.prawa = txtP.Text;
+                }
+
+                listBox.Items.Add(temp);
+                bObl.dzialania.Add(noweDzialanie);
+                dodaneDzialania.Add(noweDzialanie);
+            }
             bObl.DodajNoweZmienne(noweDzialanie);
             WyczyscPola();
         }
