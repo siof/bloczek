@@ -39,6 +39,7 @@ namespace Okienka
         private BWeWyOpcje bWeWyOpcje;
         private Czytaj czytaj;
         private libbloki.Console console = new libbloki.Console();
+        private Podglad_zmiennych podgladZmiennych;
 
         private IList<ParametryBloku> ParamBlokow = new List<ParametryBloku>();
         private IList<Bloki> tabBloki = new List<Bloki>();
@@ -69,6 +70,7 @@ namespace Okienka
             InitializeComponent();
             graph = panel1.CreateGraphics();
             numer = 0;
+            podgladZmiennych = new Podglad_zmiennych(zmienne);
         }
 
         private void WywolajBOOpcje(object sender, MouseEventArgs e)
@@ -2319,6 +2321,11 @@ namespace Okienka
                // if (bw.IsBusy == true)
                    // bw.CancelAsync();
             }
+
+
+
+            if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
+                podgladZmiennych.AktualizujListeObserwowanych();
         }
 
         private void krokowaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2427,6 +2434,9 @@ namespace Okienka
                     aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
 
                 aktualnyBlok.tryb = tryby.aktualny;
+
+                if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
+                    podgladZmiennych.AktualizujListeObserwowanych();
             }
         }
 
@@ -2952,6 +2962,14 @@ namespace Okienka
                 }
             }
             //Application.Exit();
+        }
+
+        private void podgladZmiennychToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (podgladZmiennych.IsDisposed == true)
+                podgladZmiennych = new Podglad_zmiennych(zmienne);
+            podgladZmiennych.WczytajZmienne();
+            podgladZmiennych.Show();
         }
     }
 }
