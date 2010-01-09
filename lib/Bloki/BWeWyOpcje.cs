@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BWeWyOpcje : Form
     {
         BlokWeWy BWeWy;
-        IList<Dzialanie> dodaneDzialania = new List<Dzialanie>();
+        IList<Dzialanie> poprzenieDzialania = new List<Dzialanie>();
 
         public BWeWyOpcje()
         {
@@ -30,6 +30,7 @@ namespace libbloki
             {
                 temp = BWeWy.dzialania[i].dzialanie1 + " : ";
                 temp += BWeWy.dzialania[i].srodek;
+                poprzenieDzialania.Add(BWeWy.dzialania[i]);
 
                 listBox.Items.Add(temp);
             }
@@ -92,24 +93,23 @@ namespace libbloki
 
             listBox.Items.Add(temp);
             BWeWy.dzialania.Add(noweDzialanie);
-            dodaneDzialania.Add(noweDzialanie);
             BWeWy.DodajNoweZmienne(noweDzialanie);
         }
 
         private void btnAnuluj_Click(object sender, EventArgs e)
         {
-            //z racji że na bierząco aktualizuje działania to musze je usunąć z listy
-            for (int i = 0; i < dodaneDzialania.Count; i++)
-            {
-                BWeWy.dzialania.Remove(dodaneDzialania[i]);
-            }
-
+            //z racji że na bierząco aktualizuje zmienne to musze je usunąć z listy
             for (int i = 0; i < BWeWy.dodaneZmienne.Count; i++)
             {
                 BWeWy.listaZmiennych.Remove(BWeWy.dodaneZmienne[i]);
             }
 
-            dodaneDzialania.Clear(); //na wszelki wypadek
+            //przywroc poprzednia wersje dzialan:
+            BWeWy.dzialania.Clear();
+            for (int i = 0; i < poprzenieDzialania.Count; i++)
+                BWeWy.dzialania.Add(poprzenieDzialania[i]);
+
+            poprzenieDzialania.Clear(); //na wszelki wypadek
 
             BWeWyOpcje.ActiveForm.Close();
         }
@@ -121,7 +121,7 @@ namespace libbloki
 
             //BWeWy.DodajNoweZmienne();
 
-            dodaneDzialania.Clear(); //na wszelki wypadek
+            poprzenieDzialania.Clear(); //na wszelki wypadek
 
             BWeWyOpcje.ActiveForm.Close();
         }
@@ -144,12 +144,52 @@ namespace libbloki
                             }
                         }
                     }
-
-                    dodaneDzialania.Remove(BWeWy.dzialania[listBox.SelectedIndex]);
                     BWeWy.dzialania.RemoveAt(listBox.SelectedIndex);
                     listBox.Items.Remove(listBox.SelectedItem);
                 }
             }
+        }
+
+        private void btnDoGory_Click(object sender, EventArgs e)
+        {
+            if (listBox.SelectedItem == null)
+                return;
+
+            if (listBox.SelectedIndex == 0)
+                return;
+
+            int tmpInd = listBox.SelectedIndex;
+            Dzialanie tmpDzial = BWeWy.dzialania[tmpInd - 1];
+            String tmpString = listBox.Items[tmpInd - 1].ToString();
+            listBox.Items[tmpInd - 1] = listBox.Items[tmpInd].ToString();
+            listBox.Items[tmpInd] = tmpString.ToString();
+            BWeWy.dzialania[tmpInd - 1] = BWeWy.dzialania[tmpInd];
+            BWeWy.dzialania[tmpInd] = tmpDzial;
+            listBox.SelectedIndex = tmpInd - 1;
+            tmpDzial = null;
+            tmpString = null;
+            tmpInd = 0;
+        }
+
+        private void btnNaDol_Click(object sender, EventArgs e)
+        {
+            if (listBox.SelectedItem == null)
+                return;
+
+            if (listBox.SelectedIndex == listBox.Items.Count - 1)
+                return;
+
+            int tmpInd = listBox.SelectedIndex;
+            Dzialanie tmpDzial = BWeWy.dzialania[tmpInd + 1];
+            String tmpString = listBox.Items[tmpInd + 1].ToString();
+            listBox.Items[tmpInd + 1] = listBox.Items[tmpInd].ToString();
+            listBox.Items[tmpInd] = tmpString.ToString();
+            BWeWy.dzialania[tmpInd + 1] = BWeWy.dzialania[tmpInd];
+            BWeWy.dzialania[tmpInd] = tmpDzial;
+            listBox.SelectedIndex = tmpInd + 1;
+            tmpDzial = null;
+            tmpString = null;
+            tmpInd = 0;
         }
     }
 }

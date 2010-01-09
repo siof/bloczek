@@ -37,6 +37,8 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.txtBoxL = new System.Windows.Forms.TextBox();
+            this.btnNaDol = new System.Windows.Forms.Button();
+            this.btnDoGory = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnDodaj
@@ -54,7 +56,7 @@
             this.listBox.FormattingEnabled = true;
             this.listBox.Location = new System.Drawing.Point(113, 52);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(297, 186);
+            this.listBox.Size = new System.Drawing.Size(266, 186);
             this.listBox.TabIndex = 27;
             this.listBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBox_KeyDown);
             // 
@@ -131,11 +133,33 @@
             this.txtBoxL.Size = new System.Drawing.Size(81, 20);
             this.txtBoxL.TabIndex = 33;
             // 
+            // btnNaDol
+            // 
+            this.btnNaDol.Location = new System.Drawing.Point(385, 173);
+            this.btnNaDol.Name = "btnNaDol";
+            this.btnNaDol.Size = new System.Drawing.Size(25, 23);
+            this.btnNaDol.TabIndex = 35;
+            this.btnNaDol.Text = "\\/";
+            this.btnNaDol.UseVisualStyleBackColor = true;
+            this.btnNaDol.Click += new System.EventHandler(this.btnNaDol_Click);
+            // 
+            // btnDoGory
+            // 
+            this.btnDoGory.Location = new System.Drawing.Point(385, 89);
+            this.btnDoGory.Name = "btnDoGory";
+            this.btnDoGory.Size = new System.Drawing.Size(25, 23);
+            this.btnDoGory.TabIndex = 34;
+            this.btnDoGory.Text = "/\\";
+            this.btnDoGory.UseVisualStyleBackColor = true;
+            this.btnDoGory.Click += new System.EventHandler(this.btnDoGory_Click);
+            // 
             // BDOpcje
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(422, 276);
+            this.Controls.Add(this.btnNaDol);
+            this.Controls.Add(this.btnDoGory);
             this.Controls.Add(this.txtBoxL);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.comboBox2);
@@ -163,6 +187,8 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.TextBox txtBoxL;
+        private System.Windows.Forms.Button btnNaDol;
+        private System.Windows.Forms.Button btnDoGory;
 
     }
 }

@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BDOpcje : Form
     {
         BlokDecyzyjny bDec;
-        IList<Dzialanie> dodaneDzialania = new List<Dzialanie>();
+        IList<Dzialanie> poprzenieDzialania = new List<Dzialanie>();
 
         public BDOpcje(BlokDecyzyjny usr)
         {
@@ -33,6 +33,8 @@ namespace libbloki
                     temp += bDec.znacznikZmiennej.ToString() + bDec.dzialania[i].srodek.ToString() + bDec.znacznikZmiennej.ToString();
                 else
                     temp += bDec.dzialania[i].srodek.ToString();
+
+                poprzenieDzialania.Add(bDec.dzialania[i]);
 
                 listBox.Items.Add(temp);
             }
@@ -64,13 +66,12 @@ namespace libbloki
 
         private void btnAnuluj_Click(object sender, EventArgs e)
         {
-            //z racji że na bierząco aktualizuje działania to musze je usunąć z listy
-            for (int i = 0; i < dodaneDzialania.Count; i++)
-            {
-                bDec.dzialania.Remove(dodaneDzialania[i]);
-            }
+            //przywroc poprzednia wersje dzialan:
+            bDec.dzialania.Clear();
+            for (int i = 0; i < poprzenieDzialania.Count; i++)
+                bDec.dzialania.Add(poprzenieDzialania[i]);
 
-            dodaneDzialania.Clear(); //na wszelki wypadek
+            poprzenieDzialania.Clear(); //na wszelki wypadek
 
             BDOpcje.ActiveForm.Close();
         }
@@ -80,7 +81,7 @@ namespace libbloki
             //z racji że na bierząco aktualizuje dzialania to nie trzeba nic robić
             //poza wyświetleniem działań na bloku 
 
-            dodaneDzialania.Clear(); //na wszelki wypadek
+            poprzenieDzialania.Clear(); //na wszelki wypadek
 
             BDOpcje.ActiveForm.Close();
         }
@@ -130,7 +131,6 @@ namespace libbloki
                 listBox.Items.Add(temp);
                 comboBox3.Visible = true;
                 bDec.dzialania.Add(noweDzialanie);
-                dodaneDzialania.Add(noweDzialanie);
                 WyczyscPola();
             }            
         }
@@ -141,13 +141,54 @@ namespace libbloki
             {
                 if (e.KeyCode == Keys.Delete)
                 {
-                    dodaneDzialania.Remove(bDec.dzialania.ElementAt(listBox.SelectedIndex));
                     bDec.dzialania.RemoveAt(listBox.SelectedIndex);
                     listBox.Items.Remove(listBox.SelectedItem);
                     if (listBox.Items.Count == 0)
                         comboBox3.Visible = false;
                 }
             }
+        }
+
+        private void btnDoGory_Click(object sender, EventArgs e)
+        {
+            if (listBox.SelectedItem == null)
+                return;
+
+            if (listBox.SelectedIndex == 0)
+                return;
+
+            int tmpInd = listBox.SelectedIndex;
+            Dzialanie tmpDzial = bDec.dzialania[tmpInd - 1];
+            String tmpString = listBox.Items[tmpInd - 1].ToString();
+            listBox.Items[tmpInd - 1] = listBox.Items[tmpInd].ToString();
+            listBox.Items[tmpInd] = tmpString.ToString();
+            bDec.dzialania[tmpInd - 1] = bDec.dzialania[tmpInd];
+            bDec.dzialania[tmpInd] = tmpDzial;
+            listBox.SelectedIndex = tmpInd - 1;
+            tmpDzial = null;
+            tmpString = null;
+            tmpInd = 0;
+        }
+
+        private void btnNaDol_Click(object sender, EventArgs e)
+        {
+            if (listBox.SelectedItem == null)
+                return;
+
+            if (listBox.SelectedIndex == listBox.Items.Count - 1)
+                return;
+
+            int tmpInd = listBox.SelectedIndex;
+            Dzialanie tmpDzial = bDec.dzialania[tmpInd + 1];
+            String tmpString = listBox.Items[tmpInd + 1].ToString();
+            listBox.Items[tmpInd + 1] = listBox.Items[tmpInd].ToString();
+            listBox.Items[tmpInd] = tmpString.ToString();
+            bDec.dzialania[tmpInd + 1] = bDec.dzialania[tmpInd];
+            bDec.dzialania[tmpInd] = tmpDzial;
+            listBox.SelectedIndex = tmpInd + 1;
+            tmpDzial = null;
+            tmpString = null;
+            tmpInd = 0;
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Okienka
         private BDOpcje bDOpcje;
         private BOOpcje bOOpcje;
         private BWeWyOpcje bWeWyOpcje;
-        private Czytaj czytaj;
+        //private Czytaj czytaj;
         private libbloki.Console console = new libbloki.Console();
         private Podglad_zmiennych podgladZmiennych;
 
