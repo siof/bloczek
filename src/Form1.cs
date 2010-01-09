@@ -2125,6 +2125,58 @@ namespace Okienka
             zmodyfikowany = true;
         }
 
+        public void WyczyscWartosciZmiennych()
+        {
+            if (zmienne == null)
+                return;
+
+            foreach (Zmienna zm in zmienne)
+            {
+                if (zm.tablica == true)
+                {
+                    if (zm.typ == typeof(String))
+                    {
+                        for (int i = 0; i < zm.iloscElTablicy; i++)
+                            zm.wartosci[i] = "";
+                        continue;
+                    }
+
+                    if (zm.typ == typeof(int))
+                    {
+                        for (int i = 0; i < zm.iloscElTablicy; i++)
+                            zm.wartosci[i] = "0";
+                        continue;
+                    }
+
+                    if (zm.typ == typeof(double))
+                    {
+                        for (int i = 0; i < zm.iloscElTablicy; i++)
+                            zm.wartosci[i] = "0.0";
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (zm.typ == typeof(String))
+                    {
+                        zm.wartosc = "";
+                        continue;
+                    }
+
+                    if (zm.typ == typeof(int))
+                    {
+                        zm.wartosc = "0";
+                        continue;
+                    }
+                    if (zm.typ == typeof(double))
+                    {
+                        zm.wartosc = "0.0";
+                        continue;
+                    }
+                }
+            }
+        }
+
         private void Symulacja(object sender, DoWorkEventArgs e)
         {
             if (tabBloki.Count == 0)
@@ -2215,6 +2267,9 @@ namespace Okienka
 
         private void pełnaToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
+                podgladZmiennych.AktualizujListeObserwowanych();
+
             if (symuluj == false)
             {
                 symuluj=true;
@@ -2336,12 +2391,17 @@ namespace Okienka
 
             if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
                 podgladZmiennych.AktualizujListeObserwowanych();
+
+            WyczyscWartosciZmiennych();
         }
 
         private void krokowaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tabBloki.Count == 0)
                 return;
+
+            if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
+                podgladZmiennych.AktualizujListeObserwowanych();
 
             if (symuluj == false)
             {
@@ -2395,7 +2455,7 @@ namespace Okienka
                         aktualnyBlok.tryb = tryby.normal;
 
                     aktualnyBlok = null;
-                    return;
+                    WyczyscWartosciZmiennych();
                 }
 
                 if (aktualnyBlok.typBloku == typeof(BlokObliczeniowy))
