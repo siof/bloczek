@@ -57,9 +57,9 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsPracaKrokowa = new System.Windows.Forms.ToolStrip();
             this.nastepny = new System.Windows.Forms.ToolStripButton();
+            this.Zatrzymaj = new System.Windows.Forms.ToolStripButton();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.Zatrzymaj = new System.Windows.Forms.ToolStripButton();
             this.tsBloki.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -153,7 +153,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(34, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(726, 520);
+            this.panel1.Size = new System.Drawing.Size(758, 520);
             this.panel1.TabIndex = 0;
             this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             this.panel1.Click += new System.EventHandler(this.panel1_Click);
@@ -255,6 +255,7 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // symulacjaToolStripMenuItem
             // 
@@ -334,10 +335,6 @@
             this.nastepny.Text = "Nastepny";
             this.nastepny.Click += new System.EventHandler(this.nastepny_Click);
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
             // Zatrzymaj
             // 
             this.Zatrzymaj.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -347,6 +344,10 @@
             this.Zatrzymaj.Size = new System.Drawing.Size(30, 20);
             this.Zatrzymaj.Text = "Zatrzymaj";
             this.Zatrzymaj.Click += new System.EventHandler(this.Zatrzymaj_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 

@@ -82,7 +82,6 @@ namespace libbloki
             //z racji że na bierząco aktualizuje dzialania to nie trzeba nic robić
             //poza wyświetleniem działań na bloku
 
-            //bObl.DodajNoweZmienne();
             bObl.AktualizujTXT();
 
             poprzenieDzialania.Clear(); //na wszelki wypadek
@@ -203,9 +202,6 @@ namespace libbloki
 
                 return;
             }
-
-            //TODO: jakiś warunek/informacja jeśli wszystkie textboxy są zajęte
-
         }
 
         private void listBox_KeyDown(object sender, KeyEventArgs e)
