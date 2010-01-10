@@ -3039,5 +3039,10 @@ namespace Okienka
             
             this.Close();
         }
+
+        private void pomocToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           Help.ShowHelp(ActiveForm,"help.chm");
+        }
     }
 }
