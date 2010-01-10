@@ -2456,6 +2456,7 @@ namespace Okienka
 
                     aktualnyBlok = null;
                     WyczyscWartosciZmiennych();
+                    return;
                 }
 
                 if (aktualnyBlok.typBloku == typeof(BlokObliczeniowy))
@@ -3046,6 +3047,22 @@ namespace Okienka
         {
             symuluj = false;
             
+        }
+
+        private void Zatrzymaj_Click(object sender, EventArgs e)
+        {
+            symuluj = false;
+            tsPracaKrokowa.Visible = false;
+
+            if (aktualnyBlok != null)
+                aktualnyBlok.tryb = tryby.normal;
+
+            aktualnyBlok = null;
+
+            if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
+                podgladZmiennych.AktualizujListeObserwowanych();
+
+            WyczyscWartosciZmiennych();
         }
     }
 }
