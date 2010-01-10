@@ -119,8 +119,6 @@ namespace libbloki
             //z racji że na bierząco aktualizuje dzialania to nie trzeba nic robić
             //poza wyświetleniem działań na bloku
 
-            //BWeWy.DodajNoweZmienne();
-
             poprzenieDzialania.Clear(); //na wszelki wypadek
 
             BWeWyOpcje.ActiveForm.Close();

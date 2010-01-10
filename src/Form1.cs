@@ -47,7 +47,6 @@ namespace Okienka
         private BDOpcje bDOpcje;
         private BOOpcje bOOpcje;
         private BWeWyOpcje bWeWyOpcje;
-        //private Czytaj czytaj;
         private libbloki.Console console = new libbloki.Console();
         private Podglad_zmiennych podgladZmiennych;
 
@@ -66,8 +65,6 @@ namespace Okienka
         private Point punktKlikuNaBlok;      //punkt w którym kliknięto na blok (przeciwdziałanie przesunięciu bloku bez przesuwania kursora)
         public Bloki zaznaczony;
         public Bloki aktualnyBlok;
-
-        private BackgroundWorker bw = new BackgroundWorker();
 
         public bool zmodyfikowany
         {
@@ -144,15 +141,31 @@ namespace Okienka
         
         private int ZnajdzBlok(String nazwa)
         {
-            int i;
-            for (i = 0; i < tabBloki.Count; i++)
-                if (tabBloki[i].Name.Equals(nazwa) == true) break;
+            if (nazwa == null)
+            {
+                MessageBox.Show("ZnajdzBlok: nazwa nie istnieje");
+                return -1;
+            }
 
-            return i;
+            int j = -1;
+            for (int i = 0; i < tabBloki.Count; i++)
+                if (tabBloki[i].Name.Equals(nazwa) == true)
+                {
+                    j = i;
+                    break;
+                }
+
+            return j;
         }
 
         private bool JestBlokONazwie(String nazwa)
         {
+            if (nazwa == null)
+            {
+                MessageBox.Show("JestBlokONazwie: nazwa nie istnieje");
+                return false;
+            }
+
             for (int i = 0; i < tabBloki.Count; i++)
                 if (tabBloki[i].Name.Equals(nazwa) == true)
                     return true;
@@ -162,7 +175,7 @@ namespace Okienka
 
         private void UsunBlok(object sender, KeyEventArgs e)  //
         {
-            if ((e.KeyCode == Keys.Delete) &&(zaznaczony != null))
+            if ((e.KeyCode == Keys.Delete) && (zaznaczony != null))
             {
                 Polaczenie tmpPol = new Polaczenie((Bloki)sender, 0,"", null, 0,"", null, null);
                 UsunPolaczenia(tmpPol);
@@ -173,7 +186,14 @@ namespace Okienka
                 if (zaznaczony.Name.Equals(((Bloki)sender).Name))
                     zaznaczony = null;
 
-                tabBloki.RemoveAt(ZnajdzBlok(((Bloki)sender).Name));
+                int tmp = ZnajdzBlok(((Bloki)sender).Name);
+                if (tmp < 0)
+                {
+                    MessageBox.Show("UsunBlok: niema takiego bloku");
+                    return;
+                }
+
+                tabBloki.RemoveAt(tmp);
                 ((Bloki)sender).Dispose();
                 ile--;
             }
@@ -206,7 +226,7 @@ namespace Okienka
                 
                 if (typ == typeof(BlokSTART))
                 {
-                    if (JestBlokONazwie("START")==true)
+                    if (JestBlokONazwie("START") == true)
                         return;
 
                     BlokSTART temp = new BlokSTART();
@@ -263,10 +283,7 @@ namespace Okienka
                     temp2.nazwaBloku = "BW" + numer.ToString();
                 }
 
-                //globalne dla wszystkich bloków
-
-                //if (temp2.Name == "")               //START i STOP mają własne nazwy - tylko raz mogą wystąpić w algorytmie
-                //    temp2.Name = numer.ToString();      
+                //globalne dla wszystkich bloków   
 
                 temp2.Left = ((MouseEventArgs)e).X;
                 temp2.Top = ((MouseEventArgs)e).Y;
@@ -274,6 +291,13 @@ namespace Okienka
                 temp2.MouseDown += new MouseEventHandler(PrzesunStart);
                 temp2.MouseMove += new MouseEventHandler(panel1_MouseMove);
                 temp2.MouseUp += new MouseEventHandler(panel1_MouseUp);
+
+                if (tabBloki == null)
+                {
+                    MessageBox.Show("panel1Click: tabBloki nie istnieje");
+                    return;
+                }
+
                 tabBloki.Add(temp2);
 
                 panel1.Controls.Add(tabBloki.Last());
@@ -281,6 +305,7 @@ namespace Okienka
                 ile++;
                 if (ctrl != true)
                     klik = false;
+
                 zmodyfikowany = true;
             }
             else
@@ -300,6 +325,12 @@ namespace Okienka
     
         private void DodajPolaczenie(Polaczenie p)
         {
+            if (p == null)
+            {
+                MessageBox.Show("DodajPolaczenie: p nie istnieje");
+                return;
+            }
+
             if (p.RefOD == p.RefDO)
                 return;
             if (p.RefOD == null || p.RefDO == null)
@@ -322,6 +353,12 @@ namespace Okienka
 
         private void UsunPolaczenia(Polaczenie p)
         {
+            if (p == null)
+            {
+                MessageBox.Show("UsunPolaczenia: p nie istnieje");
+                return;
+            }
+
             List<Polaczenie> tmpList;
             tmpList = ZnajdzPolaczenia(p);
             if (tmpList.Count > 0)
@@ -336,6 +373,12 @@ namespace Okienka
 
         private void UsunPolaczenie(Polaczenie p)
         {
+            if (p == null)
+            {
+                MessageBox.Show("UsunPolaczenie: p nie istnieje");
+                return;
+            }
+
             int i;
             i = Polaczenia.IndexOf(p);
             if (i>=0)
@@ -360,6 +403,12 @@ namespace Okienka
 
         private List<Polaczenie> ZnajdzPolaczenia(Polaczenie p)
         {
+            if (p == null)
+            {
+                MessageBox.Show("ZnajdzPolaczenia: p nie istnieje");
+                return null;
+            }
+
             List<Polaczenie> tmpList = new List<Polaczenie>();
             if (p.RefOD != null && p.RefDO != null)
             {
@@ -436,6 +485,12 @@ namespace Okienka
 
         private void OdznaczPolaczenie(Polaczenie p)
         {
+            if (p == null)
+            {
+                MessageBox.Show("OdznaczPolaczenie: p nie istnieje");
+                return;
+            }
+
             List<Polaczenie> tmpList;
             tmpList = ZnajdzPolaczenia(p);
             if (tmpList.Count > 0)
@@ -456,6 +511,12 @@ namespace Okienka
 
         private void RysujPolaczenia(Polaczenie p)
         {
+            if (p == null)
+            {
+                MessageBox.Show("RysujPolaczenia: p nie istnieje");
+                return;
+            }
+
             List<Polaczenie> tmpList = new List<Polaczenie>();
             if (p.RefOD != null && p.RefDO != null)
             {
@@ -508,6 +569,12 @@ namespace Okienka
 
         private void RysujPolaczenie(Polaczenie p)
         {
+            if (p == null)
+            {
+                MessageBox.Show("RysujPolaczenie: p nie istnieje");
+                return;
+            }
+
             if (p.RefLinia1 != null)
             {
                 panel1.Controls.Remove(p.RefLinia1);
@@ -781,9 +848,6 @@ namespace Okienka
                 return;
             }
 
-
-            
-//////////////////////////////////////////////
             if (p.RefOD.GetType() == typeof(BlokDecyzyjny))
             {
                 if (p.IndeksOD == 0)    //NIE
@@ -1046,8 +1110,6 @@ namespace Okienka
                 return;
             }
 
-            
-//////////////////////////////////////////////
             if (p.RefDO.GetType() == typeof(BlokDecyzyjny))
             {
                 if (((p.RefOD.Top + p.RefOD.Height) >= p.RefDO.Top) && (p.RefOD.Top <= (p.RefDO.Top)))
@@ -1306,9 +1368,7 @@ namespace Okienka
                     tmpPoz = null;
                 }
                 return;
-            }
-//////////////////////////////////////////////////
-            
+            }            
 
             if ((p.RefOD.GetType() != typeof(BlokDecyzyjny)) && (p.RefDO.GetType() != typeof(BlokDecyzyjny)))
             {
@@ -1805,7 +1865,6 @@ namespace Okienka
                     tmpPoz = null;
                 }
             }
-////////////////////////////////////
             zmodyfikowany = true;
         }
 
@@ -1821,6 +1880,7 @@ namespace Okienka
                 sender.GetType() == typeof(Bloki))
             {
                 zaznaczony = (Bloki)sender;
+
                 if (symuluj == false)
                     zaznaczony.tryb = tryby.zaznaczony;
 
@@ -1962,6 +2022,12 @@ namespace Okienka
             {
                 if (punktKlikuNaBlok.X != e.X || punktKlikuNaBlok.Y != e.Y) //jeśli zmieniono położenie kursora
                 {
+                    if (zaznaczony == null)
+                    {
+                        MessageBox.Show("przesunNarozniki: zaznaczony nie istnieje");
+                        return;
+                    }
+
                     pozK[0].Left = e.X + zaznaczony.Left - polowaX;
                     pozK[0].Top = e.Y + zaznaczony.Top - polowaY;
 
@@ -2096,12 +2162,6 @@ namespace Okienka
             klik = true;
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            //okno = new Console();
-            //okno.Show();
-        }
-
         private void Połączenie_Click(object sender, EventArgs e)
         {
             polacz = true;
@@ -2177,96 +2237,11 @@ namespace Okienka
             }
         }
 
-        private void Symulacja(object sender, DoWorkEventArgs e)
+        private void pełnaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tabBloki.Count == 0)
                 return;
 
-            aktualnyBlok = tabBloki[ZnajdzBlok("START")];
-            aktualnyBlok.tryb = tryby.aktualny;
-            bool dec = false;   //jesli false to wyszlo "NIE", jesli true to "TAK"
-            
-            while (aktualnyBlok.typBloku == typeof(BlokSTOP) && symuluj == true)
-            {
-                if (symuluj == false)
-                    e.Cancel = true;
-
-                if (aktualnyBlok.typBloku == typeof(BlokObliczeniowy))
-                {
-                    ((BlokObliczeniowy)aktualnyBlok).Wykonaj();
-
-                    if (aktualnyBlok.nastepnyBlok[0] == null)       //zatrzymaj jesli niema sciezki po ktorej masz isc
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-                }
-
-                if (aktualnyBlok.typBloku == typeof(BlokWeWy))
-                {
-
-                    ((BlokWeWy)aktualnyBlok).Wykonaj(console);
-
-                    if (aktualnyBlok.nastepnyBlok[0] == null)
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-                }
-
-                if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
-                {
-                    dec = ((BlokDecyzyjny)aktualnyBlok).Wykonaj();
-
-                    if (dec == true)
-                    {
-                        if (aktualnyBlok.nastepnyBlok[1] == null)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        if (aktualnyBlok.nastepnyBlok[0] == null)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-                    }
-                }
-
-                aktualnyBlok.tryb = tryby.normal;
-
-                                                            //wybór następnego bloku
-                if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
-                {
-                    if (dec == true)
-                        aktualnyBlok = aktualnyBlok.nastepnyBlok[1];
-                    else
-                        aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
-                }
-                else
-                    aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
-
-                aktualnyBlok.tryb = tryby.aktualny;
-            }
-
-            if (aktualnyBlok.typBloku == typeof(BlokSTOP))
-                symuluj = false;
-        }
-
-        private void PoSymulacji(object sender, RunWorkerCompletedEventArgs e)
-        {
-            for (int i = 0; i < tabBloki.Count; i++)
-                tabBloki[i].tryb = tryby.normal;
-
-            aktualnyBlok = null;
-            zaznaczony = null;
-        }
-
-        private void pełnaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
             if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
                 podgladZmiennych.AktualizujListeObserwowanych();
 
@@ -2283,61 +2258,38 @@ namespace Okienka
                 if (tabBloki.Count == 0)
                 return;
 
-                aktualnyBlok = tabBloki[ZnajdzBlok("START")];
+                int tmp = ZnajdzBlok("START");
+
+                if (tmp < 0)
+                {
+                    ZakonczPraceNaBlokach();
+                    MessageBox.Show("Symulacja: Start: Brak bloku START");
+                    return;
+                }
+
+                aktualnyBlok = tabBloki[tmp];
+
                 aktualnyBlok.tryb = tryby.aktualny;
                 bool dec = false;   //jesli false to wyszlo "NIE", jesli true to "TAK"
                 
                 while (aktualnyBlok.typBloku != typeof(BlokSTOP) && symuluj == true)
                 {
-                    if (symuluj == false)
+
+                    if (aktualnyBlok == null)
                     {
-                        // e.Cancel = true;
+                        ZakonczPraceNaBlokach();
+                        MessageBox.Show("Symulacja: Next: aktualnyBlok nie istnieje");
+                        return;
                     }
 
                     if (aktualnyBlok.typBloku == typeof(BlokObliczeniowy))
-                    {
                         ((BlokObliczeniowy)aktualnyBlok).Wykonaj();
 
-                        if (aktualnyBlok.nastepnyBlok[0] == null)       //zatrzymaj jesli niema sciezki po ktorej masz isc
-                        {
-                           // e.Cancel = true;
-                            return;
-                        }
-                    }
-
                     if (aktualnyBlok.typBloku == typeof(BlokWeWy))
-                    {
-
                         ((BlokWeWy)aktualnyBlok).Wykonaj(console);
 
-                        if (aktualnyBlok.nastepnyBlok[0] == null)
-                        {
-                           // e.Cancel = true;
-                            return;
-                        }
-                    }
-
                     if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
-                    {
                         dec = ((BlokDecyzyjny)aktualnyBlok).Wykonaj();
-
-                        if (dec == true)
-                        {
-                            if (aktualnyBlok.nastepnyBlok[1] == null)
-                            {
-                                //e.Cancel = true;
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            if (aktualnyBlok.nastepnyBlok[0] == null)
-                            {
-                               // e.Cancel = true;
-                                return;
-                            }
-                        }
-                    }
 
                     aktualnyBlok.tryb = tryby.normal;
 
@@ -2352,6 +2304,13 @@ namespace Okienka
                     else
                         aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
 
+                    if (aktualnyBlok == null)
+                    {
+                        ZakonczPraceNaBlokach();
+                        MessageBox.Show("Symulacja: Next: nastepnyBlok nie istnieje");
+                        return;
+                    }
+
                     aktualnyBlok.tryb = tryby.aktualny;
                 }
 
@@ -2363,28 +2322,10 @@ namespace Okienka
 
                 aktualnyBlok = null;
                 zaznaczony = null;
-                /*
-                symuluj = true;
-                console.Show();
-                console.richTextBox1.Clear();
-
-                tsPracaKrokowa.Visible = false;
-
-                bw.WorkerReportsProgress = true;
-                bw.WorkerSupportsCancellation = true;
-                bw.DoWork += new DoWorkEventHandler(Symulacja);
-                bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(PoSymulacji);
-
-                
-                bw.RunWorkerAsync();
-                 */
             }
             else
             {
                 symuluj = false;
-
-               // if (bw.IsBusy == true)
-                   // bw.CancelAsync();
             }
 
 
@@ -2417,13 +2358,19 @@ namespace Okienka
                 if (aktualnyBlok != null)
                     aktualnyBlok.tryb = tryby.normal;
 
-                aktualnyBlok = tabBloki[ZnajdzBlok("START")];
+                int tmp = ZnajdzBlok("START");
+
+                if (tmp < 0)
+                {
+                    ZakonczPraceNaBlokach();
+                    MessageBox.Show("Praca krokowa: Start: Brak bloku START");
+                    return;
+                }
+                aktualnyBlok = tabBloki[tmp];
                 aktualnyBlok.tryb = tryby.aktualny;
             }
             else
             {
-                pełnaToolStripMenuItem_Click(sender, e);
-
                 symuluj = false;
                 tsPracaKrokowa.Visible = false;
 
@@ -2439,6 +2386,13 @@ namespace Okienka
             if (symuluj == true)
             {
                 bool dec = false;
+
+                if (aktualnyBlok == null)
+                {
+                    ZakonczPraceNaBlokach();
+                    MessageBox.Show("Praca krokowa: Next: aktualnyBlok nie istnieje");
+                    return;
+                }
 
                 if (console.IsDisposed == true)
                 {
@@ -2503,6 +2457,13 @@ namespace Okienka
                 }
                 else
                     aktualnyBlok = aktualnyBlok.nastepnyBlok[0];
+
+                if (aktualnyBlok == null)
+                {
+                    ZakonczPraceNaBlokach();
+                    MessageBox.Show("Praca Krokowa: Next: nastepnyBlok nie istnieje");
+                    return;
+                }
 
                 aktualnyBlok.tryb = tryby.aktualny;
 
@@ -3032,7 +2993,6 @@ namespace Okienka
                     }
                 }
             }
-            //Application.Exit();
         }
 
         private void podgladZmiennychToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3046,10 +3006,9 @@ namespace Okienka
         private void zatrzymajSymulacjęToolStripMenuItem_Click(object sender, EventArgs e)
         {
             symuluj = false;
-            
         }
 
-        private void Zatrzymaj_Click(object sender, EventArgs e)
+        public void ZakonczPraceNaBlokach()
         {
             symuluj = false;
             tsPracaKrokowa.Visible = false;
@@ -3063,6 +3022,22 @@ namespace Okienka
                 podgladZmiennych.AktualizujListeObserwowanych();
 
             WyczyscWartosciZmiennych();
+        }
+
+        private void Zatrzymaj_Click(object sender, EventArgs e)
+        {
+            ZakonczPraceNaBlokach();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (console != null && console.IsDisposed == false)
+                console.Close();
+
+            if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
+                podgladZmiennych.Close();
+            
+            this.Close();
         }
     }
 }
