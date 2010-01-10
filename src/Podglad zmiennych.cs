@@ -30,7 +30,13 @@ namespace Okienka
 
         public bool SprawdzCzyIstniejeZmienna(String zmienna)
         {
-            if (zmienna == null || zmienne == null)
+            if (zmienne == null)
+            {
+                MessageBox.Show("Podglad zmiennych: SprawdzCzyIstniejeZmienna: brak listy zmiennych");
+                return false;
+            }
+
+            if (zmienna == null)
                 return false;
 
             String temp = zmienna.ToString();
@@ -48,6 +54,12 @@ namespace Okienka
         {
             if (zmienna == null)
                 return -1;
+
+            if (zmienne == null)
+            {
+                MessageBox.Show("Podglad zmiennych: ZnajdzZmienna: brak listy zmiennych");
+                return -2;
+            }
 
             String temp = zmienna.ToString();
 
@@ -84,6 +96,12 @@ namespace Okienka
         {
             lbZmienne.Items.Clear();
 
+            if (zmienne == null)
+            {
+                MessageBox.Show("Podglad zmiennych: WczytajZmienne: brak listy zmiennych");
+                return;
+            }
+
             foreach (Zmienna zm in zmienne)
             {
                 if (zm.tablica == true)
@@ -95,7 +113,13 @@ namespace Okienka
 
         public void AktualizujObserwowaneZmienne()    //ze zmiennych ktorych juz niema i aktualizuj wartości
         {
-            if (zmienne == null || obserwowaneZmienne.Count < 1)
+            if (zmienne == null)
+            {
+                MessageBox.Show("Podglad zmiennych: AktualizujObserwowaneZmienne: brak listy zmiennych");
+                return;
+            }
+
+            if (obserwowaneZmienne.Count < 1)
                 return;
 
             foreach (Zmienna zm in obserwowaneZmienne)
@@ -104,7 +128,14 @@ namespace Okienka
                     obserwowaneZmienne.Remove(zm);
                 else
                 {
-                    Zmienna temp = zmienne[ZnajdzZmienna(zm.nazwa)];
+                    int tmp = ZnajdzZmienna(zm.nazwa);
+                    if (tmp < 0)
+                    {
+                        MessageBox.Show("Podglad zmiennych: AktualizujObserwowaneZmienne: zmienna " + zm.nazwa + " nie znaleziona");
+                        return;
+                    }
+
+                    Zmienna temp = zmienne[tmp];
 
                     if (zm.tablica == true)
                     {
@@ -154,12 +185,22 @@ namespace Okienka
 
         private void lbZmienne_DoubleClick(object sender, EventArgs e)
         {
+            if (lbZmienne.SelectedItem == null)
+                return;
+
             if (lbZmienne.Items.Count>0)
             {
                 Zmienna temp = new Zmienna();
             
-                String tempNazwa = lbZmienne.SelectedItem.ToString(); ;
-                Zmienna tempZm = zmienne[ZnajdzZmienna(tempNazwa)];
+                String tempNazwa = lbZmienne.SelectedItem.ToString();
+                int tmp = ZnajdzZmienna(tempNazwa);
+                if (tmp < 0)
+                {
+                    MessageBox.Show("Podglad Zmiennych: dodaj zmienna do obs: zmienna " + tempNazwa + " nie znaleziona");
+                    return;
+                }
+
+                Zmienna tempZm = zmienne[tmp];
 
                 temp.iloscElTablicy = tempZm.iloscElTablicy;
                 temp.nazwa = tempZm.nazwa.ToString();
