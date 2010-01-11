@@ -98,11 +98,11 @@
     <Compile Include="BWeWyOpcje.Designer.cs">
       <DependentUpon>BWeWyOpcje.cs</DependentUpon>
     </Compile>
-    <Compile Include="Console.cs">
+    <Compile Include="Konsola.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Console.Designer.cs">
-      <DependentUpon>Console.cs</DependentUpon>
+    <Compile Include="Konsola.Designer.cs">
+      <DependentUpon>Konsola.cs</DependentUpon>
     </Compile>
     <Compile Include="Czytaj.cs">
       <SubType>Form</SubType>
@@ -171,8 +171,8 @@
       <DependentUpon>BWeWyOpcje.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Console.resx">
-      <DependentUpon>Console.cs</DependentUpon>
+    <EmbeddedResource Include="Konsola.resx">
+      <DependentUpon>Konsola.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Czytaj.resx">

@@ -105,12 +105,6 @@ namespace libbloki
 
         public String znacznikZmiennej = "~~";
 
-        //public Type typ
-        //{
-        //    get { return _typ; }
-        //    set { _typ = value; }
-        //}
-
         public Point[] punkty
         
         {
@@ -184,7 +178,7 @@ namespace libbloki
             if (temp.Contains(' ') == true)
                 temp = temp.Replace(" ", "");
 
-            for (int i = 0; i < listaZmiennych.Count(); i++)
+            for (int i = 0; i < listaZmiennych.Count; i++)
             {
                 if (listaZmiennych[i].nazwa.Equals(temp) == true)
                     return true;
@@ -220,11 +214,24 @@ namespace libbloki
 
         public void DodajNoweZmienne()
         {
+            if (dzialania == null)
+            {
+                MessageBox.Show("Bloki: DodajNoweZmienne: brak listy dzialan");
+                return;
+            }
+
             for (int i = 0; i < this.dzialania.Count; i++)
             {
                 if (this.dzialania[i].nowaZmienna == true && SprawdzCzyIstniejeZmienna(this.dzialania[i].lewa) == false)
                 {
                     Zmienna temp = new Zmienna();
+                    
+                    if (dzialania[i].lewa == null)
+                    {
+                        MessageBox.Show("Bloki: DodajNoweZmienne: lewa nie istnieje");
+                        return;
+                    }
+
                     this.dzialania[i].lewa = this.dzialania[i].lewa.Replace(znacznikZmiennej, "");
                     
                     if (this.dzialania[i].lewa.Contains(' '))
@@ -247,7 +254,17 @@ namespace libbloki
                             tmpInd1 = temp.nazwa.IndexOf('[') + 1;
                             tmpInd2 = temp.nazwa.IndexOf(']');
                             tmpIlEl = temp.nazwa.Substring(tmpInd1, tmpInd2 - tmpInd1);
-                            tmpIlElementow = Convert.ToInt32(tmpIlEl);
+
+                            try
+                            {
+                                tmpIlElementow = Convert.ToInt32(tmpIlEl);
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Bloki: DodajNoweZmienne: blad konwersji indexu\n index musi byc liczba calkowita");
+                                return;
+                            }
+
                             temp.nazwa = temp.nazwa.Remove(tmpInd1 - 1);
 
                             temp.iloscElTablicy = tmpIlElementow;
@@ -301,6 +318,18 @@ namespace libbloki
 
         public void DodajNoweZmienne(Dzialanie dzial)
         {
+            if (dzial == null)
+            {
+                MessageBox.Show("Bloki: DodajNoweZmienne|dzialanie: dzial nie istnieje");
+                return;
+            }
+
+            if (dzial.lewa == null)
+            {
+                MessageBox.Show("Bloki: DodajNoweZmienne|dzialanie: lewa nie istnieje");
+                return;
+            }
+
             if (dzial.nowaZmienna == true && SprawdzCzyIstniejeZmienna(dzial.lewa) == false)
             {
                 Zmienna temp = new Zmienna();
@@ -326,7 +355,17 @@ namespace libbloki
                         tmpInd1 = temp.nazwa.IndexOf('[') + 1;
                         tmpInd2 = temp.nazwa.IndexOf(']');
                         tmpIlEl = temp.nazwa.Substring(tmpInd1, tmpInd2 - tmpInd1);
-                        tmpIlElementow = Convert.ToInt32(tmpIlEl);
+
+                        try
+                        {
+                            tmpIlElementow = Convert.ToInt32(tmpIlEl);
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Bloki: DodajNoweZmienne|dzialanie: blad konwersji indexu\n index musi byc liczba calkowita");
+                            return;
+                        }
+
                         temp.nazwa = temp.nazwa.Remove(tmpInd1 - 1);
 
                         temp.iloscElTablicy = tmpIlElementow;
@@ -380,6 +419,12 @@ namespace libbloki
 
         public int NumerElementuWTablicy(String tab)
         {
+            if (tab == null)
+            {
+                MessageBox.Show("Bloki: NumerElementuWTablicy: tab nie istnieje");
+                return -4;
+            }
+
             String temp = tab.ToString();
             String tmpNumerEl = "";
             if (temp.Contains('[') && temp.Contains(']'))
@@ -402,7 +447,19 @@ namespace libbloki
                     }
                     tmpNumerEl = tmpNumerEl.Replace(znacznikZmiennej, "");
 
-                    return Convert.ToInt32(tmpNumerEl) - 1;
+                    int tempInd = 0;
+
+                    try
+                    {
+                        tempInd = Convert.ToInt32(tmpNumerEl) - 1;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Bloki: NumerElementuWTablicy: blad przy konwersji na int");
+                        return -4;
+                    }
+
+                    return tempInd;
                 }
                 else
                     return -2;

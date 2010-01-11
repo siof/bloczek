@@ -12,7 +12,7 @@ namespace libbloki
     public partial class BlokWeWy : Bloki
     {
         //private BWeWyOpcje frmOpcje;
-        private Console frmConsole;
+        private Konsola frmConsole;
 
         //public IList<Działanie> dzialania = new List<Działanie>();
 
@@ -22,9 +22,16 @@ namespace libbloki
             graph = CreateGraphics();
         }
 
-        public BlokWeWy(Console usr)
+        public BlokWeWy(Konsola usr)
         {
             InitializeComponent();
+
+            if (usr == null)
+            {
+                MessageBox.Show("BlokWeWy: konstruktor: konsola nie istnieje");
+                return;
+            }
+
             graph = CreateGraphics();
             frmConsole = usr;
         }
@@ -72,12 +79,6 @@ namespace libbloki
         {
             // przezroczyste tlo
         }
-
-        //private void BlokWeWy_MouseDoubleClick(object sender, MouseEventArgs e)
-        //{
-        //    frmOpcje = new BWeWyOpcje(this);
-        //    frmOpcje.ShowDialog(this);
-        //}
 
         private void txt_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -139,8 +140,20 @@ namespace libbloki
             }
         }
 
-        public void Wykonaj(Console usr)
+        public void Wykonaj(Konsola usr)
         {
+            if (usr == null)
+            {
+                MessageBox.Show("BlokWeWy: Wykonaj: konsola nie istnieje");
+                return;
+            }
+
+            if (dzialania == null)
+            {
+                MessageBox.Show("BlokWeWy: Wykonaj: lista dzialan nie istnieje");
+                return;
+            }
+
             frmConsole = usr;
             int temp = -1;
             
@@ -201,12 +214,39 @@ namespace libbloki
                     if (dzialania[i].srodekZmienna == true)
                     {
                         temp = ZnajdzZmienna(dzialania[i].srodek.ToString());
-                        tmpZmienna = listaZmiennych[temp];
                         
+                        if (temp < 0)
+                        {
+                            MessageBox.Show("BlokWeWy: Wykonaj|Czytaj: zmienna " + dzialania[i].srodek + " nie znaleziona");
+                            return;
+                        }
+
+                        if (temp > listaZmiennych.Count - 1)
+                        {
+                            MessageBox.Show("BlokWeWy: Wykonaj|Czytaj: zmienna znaleziona poza zakresem listy");
+                            return;
+                        }
+
+                        tmpZmienna = listaZmiennych[temp];
+
                         if (tmpZmienna.tablica == true)
+                        {
                             tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
 
+                            if (tmpNumerEl < 0)
+                            {
+                                MessageBox.Show("BlokWeWy: Wykonaj|Czytaj: tmpNumerEl ujemny: " + tmpNumerEl.ToString());
+                                return;
+                            }
+                        }
+
                         tmpZmienna = null;
+                    }
+
+                    if (temp < 0)
+                    {
+                        MessageBox.Show("BlokWeWy: Wykonaj|Czytaj: zmienna " + dzialania[i].srodek + " nie znaleziona |2|");
+                        return;
                     }
 
                     Czytaj tmpOkno = new Czytaj(listaZmiennych, temp, tmpNumerEl);

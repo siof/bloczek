@@ -47,7 +47,7 @@ namespace Okienka
         private BDOpcje bDOpcje;
         private BOOpcje bOOpcje;
         private BWeWyOpcje bWeWyOpcje;
-        private libbloki.Console console = new libbloki.Console();
+        private libbloki.Konsola console = new libbloki.Konsola();
         private Podglad_zmiennych podgladZmiennych;
 
         private IList<ParametryBloku> ParamBlokow = new List<ParametryBloku>();
@@ -2250,7 +2250,7 @@ namespace Okienka
                 symuluj=true;
 
                 if (console.IsDisposed == true)
-                    console = new libbloki.Console();
+                    console = new libbloki.Konsola();
 
                 console.Show();
                 console.richTextBox1.Clear();
@@ -2349,7 +2349,7 @@ namespace Okienka
                 symuluj = true;
 
                 if (console.IsDisposed == true)
-                    console = new libbloki.Console();
+                    console = new libbloki.Konsola();
                
                 console.Show();
                 console.richTextBox1.Clear();
@@ -2396,7 +2396,7 @@ namespace Okienka
 
                 if (console.IsDisposed == true)
                 {
-                    console = new libbloki.Console();
+                    console = new libbloki.Konsola();
                     console.Show();
                 }
 

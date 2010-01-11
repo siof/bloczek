@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace libbloki
 {
-    public partial class Console : Form
+    public partial class Konsola : Form
     {
-        public Console()
+        public Konsola()
         {
             InitializeComponent();
         }

@@ -14,11 +14,18 @@ namespace libbloki
         BlokObliczeniowy bObl;
         IList<Dzialanie> poprzenieDzialania = new List<Dzialanie>();
 
-        public BOOpcje(BlokObliczeniowy usr)
+        public BOOpcje(BlokObliczeniowy blok)
         {
             InitializeComponent();
 
-            bObl = usr;
+            if (blok == null)
+            {
+                MessageBox.Show("BOOpcje: konstruktor: blok nie istnieje");
+                this.Close();
+                return;
+            }
+
+            bObl = blok;
             String temp = "";
 
             for (int i = 0; i < bObl.dzialania.Count; i++)
@@ -128,6 +135,12 @@ namespace libbloki
             if ((txtL.Text == "" || txtL.Text == " ") && (txtS.Text != "" || txtS.Text != " "))
                 return;
 
+            if (cbDzialanie != null && cbDzialanie.Text == "/" && (txtP.Text == "0" || txtP.Text == "0.0"))
+            {
+                MessageBox.Show("Proba dzielenia przez 0");
+                return;
+            }
+
             String temp;
             Dzialanie noweDzialanie = new Dzialanie();
 
@@ -153,8 +166,7 @@ namespace libbloki
 
                         tmpString = tmpString.Remove(tmpInd1, tmpInd2 - tmpInd1);
                     }
-                    listBoxZmienne.Items.Add(tmpString);
-                    
+                    listBoxZmienne.Items.Add(tmpString);        
                 }
             }
 

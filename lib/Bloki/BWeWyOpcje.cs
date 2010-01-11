@@ -23,6 +23,13 @@ namespace libbloki
         {
             InitializeComponent();
 
+            if (blok == null)
+            {
+                MessageBox.Show("BWeWyOpcje: konstruktor: blok nie istnieje");
+                this.Close();
+                return;
+            }
+
             BWeWy = blok;
             String temp = "";
 
@@ -47,6 +54,7 @@ namespace libbloki
                     listBoxZmienne.Items.Add(temp);
                 }
             }
+
             comboBox2.SelectedIndex = 0;
         }
 
@@ -126,7 +134,7 @@ namespace libbloki
 
         private void listBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (listBox.SelectedItem != null)
+            if (listBox.SelectedItem != null && listBox.SelectedIndex >= 0)
             {
                 if (e.KeyCode == Keys.Delete)
                 {
