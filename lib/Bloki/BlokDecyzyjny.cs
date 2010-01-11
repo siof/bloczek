@@ -66,12 +66,6 @@ namespace libbloki
             // przezroczyste tlo
         }
 
-        //private void BlokDecyzyjny_MouseDoubleClick(object sender, MouseEventArgs e)
-        //{
-        //    frmOpcje = new BDOpcje(this);
-        //    frmOpcje.ShowDialog(this);
-        //}
-
         private void txt_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.OnMouseDoubleClick(e);
@@ -140,7 +134,14 @@ namespace libbloki
 
         public bool Wykonaj()
         {
-            int tmpNumerEl = 0;
+            if (dzialania == null)
+            {
+                MessageBox.Show("BlokDecyzyjny: Wykonaj: lista dzialan nie istnieje");
+                return false;
+            }
+
+            int tmpNumerEl = -1;
+            int tempIndZnajdz = -1;
             bool aktualnyStan = false;
             Zmienna tempLewa = null;
             Zmienna tempPrawa = null;
@@ -149,38 +150,85 @@ namespace libbloki
             {
                 bool tymczasowyStan = false;
 
-                tempLewa = this.listaZmiennych[ZnajdzZmienna(dzialania[i].lewa)];
+                tempIndZnajdz = ZnajdzZmienna(dzialania[i].lewa);
+
+                if (tempIndZnajdz < 0)
+                {
+                    MessageBox.Show("BlokDecyzyjny: Wykonaj: dzialanie " + i.ToString() + "\n zmienna: " + dzialania[i].lewa + " nie znaleziona");
+                    return false;
+                }
+
+                tempLewa = this.listaZmiennych[tempIndZnajdz];
                 tempPrawa = null;
 
                 if (dzialania[i].srodekZmienna == true)
-                    tempPrawa = this.listaZmiennych[ZnajdzZmienna(dzialania[i].srodek)];
+                {
+                    tempIndZnajdz = ZnajdzZmienna(dzialania[i].srodek);
+
+                    if (tempIndZnajdz < 0)
+                    {
+                        MessageBox.Show("BlokDecyzyjny: Wykonaj: dzialanie " + i.ToString() + "\n zmienna: " + dzialania[i].lewa + " nie znaleziona |2|");
+                        return false;
+                    }
+
+                    tempPrawa = this.listaZmiennych[tempIndZnajdz];
+                }
 
                 if (tempLewa.typ == typeof(int))
                 {
                     int tmp = 0;
                     int tmp2 = 0;
 
-                    if (tempLewa.tablica == true)
+                    try
                     {
-                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
-                        tmp = Convert.ToInt32(tempLewa.wartosci[tmpNumerEl]);
-                    }
-                    else
-                        tmp = Convert.ToInt32(tempLewa.wartosc);
-
-                    if (tempPrawa != null)
-                    {
-                        if (tempPrawa.tablica == true)
+                        if (tempLewa.tablica == true)
                         {
-                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
-                            tmp2 = Convert.ToInt32(tempPrawa.wartosci[tmpNumerEl]);
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+                            
+                            if (tmpNumerEl > tempLewa.wartosci.Count - 1)
+                            {
+                                MessageBox.Show("BlokDecyzyjny: Wykonaj|int: dzialanie " + i.ToString() + "\n tmpNumerEl poza zakresem tablicy");
+                                return false;
+                            }
+
+                            if (tmpNumerEl < 0)
+                            {
+                                MessageBox.Show("BlokDecyzyjny: Wykonaj|int: dzialanie " + i.ToString() + "\n tmpNumerEl ujemny:" + tmpNumerEl.ToString());
+                                return false;
+                            }
+
+                            tmp = Convert.ToInt32(tempLewa.wartosci[tmpNumerEl]);
                         }
                         else
-                            tmp2 = Convert.ToInt32(tempPrawa.wartosc);
+                            tmp = Convert.ToInt32(tempLewa.wartosc);
                     }
-                    else
+                    catch
                     {
-                        tmp2 = Convert.ToInt32(dzialania[i].srodek);
+                        MessageBox.Show("BlokDecyzyjny: Wykonaj: dzialanie " + i.ToString() + "\n Blad konwersji na int |lewa");
+                        return false;
+                    }
+
+                    try
+                    {
+                        if (tempPrawa != null)
+                        {
+                            if (tempPrawa.tablica == true)
+                            {
+                                tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+                                tmp2 = Convert.ToInt32(tempPrawa.wartosci[tmpNumerEl]);
+                            }
+                            else
+                                tmp2 = Convert.ToInt32(tempPrawa.wartosc);
+                        }
+                        else
+                        {
+                            tmp2 = Convert.ToInt32(dzialania[i].srodek);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("BlokDecyzyjny: Wykonaj: dzialanie " + i.ToString() + "\n Blad konwersji na int |prawa");
+                        return false;
                     }
 
                     switch (dzialania[i].dzialanie1)
@@ -234,27 +282,69 @@ namespace libbloki
                     double tmp = 0;
                     double tmp2 = 0;
 
-                    if (tempLewa.tablica == true)
+                    try
                     {
-                        tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
-                        tmp = Convert.ToDouble(tempLewa.wartosci[tmpNumerEl]);
-                    }
-                    else
-                        tmp = Convert.ToDouble(tempLewa.wartosc);
-
-                    if (tempPrawa != null)
-                    {
-                        if (tempPrawa.tablica == true)
+                        if (tempLewa.tablica == true)
                         {
-                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
-                            tmp2 = Convert.ToDouble(tempPrawa.wartosci[tmpNumerEl]);
+                            tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+
+                            if (tmpNumerEl > tempLewa.wartosci.Count - 1)
+                            {
+                                MessageBox.Show("BlokDecyzyjny: Wykonaj|double: dzialanie " + i.ToString() + "\n tmpNumerEl poza zakresem tablicy");
+                                return false;
+                            }
+
+                            if (tmpNumerEl < 0)
+                            {
+                                MessageBox.Show("BlokDecyzyjny: Wykonaj|double: dzialanie " + i.ToString() + "\n tmpNumerEl ujemny:" + tmpNumerEl.ToString());
+                                return false;
+                            }
+
+                            tmp = Convert.ToDouble(tempLewa.wartosci[tmpNumerEl]);
                         }
                         else
-                            tmp2 = Convert.ToDouble(tempPrawa.wartosc);
+                            tmp = Convert.ToDouble(tempLewa.wartosc);
                     }
-                    else
+                    catch
                     {
-                        tmp2 = Convert.ToDouble(dzialania[i].srodek);
+                        MessageBox.Show("BlokDecyzyjny: Wykonaj: dzialanie " + i.ToString() + "\n Blad konwersji na double |lewa");
+                        return false;
+                    }
+
+                    try
+                    {
+                        if (tempPrawa != null)
+                        {
+                            if (tempPrawa.tablica == true)
+                            {
+                                tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+
+                                if (tmpNumerEl > tempLewa.wartosci.Count - 1)
+                                {
+                                    MessageBox.Show("BlokDecyzyjny: Wykonaj|double: dzialanie " + i.ToString() + "\n tmpNumerEl poza zakresem tablicy");
+                                    return false;
+                                }
+
+                                if (tmpNumerEl < 0)
+                                {
+                                    MessageBox.Show("BlokDecyzyjny: Wykonaj|double: dzialanie " + i.ToString() + "\n tmpNumerEl ujemny:" + tmpNumerEl.ToString());
+                                    return false;
+                                }
+
+                                tmp2 = Convert.ToDouble(tempPrawa.wartosci[tmpNumerEl]);
+                            }
+                            else
+                                tmp2 = Convert.ToDouble(tempPrawa.wartosc);
+                        }
+                        else
+                        {
+                            tmp2 = Convert.ToDouble(dzialania[i].srodek);
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("BlokDecyzyjny: Wykonaj: dzialanie " + i.ToString() + "/n Blad konwersji na double |prawa");
+                        return false;
                     }
 
                     switch (dzialania[i].dzialanie1)
@@ -311,6 +401,19 @@ namespace libbloki
                     if (tempLewa.tablica == true)
                     {
                         tmpNumerEl = NumerElementuWTablicy(dzialania[i].lewa);
+
+                        if (tmpNumerEl > tempLewa.wartosci.Count - 1)
+                        {
+                            MessageBox.Show("BlokDecyzyjny: Wykonaj|String: dzialanie " + i.ToString() + "/n tmpNumerEl poza zakresem tablicy");
+                            return false;
+                        }
+
+                        if (tmpNumerEl < 0)
+                        {
+                            MessageBox.Show("BlokDecyzyjny: Wykonaj|String: dzialanie " + i.ToString() + "/n tmpNumerEl ujemny:" + tmpNumerEl.ToString());
+                            return false;
+                        }
+
                         tmp = tempLewa.wartosci[tmpNumerEl].ToString();
                     }
                     else
@@ -321,6 +424,19 @@ namespace libbloki
                         if (tempPrawa.tablica == true)
                         {
                             tmpNumerEl = NumerElementuWTablicy(dzialania[i].srodek);
+
+                            if (tmpNumerEl > tempLewa.wartosci.Count - 1)
+                            {
+                                MessageBox.Show("BlokDecyzyjny: Wykonaj|String: dzialanie " + i.ToString() + "/n tmpNumerEl poza zakresem tablicy");
+                                return false;
+                            }
+
+                            if (tmpNumerEl < 0)
+                            {
+                                MessageBox.Show("BlokDecyzyjny: Wykonaj|String: dzialanie " + i.ToString() + "/n tmpNumerEl ujemny:" + tmpNumerEl.ToString());
+                                return false;
+                            }
+
                             tmp2 = tempPrawa.wartosci[tmpNumerEl].ToString();
                         }
                         else

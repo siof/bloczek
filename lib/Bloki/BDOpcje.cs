@@ -14,11 +14,18 @@ namespace libbloki
         BlokDecyzyjny bDec;
         IList<Dzialanie> poprzenieDzialania = new List<Dzialanie>();
 
-        public BDOpcje(BlokDecyzyjny usr)
+        public BDOpcje(BlokDecyzyjny blok)
         {
             InitializeComponent();
 
-            bDec = usr;
+            if (blok == null)
+            {
+                MessageBox.Show("BDOpcje: konstruktor: blok nie istnieje");
+                this.Close();
+                return;
+            }
+
+            bDec = blok;
             String temp = "";
 
             for (int i = 0; i < bDec.dzialania.Count; i++)
@@ -137,7 +144,7 @@ namespace libbloki
 
         private void listBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (listBox.SelectedItem != null)
+            if (listBox.SelectedItem != null && listBox.SelectedIndex >= 0)
             {
                 if (e.KeyCode == Keys.Delete)
                 {

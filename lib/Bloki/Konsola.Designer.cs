@@ -1,6 +1,6 @@
 ﻿namespace libbloki
 {
-    partial class Console
+    partial class Konsola
     {
         /// <summary>
         /// Required designer variable.
