@@ -44,7 +44,7 @@
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             // 
-            // Console
+            // Konsola
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -55,8 +55,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Console";
-            this.Text = "Console";
+            this.Name = "Konsola";
+            this.Text = "Konsola";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.Watch_Load);
             this.ResumeLayout(false);

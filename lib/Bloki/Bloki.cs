@@ -324,7 +324,7 @@ namespace libbloki
                 return;
             }
 
-            if (dzial.lewa == null)
+            if (dzial.nowaZmienna == true && dzial.lewa == null)
             {
                 MessageBox.Show("Bloki: DodajNoweZmienne|dzialanie: lewa nie istnieje");
                 return;
