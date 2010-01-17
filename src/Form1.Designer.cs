@@ -53,6 +53,7 @@
             this.krokowaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dodatkoweToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.podgladZmiennychToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pomocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsPracaKrokowa = new System.Windows.Forms.ToolStrip();
@@ -60,8 +61,6 @@
             this.Zatrzymaj = new System.Windows.Forms.ToolStripButton();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.pomocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsBloki.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -298,6 +297,13 @@
             this.podgladZmiennychToolStripMenuItem.Text = "Podglad zmiennych";
             this.podgladZmiennychToolStripMenuItem.Click += new System.EventHandler(this.podgladZmiennychToolStripMenuItem_Click);
             // 
+            // pomocToolStripMenuItem
+            // 
+            this.pomocToolStripMenuItem.Name = "pomocToolStripMenuItem";
+            this.pomocToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.pomocToolStripMenuItem.Text = "Pomoc";
+            this.pomocToolStripMenuItem.Click += new System.EventHandler(this.pomocToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -351,17 +357,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // helpProvider1
-            // 
-            this.helpProvider1.HelpNamespace = "C:\\Users\\Ja\\Desktop\\help\\HELP.HLP";
-            // 
-            // pomocToolStripMenuItem
-            // 
-            this.pomocToolStripMenuItem.Name = "pomocToolStripMenuItem";
-            this.pomocToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.pomocToolStripMenuItem.Text = "Pomoc";
-            this.pomocToolStripMenuItem.Click += new System.EventHandler(this.pomocToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -426,7 +421,6 @@
         private System.Windows.Forms.ToolStripMenuItem podgladZmiennychToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton Zatrzymaj;
         private System.Windows.Forms.ToolStripMenuItem pomocToolStripMenuItem;
-        private System.Windows.Forms.HelpProvider helpProvider1;
     }
 }
 

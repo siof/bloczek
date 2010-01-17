@@ -463,6 +463,11 @@ namespace Okienka
 
         private void ZaznaczPolaczenie(object sender, MouseEventArgs e)
         {
+            if (zaznaczony != null)
+            {
+                zaznaczony.tryb = tryby.normal;
+                zaznaczony = null;
+            }
             zaznaczony = (Bloki)sender;
             Polaczenie tmpPol = new Polaczenie(null,0,"",null,0,"",(Bloki)sender,null);
             List<Polaczenie> tmpList;
@@ -2115,8 +2120,8 @@ namespace Okienka
 
                 zaznaczony.BringToFront();
                 przesun = false;
-                if (symuluj == false)
-                    zaznaczony.tryb = tryby.normal;
+                //if (symuluj == false)
+                //    zaznaczony.tryb = tryby.normal;
                 //zaznaczony = null;
                 polowaX = 0;
                 polowaY = 0;
