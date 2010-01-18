@@ -180,6 +180,14 @@ namespace Okienka
             {
                 Polaczenie tmpPol = new Polaczenie((Bloki)sender, 0,"", null, 0,"", null, null);
                 UsunPolaczenia(tmpPol);
+
+                if (sender.GetType() == typeof(BlokDecyzyjny))
+                {
+                    tmpPol.IndeksOD = 1;
+                    UsunPolaczenia(tmpPol);
+                    tmpPol.IndeksOD = 0;
+                }
+
                 tmpPol.RefOD = null;
                 tmpPol.RefDO = (Bloki)sender;
                 UsunPolaczenia(tmpPol);

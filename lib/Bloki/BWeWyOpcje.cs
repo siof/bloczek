@@ -118,6 +118,7 @@ namespace libbloki
                 BWeWy.dzialania.Add(poprzenieDzialania[i]);
 
             poprzenieDzialania.Clear(); //na wszelki wypadek
+            BWeWy.dodaneZmienne.Clear(); //na wszelki wypadek
 
             BWeWyOpcje.ActiveForm.Close();
         }
@@ -128,6 +129,7 @@ namespace libbloki
             //poza wyświetleniem działań na bloku
 
             poprzenieDzialania.Clear(); //na wszelki wypadek
+            BWeWy.dodaneZmienne.Clear();
 
             BWeWyOpcje.ActiveForm.Close();
         }
