@@ -47,12 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BDEdycja.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BDEdycja.Designer.cs">
-      <DependentUpon>BDEdycja.cs</DependentUpon>
-    </Compile>
     <Compile Include="BDOpcje.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,23 +86,11 @@
     <Compile Include="BlokWeWy.Designer.cs">
       <DependentUpon>BlokWeWy.cs</DependentUpon>
     </Compile>
-    <Compile Include="BOEdycja.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BOEdycja.Designer.cs">
-      <DependentUpon>BOEdycja.cs</DependentUpon>
-    </Compile>
     <Compile Include="BOOpcje.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BOOpcje.Designer.cs">
       <DependentUpon>BOOpcje.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BWeWyEdycja.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BWeWyEdycja.Designer.cs">
-      <DependentUpon>BWeWyEdycja.cs</DependentUpon>
     </Compile>
     <Compile Include="BWeWyOpcje.cs">
       <SubType>Form</SubType>
@@ -183,10 +165,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BOOpcje.resx">
       <DependentUpon>BOOpcje.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BWeWyEdycja.resx">
-      <DependentUpon>BWeWyEdycja.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="BWeWyOpcje.resx">

@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="Okienka.Projekt">
+    <Position X="0.5" Y="0.5" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>BQuPIgVKWjBgwViwSyy5y5sSiwoK6Is0EtEoqagCMSE=</HashCode>
+      <FileName>Projekt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="libbloki.BDOpcje">
+    <Position X="5.75" Y="12.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.BlokDecyzyjny">
+    <Position X="5.5" Y="0.5" Width="3" />
+    <InheritanceLine Type="libbloki.Bloki" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9" Y="1.5" />
+        <Point X="8.5" Y="1.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.Polaczenie">
+    <Position X="5.75" Y="17.5" Width="7.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.Bloki">
+    <Position X="9" Y="0.5" Width="3.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.BlokObliczeniowy">
+    <Position X="9.25" Y="6.5" Width="3" />
+    <InheritanceLine Type="libbloki.Bloki" FixedFromPoint="true">
+      <Path>
+        <Point X="10.75" Y="5.928" />
+        <Point X="10.75" Y="6.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.BlokSTART">
+    <Position X="12.75" Y="0.5" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.BlokSTOP">
+    <Position X="12.75" Y="3" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.BlokWeWy">
+    <Position X="5.5" Y="5.5" Width="3" />
+    <InheritanceLine Type="libbloki.Bloki" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="5.928" />
+        <Point X="10.75" Y="6.188" />
+        <Point X="8.5" Y="6.188" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.BOOpcje">
+    <Position X="11.25" Y="12.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.BWeWyOpcje">
+    <Position X="8.5" Y="12.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.Czytaj">
+    <Position X="5.75" Y="9.75" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.DodatkoweStale">
+    <Position X="11.5" Y="14.5" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.Zmienna">
+    <Position X="5.75" Y="14.5" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.Dzialanie">
+    <Position X="8.5" Y="14.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.ParametryBloku">
+    <Position X="11.5" Y="9.75" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.Konsola">
+    <Position X="9" Y="9.75" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.LiniaPion">
+    <Position X="12.75" Y="5.25" Width="2.75" />
+    <InheritanceLine Type="libbloki.Bloki" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="5.928" />
+        <Point X="10.75" Y="6.188" />
+        <Point X="12.75" Y="6.188" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.LiniaPoz">
+    <Position X="5.5" Y="3.25" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.Pion">
+    <Position X="14" Y="16.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="libbloki.Poziom">
+    <Position X="14" Y="14.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Enum Name="libbloki.tryby">
+    <Position X="14.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="libbloki.strzalkaUpDown">
+    <Position X="14.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="libbloki.strzalkaLeftRight">
+    <Position X="14.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

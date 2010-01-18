@@ -16,7 +16,7 @@ using System.IO;
 namespace Okienka
 {
     [Serializable]
-    public partial class Form1 : Form
+    public partial class Projekt : Form
     {
         private static int numer = 0;
 
@@ -26,6 +26,7 @@ namespace Okienka
         private bool przesun = false;
         private bool symuluj = false;
         private bool _zmodyfikowany = false;
+        private bool naroznikiDodane = false;
         private String blokDecTakNie = "";
         private String _nazwaPliku = "";
 
@@ -33,9 +34,9 @@ namespace Okienka
         {
             get { return _nazwaPliku; }
             set { _nazwaPliku = value;
-                 Form1.ActiveForm.Text = "Schematy blokowe";
+                 Projekt.ActiveForm.Text = "Bloczek";
                  if (_nazwaPliku != "")
-                     Form1.ActiveForm.Text += " (" + _nazwaPliku + ")";
+                     Projekt.ActiveForm.Text += " (" + _nazwaPliku + ")";
             }
         }
 
@@ -47,7 +48,7 @@ namespace Okienka
         private BDOpcje bDOpcje;
         private BOOpcje bOOpcje;
         private BWeWyOpcje bWeWyOpcje;
-        private libbloki.Konsola console = new libbloki.Konsola();
+        private libbloki.Konsola konsola = new libbloki.Konsola();
         private Podglad_zmiennych podgladZmiennych;
 
         private IList<ParametryBloku> ParamBlokow = new List<ParametryBloku>();
@@ -72,7 +73,7 @@ namespace Okienka
             set { _zmodyfikowany = value;}
         }
 
-        public Form1()
+        public Projekt()
         {
             InitializeComponent();
             graph = panel1.CreateGraphics();
@@ -217,7 +218,7 @@ namespace Okienka
             }
         }
 
-        private void panel1_Click(object sender, EventArgs e)
+        private void DodajBlok(object sender, EventArgs e)
         {
             if (klik == true)
             {
@@ -273,7 +274,7 @@ namespace Okienka
 
                 if (typ == typeof(BlokWeWy))
                 {
-                    BlokWeWy temp = new BlokWeWy(console);//
+                    BlokWeWy temp = new BlokWeWy(konsola);//
                     
                     temp2 = (Bloki)temp;
                     temp2.typBloku = typeof(BlokWeWy);
@@ -288,9 +289,9 @@ namespace Okienka
                 temp2.Left = ((MouseEventArgs)e).X;
                 temp2.Top = ((MouseEventArgs)e).Y;
                 temp2.KeyDown += new KeyEventHandler(UsunBlok);
-                temp2.MouseDown += new MouseEventHandler(PrzesunStart);
-                temp2.MouseMove += new MouseEventHandler(panel1_MouseMove);
-                temp2.MouseUp += new MouseEventHandler(panel1_MouseUp);
+                temp2.MouseDown += new MouseEventHandler(ZacznijPrzesuwanie);
+                temp2.MouseMove += new MouseEventHandler(przesunNarozniki);
+                temp2.MouseUp += new MouseEventHandler(ZakonczPrzesuwanie);
 
                 if (tabBloki == null)
                 {
@@ -1873,7 +1874,7 @@ namespace Okienka
             zmodyfikowany = true;
         }
 
-        public void PrzesunStart(object sender, MouseEventArgs e)
+        public void ZacznijPrzesuwanie(object sender, MouseEventArgs e)
         {
             WyczyscZaznaczenie();
 
@@ -1964,10 +1965,11 @@ namespace Okienka
                         pozK[i] = new Poziom();
                         pioK[i] = new Pion();
                     }
-
+                    
                     polowaX = (zaznaczony.Width) / 2;
                     polowaY = (zaznaczony.Height) / 2;
-
+                    naroznikiDodane = false;
+                    /*
                     pioK[0].Left = zaznaczony.Left;
                     pioK[0].Top = zaznaczony.Top;
 
@@ -1999,7 +2001,7 @@ namespace Okienka
                     {
                         panel1.Controls.Add(pioK[i]);
                         panel1.Controls.Add(pozK[i]);
-                    }
+                    }*/
                 }
                 zmodyfikowany = true;
             }
@@ -2010,14 +2012,6 @@ namespace Okienka
                 polaczOD = null;
                 polaczDO = null;
                 WyczyscZaznaczenie();   
-            }
-        }
-
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (przesun == true)
-            {
-                przesunNarozniki(sender, e);
             }
         }
 
@@ -2042,20 +2036,26 @@ namespace Okienka
                     if (pozK[0].Left < panel1.Margin.Left)
                         pozK[0].Left = panel1.Margin.Left;
 
-                    if (pozK[0].Top < panel1.Top)
-                        pozK[0].Top = panel1.Top;
+                    if (pozK[0].Top < panel1.Margin.Top)
+                        pozK[0].Top = panel1.Margin.Top;
+
+                    if (pioK[0].Left < panel1.Margin.Left)
+                        pioK[0].Left = panel1.Margin.Left;
+
+                    if (pioK[0].Top < panel1.Margin.Top)
+                        pioK[0].Top = panel1.Margin.Top;
 
                     pozK[1].Left = pozK[0].Left;
                     pozK[1].Top = pozK[0].Top + (zaznaczony.Height - pozK[1].Height);
 
-                    pioK[1].Left = pozK[0].Left;
-                    pioK[1].Top = pozK[0].Top + (zaznaczony.Height - pioK[1].Height);
+                    pioK[1].Left = pioK[0].Left;
+                    pioK[1].Top = pioK[0].Top + (zaznaczony.Height - pioK[1].Height);
 
                     pozK[2].Left = pozK[0].Left + (zaznaczony.Width - pozK[2].Width);
                     pozK[2].Top = pozK[0].Top;
 
                     pioK[2].Left = pioK[0].Left + (zaznaczony.Width);
-                    pioK[2].Top = pozK[0].Top;
+                    pioK[2].Top = pioK[0].Top;
 
                     pozK[3].Left = pozK[0].Left + (zaznaczony.Width - pozK[3].Width);
                     pozK[3].Top = pozK[0].Top + (zaznaczony.Height - pozK[3].Height);
@@ -2065,14 +2065,23 @@ namespace Okienka
 
                     for (int i = 0; i < 4; i++)
                     {
-                        pioK[i].Refresh();
-                        pozK[i].Refresh();
+                        if (naroznikiDodane == false)
+                        {
+                            panel1.Controls.Add(pioK[i]);
+                            panel1.Controls.Add(pozK[i]);
+                        }
+                        else
+                        {
+                            pioK[i].Refresh();
+                            pozK[i].Refresh();
+                        }
                     }
+                    naroznikiDodane = true;
                 }
             }
         }
 
-        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        private void ZakonczPrzesuwanie(object sender, MouseEventArgs e)
         {
             if (przesun == true && zaznaczony != null)
             {
@@ -2134,6 +2143,7 @@ namespace Okienka
                 
                 panel1.Refresh();
                 zmodyfikowany = true;
+                naroznikiDodane = false;
             }
         }
 
@@ -2242,7 +2252,7 @@ namespace Okienka
             }
         }
 
-        private void pełnaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ZacznijPelnaSymulacje(object sender, EventArgs e)
         {
             if (tabBloki.Count == 0)
                 return;
@@ -2254,11 +2264,11 @@ namespace Okienka
             {
                 symuluj=true;
 
-                if (console.IsDisposed == true)
-                    console = new libbloki.Konsola();
+                if (konsola.IsDisposed == true)
+                    konsola = new libbloki.Konsola();
 
-                console.Show();
-                console.richTextBox1.Clear();
+                konsola.Show();
+                konsola.richTextBox1.Clear();
 
                 if (tabBloki.Count == 0)
                 return;
@@ -2291,7 +2301,7 @@ namespace Okienka
                         ((BlokObliczeniowy)aktualnyBlok).Wykonaj();
 
                     if (aktualnyBlok.typBloku == typeof(BlokWeWy))
-                        ((BlokWeWy)aktualnyBlok).Wykonaj(console);
+                        ((BlokWeWy)aktualnyBlok).Wykonaj(konsola);
 
                     if (aktualnyBlok.typBloku == typeof(BlokDecyzyjny))
                         dec = ((BlokDecyzyjny)aktualnyBlok).Wykonaj();
@@ -2341,7 +2351,7 @@ namespace Okienka
             WyczyscWartosciZmiennych();
         }
 
-        private void krokowaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ZacznijPraceKrokowa(object sender, EventArgs e)
         {
             if (tabBloki.Count == 0)
                 return;
@@ -2353,11 +2363,11 @@ namespace Okienka
             {
                 symuluj = true;
 
-                if (console.IsDisposed == true)
-                    console = new libbloki.Konsola();
+                if (konsola.IsDisposed == true)
+                    konsola = new libbloki.Konsola();
                
-                console.Show();
-                console.richTextBox1.Clear();
+                konsola.Show();
+                konsola.richTextBox1.Clear();
                 tsPracaKrokowa.Visible = true;
 
                 if (aktualnyBlok != null)
@@ -2386,7 +2396,7 @@ namespace Okienka
             }
         }
 
-        private void nastepny_Click(object sender, EventArgs e)
+        private void nastepnyBlok(object sender, EventArgs e)
         {
             if (symuluj == true)
             {
@@ -2399,10 +2409,10 @@ namespace Okienka
                     return;
                 }
 
-                if (console.IsDisposed == true)
+                if (konsola.IsDisposed == true)
                 {
-                    console = new libbloki.Konsola();
-                    console.Show();
+                    konsola = new libbloki.Konsola();
+                    konsola.Show();
                 }
 
                 if (aktualnyBlok.typBloku == typeof(BlokSTOP))
@@ -2428,7 +2438,7 @@ namespace Okienka
 
                 if (aktualnyBlok.typBloku == typeof(BlokWeWy))
                 {
-                    ((BlokWeWy)aktualnyBlok).Wykonaj(console);
+                    ((BlokWeWy)aktualnyBlok).Wykonaj(konsola);
 
                     if (aktualnyBlok.nastepnyBlok[0] == null)
                         return;
@@ -2608,7 +2618,7 @@ namespace Okienka
 
                     if (tempPB.typ == typeof(BlokWeWy))
                     {
-                        temp = new BlokWeWy(console);//
+                        temp = new BlokWeWy(konsola);//
                         temp.typBloku = typeof(BlokWeWy);
                         temp.listaZmiennych = zmienne;
                         temp.Name = tempPB.Nazwa.ToString();
@@ -2621,9 +2631,9 @@ namespace Okienka
                     temp.Left = temp.Left = tempPB.x;
                     temp.Top = tempPB.y;
                     temp.KeyDown += new KeyEventHandler(UsunBlok);
-                    temp.MouseDown += new MouseEventHandler(PrzesunStart);
-                    temp.MouseMove += new MouseEventHandler(panel1_MouseMove);
-                    temp.MouseUp += new MouseEventHandler(panel1_MouseUp);
+                    temp.MouseDown += new MouseEventHandler(ZacznijPrzesuwanie);
+                    temp.MouseMove += new MouseEventHandler(przesunNarozniki);
+                    temp.MouseUp += new MouseEventHandler(ZakonczPrzesuwanie);
 
                     iloscDzialan = (Int32)bf.Deserialize(plik);
                     for (int j = 0; j < iloscDzialan; j++)
@@ -2766,7 +2776,7 @@ namespace Okienka
 
                     if (tempPB.typ == typeof(BlokWeWy))
                     {
-                        temp = new BlokWeWy(console);//
+                        temp = new BlokWeWy(konsola);//
                         temp.typBloku = typeof(BlokWeWy);
                         temp.listaZmiennych = zmienne;
                         temp.Name = tempPB.Nazwa.ToString();
@@ -2779,9 +2789,9 @@ namespace Okienka
                     temp.Left = temp.Left = tempPB.x;
                     temp.Top = tempPB.y;
                     temp.KeyDown += new KeyEventHandler(UsunBlok);
-                    temp.MouseDown += new MouseEventHandler(PrzesunStart);
-                    temp.MouseMove += new MouseEventHandler(panel1_MouseMove);
-                    temp.MouseUp += new MouseEventHandler(panel1_MouseUp);
+                    temp.MouseDown += new MouseEventHandler(ZacznijPrzesuwanie);
+                    temp.MouseMove += new MouseEventHandler(przesunNarozniki);
+                    temp.MouseUp += new MouseEventHandler(ZakonczPrzesuwanie);
 
                     iloscDzialan = (Int32)bf.Deserialize(fs);
                     for (int j = 0; j < iloscDzialan; j++)
@@ -2974,7 +2984,7 @@ namespace Okienka
             }
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void Projekt_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (zmodyfikowany == true)
             {
@@ -3036,8 +3046,8 @@ namespace Okienka
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (console != null && console.IsDisposed == false)
-                console.Close();
+            if (konsola != null && konsola.IsDisposed == false)
+                konsola.Close();
 
             if (podgladZmiennych != null && podgladZmiennych.IsDisposed == false)
                 podgladZmiennych.Close();

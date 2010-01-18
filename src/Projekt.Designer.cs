@@ -1,6 +1,6 @@
 ﻿namespace Okienka
 {
-    partial class Form1
+    partial class Projekt
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Projekt));
             this.tsBloki = new System.Windows.Forms.ToolStrip();
             this.dodajBlokStart = new System.Windows.Forms.ToolStripButton();
             this.dodajBlokStop = new System.Windows.Forms.ToolStripButton();
@@ -156,10 +156,10 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(758, 520);
             this.panel1.TabIndex = 0;
-            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
-            this.panel1.Click += new System.EventHandler(this.panel1_Click);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.przesunNarozniki);
+            this.panel1.Click += new System.EventHandler(this.DodajBlok);
             this.panel1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel1_Scroll);
-            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseUp);
+            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ZakonczPrzesuwanie);
             // 
             // menuStrip1
             // 
@@ -187,7 +187,7 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(34, 20);
             this.fileToolStripMenuItem.Text = "&Plik";
             // 
             // newToolStripMenuItem
@@ -196,7 +196,7 @@
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.newToolStripMenuItem.Text = "&Nowy";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -206,14 +206,14 @@
             this.openToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.openToolStripMenuItem.Text = "&Otwórz schemat";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(203, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(191, 6);
             // 
             // saveToolStripMenuItem
             // 
@@ -222,40 +222,40 @@
             this.saveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.saveToolStripMenuItem.Text = "&Zapisz schemat";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.saveAsToolStripMenuItem.Text = "Z&apisz schemat jako";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // zapiszKodŹródłowyToolStripMenuItem
             // 
             this.zapiszKodŹródłowyToolStripMenuItem.Name = "zapiszKodŹródłowyToolStripMenuItem";
-            this.zapiszKodŹródłowyToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.zapiszKodŹródłowyToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.zapiszKodŹródłowyToolStripMenuItem.Text = "Zapisz kod źródłowy";
             this.zapiszKodŹródłowyToolStripMenuItem.Visible = false;
             // 
             // zapiszKodŹródłowyJakoToolStripMenuItem
             // 
             this.zapiszKodŹródłowyJakoToolStripMenuItem.Name = "zapiszKodŹródłowyJakoToolStripMenuItem";
-            this.zapiszKodŹródłowyJakoToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.zapiszKodŹródłowyJakoToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.zapiszKodŹródłowyJakoToolStripMenuItem.Text = "Zapisz kod źródłowy jako";
             this.zapiszKodŹródłowyJakoToolStripMenuItem.Visible = false;
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(203, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(191, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -265,42 +265,42 @@
             this.pełnaToolStripMenuItem,
             this.krokowaToolStripMenuItem});
             this.symulacjaToolStripMenuItem.Name = "symulacjaToolStripMenuItem";
-            this.symulacjaToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
+            this.symulacjaToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.symulacjaToolStripMenuItem.Text = "Symulacja";
             // 
             // pełnaToolStripMenuItem
             // 
             this.pełnaToolStripMenuItem.Name = "pełnaToolStripMenuItem";
-            this.pełnaToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.pełnaToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.pełnaToolStripMenuItem.Text = "Pełna";
-            this.pełnaToolStripMenuItem.Click += new System.EventHandler(this.pełnaToolStripMenuItem_Click);
+            this.pełnaToolStripMenuItem.Click += new System.EventHandler(this.ZacznijPelnaSymulacje);
             // 
             // krokowaToolStripMenuItem
             // 
             this.krokowaToolStripMenuItem.Name = "krokowaToolStripMenuItem";
-            this.krokowaToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.krokowaToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.krokowaToolStripMenuItem.Text = "Krokowa";
-            this.krokowaToolStripMenuItem.Click += new System.EventHandler(this.krokowaToolStripMenuItem_Click);
+            this.krokowaToolStripMenuItem.Click += new System.EventHandler(this.ZacznijPraceKrokowa);
             // 
             // dodatkoweToolStripMenuItem
             // 
             this.dodatkoweToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.podgladZmiennychToolStripMenuItem});
             this.dodatkoweToolStripMenuItem.Name = "dodatkoweToolStripMenuItem";
-            this.dodatkoweToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.dodatkoweToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
             this.dodatkoweToolStripMenuItem.Text = "Dodatkowe";
             // 
             // podgladZmiennychToolStripMenuItem
             // 
             this.podgladZmiennychToolStripMenuItem.Name = "podgladZmiennychToolStripMenuItem";
-            this.podgladZmiennychToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.podgladZmiennychToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.podgladZmiennychToolStripMenuItem.Text = "Podglad zmiennych";
             this.podgladZmiennychToolStripMenuItem.Click += new System.EventHandler(this.podgladZmiennychToolStripMenuItem_Click);
             // 
             // pomocToolStripMenuItem
             // 
             this.pomocToolStripMenuItem.Name = "pomocToolStripMenuItem";
-            this.pomocToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.pomocToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.pomocToolStripMenuItem.Text = "Pomoc";
             this.pomocToolStripMenuItem.Click += new System.EventHandler(this.pomocToolStripMenuItem_Click);
             // 
@@ -342,7 +342,7 @@
             this.nastepny.Name = "nastepny";
             this.nastepny.Size = new System.Drawing.Size(30, 20);
             this.nastepny.Text = "Nastepny";
-            this.nastepny.Click += new System.EventHandler(this.nastepny_Click);
+            this.nastepny.Click += new System.EventHandler(this.nastepnyBlok);
             // 
             // Zatrzymaj
             // 
@@ -358,7 +358,7 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // Form1
+            // Projekt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -369,10 +369,10 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
-            this.Text = "Schematy blokowe";
+            this.Name = "Projekt";
+            this.Text = "Bloczek";
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Projekt_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.tsBloki.ResumeLayout(false);
             this.tsBloki.PerformLayout();
