@@ -80,6 +80,7 @@ namespace libbloki
                 bObl.dzialania.Add(poprzenieDzialania[i]);
 
             poprzenieDzialania.Clear(); //na wszelki wypadek
+            bObl.dodaneZmienne.Clear(); //na wszelki wypadek
 
             BOOpcje.ActiveForm.Close();
         }
@@ -92,6 +93,7 @@ namespace libbloki
             bObl.AktualizujTXT();
 
             poprzenieDzialania.Clear(); //na wszelki wypadek
+            bObl.dodaneZmienne.Clear();
 
             this.Close();
         }
