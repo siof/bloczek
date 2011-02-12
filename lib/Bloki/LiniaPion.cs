@@ -21,7 +21,7 @@ namespace libbloki
             get { return _zakonczenie; }
             set { _zakonczenie = value; }
         }
-		
+
         public LiniaPion(strzalkaUpDown zakonczenie)
         {
             InitializeComponent();
@@ -54,10 +54,10 @@ namespace libbloki
         {
            
             Graphics graph = pe.Graphics;
-			if (graph == null)
-				return;
+		if (gr            h == null)
+				retu 
 			
-            Pen pn = new Pen(Color.Black, 1);
+           Pen pn             new Pen(Color.Black, 1);
 
             Point[] p = new Point[2];
             switch(zakonczenie)
@@ -97,7 +97,7 @@ namespace libbloki
         {
             Pen pn = new Pen(Color.Black, 1);
 			if (graph == null)
-				graph = CreateGraphics();
+            	graph = CreateGraph                );
 
             Point[] p = new Point[2];
             switch (zakonczenie)

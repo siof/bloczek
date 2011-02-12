@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -81,7 +81,7 @@ namespace libbloki
             this.nazwaDO = nazwaDO;
         }
     }
-	
+
     [Serializable]
     public class Bloki : UserControl
     {
@@ -91,7 +91,7 @@ namespace libbloki
         protected Bloki[] _nastepnaLinia = new Bloki[2];
         protected IList<Bloki> poprzedni = new List<Bloki>();
         protected IList<Bloki> _poprzedniaLinia = new List<Bloki>();
-		
+        
         protected String nazwa;
 
         protected tryby _tryb;
