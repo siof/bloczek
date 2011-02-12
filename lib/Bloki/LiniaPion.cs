@@ -54,10 +54,10 @@ namespace libbloki
         {
            
             Graphics graph = pe.Graphics;
-		if (gr            h == null)
-				retu 
-			
-           Pen pn             new Pen(Color.Black, 1);
+		    if (graph == null)
+                return;
+
+            Pen pn = new Pen(Color.Black, 1);
 
             Point[] p = new Point[2];
             switch(zakonczenie)
@@ -97,7 +97,7 @@ namespace libbloki
         {
             Pen pn = new Pen(Color.Black, 1);
 			if (graph == null)
-            	graph = CreateGraph                );
+            	graph = CreateGraphics();
 
             Point[] p = new Point[2];
             switch (zakonczenie)
