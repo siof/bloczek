@@ -48,8 +48,8 @@ namespace libbloki
 
         protected override void OnPaint(PaintEventArgs pe)
         {
-            Font fnt = new Font("Verdana", 16);
-            Graphics g = pe.Graphics;
+            //Font fnt = new Font("Verdana", 16);
+            //Graphics g = pe.Graphics;
             SolidBrush brush = new SolidBrush(Color.Black);
             switch (tryb)
             {
@@ -59,7 +59,7 @@ namespace libbloki
             }
 
             Pen pn = new Pen(Color.Brown, 2);
-            Rectangle rect = new Rectangle(20, 1, 170, 75);
+            //Rectangle rect = new Rectangle(20, 1, 170, 75);
             Point[] p = new Point[4];
             p[0].X = 20; p[0].Y = 2;
             p[1].X = 172; p[1].Y = 2;
