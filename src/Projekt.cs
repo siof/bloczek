@@ -531,7 +531,7 @@ namespace Okienka
                 return;
             }
 
-            List<Polaczenie> tmpList = new List<Polaczenie>();
+            //List<Polaczenie> tmpList = new List<Polaczenie>();
             if (p.RefOD != null && p.RefDO != null)
             {
                 foreach (Polaczenie pol in Polaczenia)

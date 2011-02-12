@@ -84,7 +84,7 @@ namespace libbloki
 
         protected override void OnPaint(PaintEventArgs pe)
         {
-            Font fnt = new Font("Verdana", 16);
+            //Font fnt = new Font("Verdana", 16);
             Graphics g = pe.Graphics;
             SolidBrush brush = new SolidBrush(Color.Black);
             switch (tryb)

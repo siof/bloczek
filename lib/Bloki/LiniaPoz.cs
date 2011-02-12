@@ -93,6 +93,9 @@ namespace libbloki
 
         private void LiniaPoz_Resize(object sender, EventArgs e)
         {
+			if (graph == null)
+				graph = CreateGraphics();
+			
             Pen pn = new Pen(Color.Black, 1);
             Point[] p = new Point[2];
             switch (zakonczenie)
